@@ -5,35 +5,42 @@ Mesh::Mesh()
     glGenVertexArrays(1, &VAO_);
 }
 
-// VBO
+// VBO interleaved
 
-void Mesh::GenArrayBuffer(float vertices[], int elemPerAttr, int numVerts, int numAttrs)
+void Mesh::GenArrayBuffer(float vertices[], int elemPerAttr, int numAttrs, int numVerts)
 {
     numVerts_ = numVerts;
     
     glBindVertexArray(VAO_);
 
-    // VBO
-    glGenBuffers(1, &VBO_);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_);
+    unsigned int VBO;
+    glGenBuffers(1, &VBO);
+    VBOs_.push_back(VBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    // Buffer data
     size_t attrSize = elemPerAttr * sizeof(float);
     int size = attrSize * numAttrs * numVerts;
     glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+
+    // Define data
+    GLsizei stride = attrSize * numAttrs; 
     for (int i = 0; i < numAttrs; ++i) {
-        glVertexAttribPointer(i, elemPerAttr, GL_FLOAT, GL_FALSE, attrSize, (void*)(i*attrSize));
+        void* offset = (void*)(i*attrSize);
+        glVertexAttribPointer(i, elemPerAttr, GL_FLOAT, GL_FALSE, stride, offset);
         glEnableVertexAttribArray(i);
     }
 
     glBindVertexArray(0);
 }
 
-// VBOs
+// VBOs separate
 
 void Mesh::GenArrayBuffer(float attribArray[], int elemPerAttr, int numVerts)
 {
     numVerts_ = numVerts;
     
-    // VAO
     glBindVertexArray(VAO_);
     
     unsigned int VBO;
@@ -41,7 +48,7 @@ void Mesh::GenArrayBuffer(float attribArray[], int elemPerAttr, int numVerts)
     VBOs_.push_back(VBO);
     
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    int size = sizeof(float) * elemPerAttr * numVerts_;
+    size_t size = sizeof(float) * elemPerAttr * numVerts;
     glBufferData(GL_ARRAY_BUFFER, size, attribArray, GL_STATIC_DRAW);
     int idx = VBOs_.size()-1;
     glVertexAttribPointer(idx, elemPerAttr, GL_FLOAT, GL_FALSE, 0, 0);
@@ -56,7 +63,6 @@ void Mesh::GenElementBuffer(unsigned int indices[], int numIdx)
 {
     numIdx_ = numIdx;
     
-    // VAO
     glBindVertexArray(VAO_);
     
     glGenBuffers(1, &EBO_);
@@ -86,7 +92,6 @@ void Mesh::Render()
 
 Mesh::~Mesh()
 {
-    glDeleteBuffers(1, &VBO_);
     glDeleteBuffers(1, &EBO_);
     glDeleteBuffers(VBOs_.size(), &VBOs_.front());
     glDeleteVertexArrays(1, &VAO_);

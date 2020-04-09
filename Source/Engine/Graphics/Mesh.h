@@ -11,7 +11,7 @@ public:
     ~Mesh();
 
     // interleaved VBO
-    void GenArrayBuffer(float vertices[], int elemPerAttr, int numVerts, int numAttrs);
+    void GenArrayBuffer(float vertices[], int elemPerAttr, int numAttrs, int numVerts);
 
     // separate VBOs
     void GenArrayBuffer(float attribArray[], int elemPerAttr, int numVerts);
@@ -22,7 +22,6 @@ public:
     void Render();
 
     GLuint VAO_;
-    GLuint VBO_;
     std::vector<GLuint> VBOs_;    
     GLuint EBO_;
 
