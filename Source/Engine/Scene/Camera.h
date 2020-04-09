@@ -49,6 +49,6 @@ public:
     float zoom_;
     
 private:
-    void updateCameraVectors();
+    void UpdateCameraVectors();
 };
 #endif

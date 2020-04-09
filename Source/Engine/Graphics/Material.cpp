@@ -15,7 +15,7 @@ void Material::Update(float deltaTime, const glm::mat4& model, const glm::mat4& 
 {
     shader_->use();
 
-    shader_->setMat4("uModel", model);
-    shader_->setMat4("uView", view);
-    shader_->setMat4("uProjection", projection);
+    shader_->SetMat4("uModel", model);
+    shader_->SetMat4("uView", view);
+    shader_->SetMat4("uProjection", projection);
 }

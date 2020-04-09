@@ -51,12 +51,12 @@ int main()
     cube4->Translate(ONE*2.0f);
     cube4->Scale(2);
     app.entities_.push_back(cube4);
-    
+
     litSolidTexturedShader->use();
-    litSolidTexturedShader->setVec3("uLight.ambient",  DARK_GRAY);
-    litSolidTexturedShader->setVec3("uLight.diffuse",  GRAY);
-    litSolidTexturedShader->setVec3("uLight.specular", GRAY);
-    litSolidTexturedShader->setVec3("uLight.position", 0.5f, 0.0f, 5.0f);
+    litSolidTexturedShader->SetVec3("uLight.ambient",  DARK_GRAY);
+    litSolidTexturedShader->SetVec3("uLight.diffuse",  GRAY);
+    litSolidTexturedShader->SetVec3("uLight.specular", GRAY);
+    litSolidTexturedShader->SetVec3("uLight.position", 0.5f, 0.0f, 5.0f);
 
     app.camera_.position_.z = 12.0f;
     
@@ -70,7 +70,7 @@ int main()
         float cosVal = glm::cos(time);
         vec3 col = vec3(cosVal, 0.0f, sinVal);
         litSolidTexturedShader->use();
-        litSolidTexturedShader->setVec3("uLight.position", col*5.0f);
+        litSolidTexturedShader->SetVec3("uLight.position", col*5.0f);
         
         app.Update();
     }

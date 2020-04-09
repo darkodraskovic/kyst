@@ -15,8 +15,8 @@ void PhongMap::Update(float deltaTime, const glm::mat4& model, const glm::mat4& 
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, emissive_);
 
-    shader_->setInt("uMaterial.diffuse", 0);
-    shader_->setInt("uMaterial.specular", 1);
-    shader_->setInt("uMaterial.emissive", 2);
-    shader_->setFloat("uMaterial.shininess", shininess_);
+    shader_->SetInt("uMaterial.diffuse", 0);
+    shader_->SetInt("uMaterial.specular", 1);
+    shader_->SetInt("uMaterial.emissive", 2);
+    shader_->SetFloat("uMaterial.shininess", shininess_);
 }

@@ -8,8 +8,8 @@ void Phong::Update(float deltaTime, const glm::mat4& model, const glm::mat4& vie
 {
     Material::Update(deltaTime, model, view, projection);
     
-    shader_->setVec3("uMaterial.ambient",  ambient_);
-    shader_->setVec3("uMaterial.diffuse",  diffuse_);
-    shader_->setVec3("uMaterial.specular", specular_);
-    shader_->setFloat("uMaterial.shininess", shininess_);
+    shader_->SetVec3("uMaterial.ambient",  ambient_);
+    shader_->SetVec3("uMaterial.diffuse",  diffuse_);
+    shader_->SetVec3("uMaterial.specular", specular_);
+    shader_->SetFloat("uMaterial.shininess", shininess_);
 }

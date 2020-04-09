@@ -14,7 +14,7 @@ Camera::Camera(vec3 position, vec3 up, float yaw, float pitch) :
     worldUp_ = up;
     yaw_ = yaw;
     pitch_ = pitch;
-    updateCameraVectors();
+    UpdateCameraVectors();
 }
 
 // Returns the view matrix calculated using Euler Angles and the LookAt Matrix
@@ -66,7 +66,7 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constr
     }
 
     // Update front_, right_ and up_ Vectors using the updated Euler angles
-    updateCameraVectors();
+    UpdateCameraVectors();
 }
 
 // Processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
@@ -77,7 +77,7 @@ void Camera::ProcessMouseScroll(float yoffset)
 }
 
 // Calculates the front vector from the Camera's (updated) Euler Angles
-void Camera::updateCameraVectors()
+void Camera::UpdateCameraVectors()
 {
     // Calculate the new front_ vector
     vec3 front;
