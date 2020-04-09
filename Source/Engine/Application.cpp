@@ -7,7 +7,7 @@
 #include "Application.h"
 #include "Camera.h"
 
-namespace mouseData
+namespace MouseData
 {
     float lastMouseX = SCR_WIDTH/2, lastMouseY = SCR_HEIGHT/2;
     float mouseOffsetX, mouseOffsetY;
@@ -18,7 +18,7 @@ namespace mouseData
 }
 
 using namespace glm;
-using namespace mouseData;
+using namespace MouseData;
 
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 void MouseCallback(GLFWwindow* window, double posX, double posY);
@@ -138,6 +138,7 @@ bool Application::ShouldClose()
 {
     return glfwWindowShouldClose(window_);    
 };
+
 void Application::Terminate()
 {
     glfwTerminate();

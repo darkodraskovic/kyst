@@ -21,10 +21,10 @@ public:
 
     void Render();
 
-    unsigned int VAO_;
-    unsigned int VBO_;
-    std::vector<unsigned int> VBOs_;    
-    unsigned int EBO_;
+    GLuint VAO_;
+    GLuint VBO_;
+    std::vector<GLuint> VBOs_;    
+    GLuint EBO_;
 
 	GLenum mode_ = GL_TRIANGLES;
     
