@@ -15,6 +15,7 @@ public:
 
     // separate VBOs
     void GenArrayBuffer(float attribArray[], int elemPerAttr, int numVerts);
+    void GenArrayBuffer(const std::vector<vec3>&);
 
     // indices - EBO
     void GenElementBuffer(unsigned int indices[], int numIdx);

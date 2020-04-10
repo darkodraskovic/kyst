@@ -57,6 +57,12 @@ void Mesh::GenArrayBuffer(float attribArray[], int elemPerAttr, int numVerts)
     glBindVertexArray(0);
 }
 
+
+void Mesh::GenArrayBuffer(const std::vector<vec3>& attribs)
+{
+    GenArrayBuffer((float*)&attribs[0], 3, attribs.size());
+}
+
 // EBO
 
 void Mesh::GenElementBuffer(unsigned int indices[], int numIdx)
