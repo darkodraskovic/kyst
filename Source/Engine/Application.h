@@ -35,6 +35,7 @@ public:
 
     float deltaTime_ = 0.0f;	// Time between current frame and last frame
     float lastFrame_ = 0.0f; // Time of last frame
+    vec4 clearColor_ = vec4(0.2f, 0.3f, 0.3f, 1.0f);
 };
 
 #endif

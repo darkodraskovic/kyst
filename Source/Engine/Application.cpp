@@ -102,7 +102,7 @@ float cameraYaw = -90, cameraPitch = 0, cameraFov = 45.0f;
 
 void Application::Render(float deltaTime)
 {
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClearColor(clearColor_.r, clearColor_.g, clearColor_.b, clearColor_.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glm::mat4 view = camera_.GetViewMatrix();

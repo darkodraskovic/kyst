@@ -4,6 +4,7 @@
 #include "VecConsts.h"
 #include "Application.h"
 #include "EntityFactory.h"
+#include "ShapeUitls.h"
 
 using namespace VecConsts;
 
@@ -20,6 +21,11 @@ int main()
         return -1;
     };
 
+    // app.clearColor_ = vec4(ShapeUtils::Hex2rgb("2A363B"), 1.0);
+    app.clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
+    // glEnable(GL_LINE_SMOOTH);
+    glLineWidth(1.25f);
+    
     EntityFactory eFactory(&app);
     // Application CONTENT
     // ---------------------------------------------------------------------------
@@ -28,7 +34,9 @@ int main()
 
     float limit = 0.05;
 
-    eFactory.color1_ = YELLOW;
+    eFactory.color1_ = ShapeUtils::Hex2rgb("E84A5F");
+    eFactory.color2_ = ShapeUtils::Hex2rgb("FF847C");
+    eFactory.color3_ = ShapeUtils::Hex2rgb("FECEAB");
     auto e1 = eFactory.CreateLineGasket(4, vec2(-limit, limit), true, true);
     // auto e1 = eFactory.CreateTriGasket(3, vec2(-limit, limit), true, true);
     
