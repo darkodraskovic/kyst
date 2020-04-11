@@ -79,6 +79,11 @@ void Mesh::GenElementBuffer(unsigned int indices[], int numIdx)
     glBindVertexArray(0);
 }
 
+void Mesh::GenElementBuffer(std::vector<unsigned int> indices)
+{
+    GenElementBuffer(&indices[0], indices.size());
+}
+
 // RENDER
 
 void Mesh::Render()

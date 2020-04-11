@@ -1,6 +1,7 @@
 #ifndef CUBE_FACTORY_H
 #define CUBE_FACTORY_H
 
+#include <vector>
 #include <glm/glm.hpp>
 
 #include "VecConsts.h"
@@ -26,12 +27,13 @@ class CubeFactory
 public:
     CubeFactory();
 
-    static float* GetPositions();
-    static float* GetNormals();
-    static float* GetTexCoords();
+    static std::vector<vec3>  GetPositions();
+    static std::vector<vec3> GetNormals();
+    static std::vector<vec3> GetTexCoords();
+    static std::vector<unsigned int> GetIndices();
 
 private:
-    static const int numVerts_ = 24;
+    static const std::vector<vec3> attribs_;
 
 };
 

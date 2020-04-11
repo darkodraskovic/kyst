@@ -19,6 +19,7 @@ public:
 
     // indices - EBO
     void GenElementBuffer(unsigned int indices[], int numIdx);
+    void GenElementBuffer(std::vector<unsigned int> indices);
 
     void Render();
 

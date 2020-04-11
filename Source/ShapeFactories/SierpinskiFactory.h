@@ -12,10 +12,15 @@ public:
     SierpinskiFactory();
 
     static std::vector<vec3> Sierpinski2DDet(int numDivisions);
-    
+    static std::vector<vec3> Sierpinski2DRnd(int numDivisions);
+
+    static std::vector<vec3> Sierpinski3DDet(int numDivisions);
+    static std::vector<vec3> Sierpinski3DRnd(int numDivisions);
+
 private:
-    static void Divide2D(const vec3& a, const vec3& b, const vec3& c, int numDivisions);
-    static std::vector<vec3> positions_;
+    static void Divide(const vec3& a, const vec3& b, const vec3& c, int numDivisions);
+    static void Divide(const vec3& a, const vec3& b, const vec3& c, const vec3& d, int numDivisions);
+    static std::vector<vec3> points_;
 };
 
 #endif
