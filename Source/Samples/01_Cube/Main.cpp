@@ -52,7 +52,7 @@ int main()
     cube4->Scale(2);
     app.entities_.push_back(cube4);
 
-    litTexShader->use();
+    litTexShader->Use();
     litTexShader->SetVec3("uLight.ambient",  DARK_GRAY);
     litTexShader->SetVec3("uLight.diffuse",  GRAY);
     litTexShader->SetVec3("uLight.specular", GRAY);
@@ -69,7 +69,7 @@ int main()
         float sinVal = glm::sin(time);
         float cosVal = glm::cos(time);
         vec3 col = vec3(cosVal, 0.0f, sinVal);
-        litTexShader->use();
+        litTexShader->Use();
         litTexShader->SetVec3("uLight.position", col*5.0f);
         
         app.Update();

@@ -98,9 +98,9 @@ public:
     }
     // activate the shader
     // ------------------------------------------------------------------------
-    void use() const
+    void Use() const
     { 
-        glUseProgram(ID); 
+        glUseProgram(ID);
     }
     // utility uniform functions
     // ------------------------------------------------------------------------
