@@ -1,3 +1,4 @@
+#include <glm/gtc/constants.hpp>
 #include "Cube.h"
 #include "VecConsts.h"
 #include "CubeFactory.h"
@@ -55,5 +56,5 @@ Cube::Cube(const std::shared_ptr<Material>& material)
 }
 
 void Cube::Update(float deltaTime) {
-    Rotate(deltaTime*50, ONE);
+    Rotate(deltaTime * glm::quarter_pi<float>(), ONE);
 }

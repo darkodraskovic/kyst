@@ -17,6 +17,8 @@ public:
     static std::vector<vec3> Sierpinski3DDet(int numDivisions);
     static std::vector<vec3> Sierpinski3DRnd(int numDivisions);
 
+    static vec2 varRange_;
+    
 private:
     static void Divide(const vec3& a, const vec3& b, const vec3& c, int numDivisions);
     static void Divide(const vec3& a, const vec3& b, const vec3& c, const vec3& d, int numDivisions);

@@ -1,3 +1,4 @@
+#include <glm/gtc/constants.hpp>
 #include "VecConsts.h"
 #include "Sierpinski.h"
 
@@ -16,7 +17,8 @@ Sierpinski::Sierpinski()
     material_->shader_ = vCol;
     
     // 2D
-    std::vector<vec3> points2D = SierpinskiFactory::Sierpinski2DDet(5);
+    SierpinskiFactory::varRange_ += vec2(-0.03, 0.1);
+    std::vector<vec3> points2D = SierpinskiFactory::Sierpinski2DDet(4);
 
     // triangles
     // mesh_->GenArrayBuffer(points2D);
@@ -34,22 +36,38 @@ Sierpinski::Sierpinski()
 
     // 3D
     std::vector<vec3> points3D = SierpinskiFactory::Sierpinski3DDet(3);
-
+    std::vector<vec3> colors3D;
+    std::vector<vec3> lines3D;
+    
     // triangles
     // mesh_->GenArrayBuffer(points3D);
-
+    for (int i = 0; i < points3D.size(); i += 3)
+    {
+        switch ((i/3)%3) {
+        case 0: {
+            colors3D.push_back(RED); colors3D.push_back(RED); colors3D.push_back(RED);
+            break;
+        }
+        case 1: {
+            colors3D.push_back(GREEN); colors3D.push_back(GREEN); colors3D.push_back(GREEN);
+            break;
+        }
+        case 2: {
+            colors3D.push_back(BLUE); colors3D.push_back(BLUE); colors3D.push_back(BLUE);
+            break;
+        }
+        default:
+            break;
+        }
+    }    
+    // mesh_->GenArrayBuffer(colors3D);
+    
     // lines
-    std::vector<vec3> lines3D;
-    std::vector<vec3> colors3D;
     for (int i = 0; i < points3D.size(); i += 3)
     {
         colors3D.push_back(RED); colors3D.push_back(RED);
         colors3D.push_back(GREEN); colors3D.push_back(GREEN);
         colors3D.push_back(BLUE); colors3D.push_back(BLUE);
-        // float limit = 0.03;
-        // ShapeUtils::prodPoint(points3D[i], -limit, +limit);
-        // ShapeUtils::prodPoint(points3D[i+1], -limit, +limit);
-        // ShapeUtils::prodPoint(points3D[i+2], -limit, +limit);
         lines3D.push_back(points3D[i]); lines3D.push_back(points3D[i+1]);
         lines3D.push_back(points3D[i+1]); lines3D.push_back(points3D[i+2]);
         lines3D.push_back(points3D[i+2]); lines3D.push_back(points3D[i]);
@@ -61,5 +79,5 @@ Sierpinski::Sierpinski()
 }
 
 void Sierpinski::Update(float deltaTime) {
-    Rotate(deltaTime*30, UP);
+    Rotate(deltaTime * glm::quarter_pi<float>(), UP);
 }

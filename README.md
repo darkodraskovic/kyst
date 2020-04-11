@@ -33,8 +33,9 @@ Install [STB library](https://github.com/nothings/stb) for image handling:
 
 ```
 git clone https://github.com/nothings/stb.git 
-cd stb 
-cp -a stb* /usr/local/include/
+cd stb
+mkdir /usr/local/include/stb
+cp -a stb* /usr/local/include/stb/
 ```
 
 ## Build

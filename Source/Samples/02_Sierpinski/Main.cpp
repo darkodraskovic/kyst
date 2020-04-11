@@ -1,27 +1,36 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "VecConsts.h"
 #include "Application.h"
-#include "Sierpinski.h"
+#include "EntityFactory.h"
+
+using namespace VecConsts;
+
+Application app;
 
 int main()
 {
     // Application init
     // ---------------------------------------------------------------------------    
-    Application app;
+    
     if (app.Init() < 0)
     {
         std::cout << "Failed to create an OpenGL app" << std::endl;
         return -1;
     };
 
+    EntityFactory eFactory(&app);
     // Application CONTENT
     // ---------------------------------------------------------------------------
     
-    app.camera_.position_.z = 3.0f;
+    app.camera_.position_.z = 4.0f;
 
-    auto gasket = std::make_shared<Sierpinski>();
-    app.entities_.push_back(gasket);
+    float limit = 0.05;
+
+    eFactory.color1_ = YELLOW;
+    auto e1 = eFactory.CreateLineGasket(4, vec2(-limit, limit), true, true);
+    // auto e1 = eFactory.CreateTriGasket(3, vec2(-limit, limit), true, true);
     
     // Application loop
     // ---------------------------------------------------------------------------
@@ -29,7 +38,8 @@ int main()
     {
 
         float time = glfwGetTime();
-        
+
+        e1->Rotate(quarter_pi<float>() * app.deltaTime_, UP);
         app.Update();
     }
 

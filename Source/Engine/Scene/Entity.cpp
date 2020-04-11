@@ -15,12 +15,12 @@ Entity::Entity()
 
 void Entity::SetRotation(float angle, const glm::vec3& axis)
 {
-    rotation_ = glm::rotate(id_, glm::radians(angle), axis);
+    rotation_ = glm::rotate(id_, angle, axis);
 }
 
 void Entity::Rotate(float angle, const glm::vec3& axis)
 {
-    rotation_ = glm::rotate(rotation_, glm::radians(angle), axis);
+    rotation_ = glm::rotate(rotation_, angle, axis);
 }
 
 void Entity::SetScale(const glm::vec3& scale)
