@@ -1,5 +1,6 @@
 #include <glm/gtc/constants.hpp>
 
+#include "KochFactory.h"
 #include "SierpinskiFactory.h"
 #include "EntityFactory.h"
 
@@ -7,8 +8,13 @@ EntityFactory::EntityFactory(Application* app) : app_(app)
 {
     colShader_ = std::make_shared<Shader>("../Shaders/Col.vs", "../Shaders/Col.fs");
     vColShader_ = std::make_shared<Shader>("../Shaders/VCol.vs", "../Shaders/VCol.fs");
+    SetColor(MAGENTA);
+}
+
+void EntityFactory::SetColor(const vec3 &color)
+{
     colShader_->Use();
-    colShader_->SetVec4("uColor", vec4(MAGENTA, 1.0));    
+    colShader_->SetVec4("uColor", vec4(color, 1.0));    
 }
 
 std::shared_ptr<Entity> EntityFactory::CreateEntity(bool vCol)
@@ -84,6 +90,22 @@ std::shared_ptr<Entity> EntityFactory::CreateTriGasket(int numDivisions, const v
     }
     
     entity->mesh_->GenArrayBuffer(colors);
+
+    return entity;
+}
+
+std::shared_ptr<Entity> EntityFactory::CreateSnowflake(int numDivisions)
+{
+    auto entity = CreateEntity(false);
+
+    vec3 a(-1, 1, 0);
+    vec3 b(1, 1, 0);
+    vec3 c(0, -1, 0);    
+
+    auto points = KochFactory::Snowflake(a, b, c, numDivisions);
+
+    entity->mesh_->mode_ = GL_LINE_LOOP;
+    entity->mesh_->GenArrayBuffer(points);
 
     return entity;
 }
