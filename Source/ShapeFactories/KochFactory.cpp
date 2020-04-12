@@ -12,10 +12,15 @@ KochFactory::KochFactory()
 {
 }
 
-std::vector<vec3> KochFactory::Snowflake(vec3& a, vec3& b, vec3& c, int numDivisions)
+std::vector<vec3> KochFactory::Snowflake(int numDivisions)
 {
     points_.clear();
 
+    float side = sqrt(3);
+    vec3 a(-1, side/3, 0);
+    vec3 b(1, side/3, 0);
+    vec3 c(0, -2*(side/3), 0);
+    
     Divide(a, b, numDivisions);
     Divide(b, c, numDivisions);
     Divide(c, a, numDivisions);

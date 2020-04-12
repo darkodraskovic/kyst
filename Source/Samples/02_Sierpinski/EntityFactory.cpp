@@ -1,5 +1,6 @@
 #include <glm/gtc/constants.hpp>
 
+#include "Mover.h"
 #include "KochFactory.h"
 #include "SierpinskiFactory.h"
 #include "EntityFactory.h"
@@ -17,9 +18,16 @@ void EntityFactory::SetColor(const vec3 &color)
     colShader_->SetVec4("uColor", vec4(color, 1.0));    
 }
 
-std::shared_ptr<Entity> EntityFactory::CreateEntity(bool vCol)
+std::shared_ptr<Entity> EntityFactory::CreateEntity(EntityType type, bool vCol)
 {
-    auto entity = std::make_shared<Entity>();
+    std::shared_ptr<Entity> entity;
+    switch (type) {
+    case MOVER_ENTITY: entity = std::make_shared<Mover>();
+        break;
+    default: entity = std::make_shared<Entity>();
+        break;
+    }
+    
     entity->material_ = std::make_shared<Material>();
     app_->entities_.push_back(entity);
     entity->material_->shader_ = colShader_;
@@ -31,7 +39,7 @@ std::shared_ptr<Entity> EntityFactory::CreateEntity(bool vCol)
 
 std::shared_ptr<Entity> EntityFactory::CreateLineGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol)
 {
-    auto entity = CreateEntity(vCol);
+    auto entity = CreateEntity(BASE_ENTITY, vCol);
     
     SierpinskiFactory::varRange_ = varRange;
     auto points = threeD ? SierpinskiFactory::Sierpinski3DDet(numDivisions) :
@@ -65,7 +73,7 @@ std::shared_ptr<Entity> EntityFactory::CreateLineGasket(int numDivisions, const 
 
 std::shared_ptr<Entity> EntityFactory::CreateTriGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol)
 {
-    auto entity = CreateEntity(vCol);
+    auto entity = CreateEntity(BASE_ENTITY, vCol);
     
     SierpinskiFactory::varRange_ = varRange;
     auto points = threeD ? SierpinskiFactory::Sierpinski3DDet(numDivisions) :
@@ -96,13 +104,14 @@ std::shared_ptr<Entity> EntityFactory::CreateTriGasket(int numDivisions, const v
 
 std::shared_ptr<Entity> EntityFactory::CreateSnowflake(int numDivisions)
 {
-    auto entity = CreateEntity(false);
+    auto entity = CreateEntity(MOVER_ENTITY, false);
+    Mover* mover = dynamic_cast<Mover*>(entity.get());
+    // mover->gravity_.y = -2;
+    mover->velocity_.x = -1;
+    mover->dragC_ = 1.0f;
+    mover->aVelocity_ = vec3(0,0,2);
 
-    vec3 a(-1, 1, 0);
-    vec3 b(1, 1, 0);
-    vec3 c(0, -1, 0);    
-
-    auto points = KochFactory::Snowflake(a, b, c, numDivisions);
+    auto points = KochFactory::Snowflake(numDivisions);
 
     entity->mesh_->mode_ = GL_LINE_LOOP;
     entity->mesh_->GenArrayBuffer(points);

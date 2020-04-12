@@ -10,19 +10,21 @@
 
 using namespace VecConsts;
 
-
-
 #include_next <vector>
 #include_next <glm/glm.hpp>
 
 using namespace glm;
+
+enum EntityType{
+    BASE_ENTITY, MOVER_ENTITY
+};
 
 class EntityFactory
 {
 public:
     EntityFactory(Application* app);
 
-    std::shared_ptr<Entity> CreateEntity(bool vCol);
+    std::shared_ptr<Entity> CreateEntity(EntityType type, bool vCol);
     std::shared_ptr<Entity> CreateLineGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol);
     std::shared_ptr<Entity> CreateTriGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol);
 

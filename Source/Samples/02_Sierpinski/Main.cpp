@@ -21,8 +21,8 @@ int main()
         return -1;
     };
 
-    // app.clearColor_ = vec4(ShapeUtils::Hex2rgb("2A363B"), 1.0);
     app.clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
+    
     // glEnable(GL_LINE_SMOOTH);
     glLineWidth(2.0f);
     
@@ -49,10 +49,11 @@ int main()
     while (!app.ShouldClose())
     {
 
-        float time = glfwGetTime();
+        // float time = glfwGetTime();
 
         e1->Rotate(quarter_pi<float>() * app.deltaTime_ / 2, UP);
         app.Update();
+
     }
 
     // Application termination
