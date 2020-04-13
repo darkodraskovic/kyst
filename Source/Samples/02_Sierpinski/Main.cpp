@@ -1,12 +1,20 @@
+#include <algorithm>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include <glm/gtc/random.hpp>
 
 #include "VecConsts.h"
 #include "Application.h"
 #include "EntityFactory.h"
 #include "ShapeUitls.h"
+#include "Mover.h"
+#include "Particle.h"
 
 using namespace VecConsts;
+
+void createEntites();
 
 Application app;
 
@@ -26,38 +34,41 @@ int main()
     // glEnable(GL_LINE_SMOOTH);
     glLineWidth(2.0f);
     
-    EntityFactory eFactory(&app);
+
     // Application CONTENT
     // ---------------------------------------------------------------------------
     
-    app.camera_.position_.z = 4.0f;
+    app.camera_.position_.z = 5.0f;
 
-    float limit = 0.05;
+    createEntites();
+    
+    // auto e1 = eFactory.CreateTriGasket(3, vec2(-limit, limit), true, true);
 
+
+    EntityFactory eFactory(&app);
     eFactory.color1_ = ShapeUtils::Hex2rgb("E84A5F");
     eFactory.color2_ = ShapeUtils::Hex2rgb("FF847C");
     eFactory.color3_ = ShapeUtils::Hex2rgb("FECEAB");
-    auto e1 = eFactory.CreateLineGasket(4, vec2(-limit, limit), true, true);
-    eFactory.SetColor(eFactory.color3_);
-    auto e2 = eFactory.CreateSnowflake(3);
-    e2->SetScale(0.1f);
-    e2->Translate(ONE);
-    // auto e1 = eFactory.CreateTriGasket(3, vec2(-limit, limit), true, true);
-    
+    float limit = 0.05;
+    eFactory.CreateLineGasket(4, vec2(-limit, limit), true, true);
+
     // Application loop
     // ---------------------------------------------------------------------------
+    int i = 0;
     while (!app.ShouldClose())
     {
-
-        // float time = glfwGetTime();
-
-        e1->Rotate(quarter_pi<float>() * app.deltaTime_ / 2, UP);
+        if (i%40 == 0) eFactory.CreateSnowflake(3);        
+        i++;
         app.Update();
-
     }
 
     // Application termination
     // ---------------------------------------------------------------------------
     app.Terminate();
     return 0;
+}
+
+void createEntites()
+{
+    
 }

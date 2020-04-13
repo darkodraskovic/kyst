@@ -28,8 +28,8 @@ void Mesh::GenArrayBuffer(float vertices[], int elemPerAttr, int numAttrs, int n
     GLsizei stride = attrSize * numAttrs; 
     for (int i = 0; i < numAttrs; ++i) {
         void* offset = (void*)(i*attrSize);
-        glVertexAttribPointer(i, elemPerAttr, GL_FLOAT, GL_FALSE, stride, offset);
         glEnableVertexAttribArray(i);
+        glVertexAttribPointer(i, elemPerAttr, GL_FLOAT, GL_FALSE, stride, offset);
     }
 
     glBindVertexArray(0);
@@ -51,8 +51,8 @@ void Mesh::GenArrayBuffer(float attribArray[], int elemPerAttr, int numVerts)
     size_t size = sizeof(float) * elemPerAttr * numVerts;
     glBufferData(GL_ARRAY_BUFFER, size, attribArray, GL_STATIC_DRAW);
     int idx = VBOs_.size()-1;
-    glVertexAttribPointer(idx, elemPerAttr, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(idx);
+    glVertexAttribPointer(idx, elemPerAttr, GL_FLOAT, GL_FALSE, 0, 0);
 
     glBindVertexArray(0);
 }

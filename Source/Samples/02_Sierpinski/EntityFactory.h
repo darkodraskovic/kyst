@@ -16,7 +16,7 @@ using namespace VecConsts;
 using namespace glm;
 
 enum EntityType{
-    BASE_ENTITY, MOVER_ENTITY
+    BASE_ENTITY, MOVER_ENTITY, PARTICLE_ENTITY,
 };
 
 class EntityFactory
@@ -41,6 +41,7 @@ public:
     
 private:
     Application* app_;
+    Mesh* snowflakeMesh_;    
 };
 
 #endif

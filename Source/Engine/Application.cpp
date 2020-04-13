@@ -71,8 +71,9 @@ int Application::Init()
 
 void Application::ProcessInput(float deltaTime)
 {
-    if(glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if(glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window_, true);
+    }
     
     if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS)
         camera_.ProcessKeyboard(CAM_FORWARD, deltaTime);
@@ -108,8 +109,7 @@ void Application::Render(float deltaTime)
     glm::mat4 view = camera_.GetViewMatrix();
     glm::mat4 projection = camera_.GetProjectionMatrix(SCR_WIDTH, SCR_HEIGHT);
 
-    for(std::vector<std::shared_ptr<Entity>>::iterator it = entities_.begin(); it != entities_.end(); ++it) {
-        (*it)->Update(deltaTime);
+    for(auto it = entities_.begin(); it != entities_.end(); ++it) {
         (*it)->Draw(deltaTime, view, projection);
     }
         
@@ -126,11 +126,20 @@ float Application::GetDeltaTime()
 
 void Application::Update()
 {
+    for(auto it = entities_.begin(); it != entities_.end(); ++it) {
+        if ((*it)->GetRemove()) entities_.erase(it--);
+    }
+    
     float currentFrame = glfwGetTime();
     deltaTime_ = currentFrame - lastFrame_;
     lastFrame_ = currentFrame;
     
     ProcessInput(deltaTime_);
+
+    for(auto it = entities_.begin(); it != entities_.end(); ++it) {
+        (*it)->Update(deltaTime_);
+    }
+    
     Render(deltaTime_);
 };
 
@@ -141,6 +150,7 @@ bool Application::ShouldClose()
 
 void Application::Terminate()
 {
+    entities_.clear();
     glfwTerminate();
 };
 

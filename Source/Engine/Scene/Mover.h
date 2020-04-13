@@ -11,9 +11,9 @@ class Mover : public Entity
 public:
     Mover();
 
-    virtual void Update(float deltaTime) override;
-    void ApplyForce(const vec3& force);
-    void Drag();
+    void Update(float deltaTime) override;
+    void ApplyForce(float deltaTime, const vec3& force);
+    void Drag(float deltaTime);
 
     // linear
     vec3 velocity_ = vec3(0,0,0);
@@ -28,7 +28,7 @@ public:
     vec3 aVelocity_ = vec3(0,0,0);
     vec3 maxAVelocity_ = vec3(glm::radians(720.0f), glm::radians(720.0f), glm::radians(720.0f));
     vec3 aAcceleration_ = vec3(0,0,0);
-    float minASpeed_ = glm::radians(5.0f);
+    float minASpeed_ = glm::radians(1.0f);
     vec3 aDrag_ = vec3(0,0,0);
 
     float forceScale_ = 1e-3;

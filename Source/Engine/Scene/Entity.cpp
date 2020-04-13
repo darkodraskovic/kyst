@@ -62,3 +62,13 @@ void Entity::Draw(float deltaTime, const glm::mat4& uView, const glm::mat4& uPro
     material_->Update(deltaTime, translation_* rotation_ * scale_, uView, uProjection);
     mesh_->Render();
 }
+
+bool Entity::GetRemove()
+{
+    return remove_;
+}
+
+void Entity::Remove()
+{
+    remove_ = true;
+}
