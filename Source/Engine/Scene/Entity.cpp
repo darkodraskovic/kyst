@@ -4,14 +4,17 @@
 
 Entity::Entity()
 {
-    mesh_ = std::shared_ptr<Mesh>(new Mesh());
-    
+    InitTransform_();
+};
+
+void Entity::InitTransform_()
+{
     id_ = glm::mat4(1.0f);
     rotation_ = glm::mat4(1.0f);
     scale_ = glm::mat4(1.0f);
     translation_ = glm::mat4(1.0f);
     transform_ = glm::mat4(1.0f);
-};
+}
 
 void Entity::SetRotation(float angle, const glm::vec3& axis)
 {

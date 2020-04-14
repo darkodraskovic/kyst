@@ -9,7 +9,7 @@
 
 namespace MouseData
 {
-    float lastMouseX = SCR_WIDTH/2, lastMouseY = SCR_HEIGHT/2;
+    float lastMouseX, lastMouseY;
     float mouseOffsetX, mouseOffsetY;
     float mouseScrollY;
     bool firstMouse = true;
@@ -28,7 +28,6 @@ Application::Application() {};
 
 int Application::Init()
 {
-
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -38,14 +37,16 @@ int Application::Init()
 
     // glfw window creation
     // --------------------
-    window_ = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Camera", NULL, NULL);
-
+    window_ = glfwCreateWindow(windowSize_.x, windowSize_.y, "Camera", NULL, NULL);
     if (window_ == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
+
+    glfwSetWindowPos(window_, windowPosition_.x, windowPosition_.y);
+    
     glfwMakeContextCurrent(window_);
     glfwSetFramebufferSizeCallback(window_, FramebufferSizeCallback);
 
@@ -65,6 +66,11 @@ int Application::Init()
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
+    // configure mouse position
+    // -----------------------------
+    lastMouseX = (float)windowSize_.x / 2;
+    lastMouseX = (float)windowSize_.y / 2;
+    
     return 0;
 };
 
@@ -107,7 +113,7 @@ void Application::Render(float deltaTime)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glm::mat4 view = camera_.GetViewMatrix();
-    glm::mat4 projection = camera_.GetProjectionMatrix(SCR_WIDTH, SCR_HEIGHT);
+    glm::mat4 projection = camera_.GetProjectionMatrix(windowSize_.x, windowSize_.y);
 
     for(auto it = entities_.begin(); it != entities_.end(); ++it) {
         (*it)->Draw(deltaTime, view, projection);
@@ -119,11 +125,6 @@ void Application::Render(float deltaTime)
     glfwPollEvents();
 }
 
-float Application::GetDeltaTime()
-{
-    return glfwGetTime() - lastFrame_;
-};
-
 void Application::Update()
 {
     for(auto it = entities_.begin(); it != entities_.end(); ++it) {
@@ -133,7 +134,7 @@ void Application::Update()
     float currentFrame = glfwGetTime();
     deltaTime_ = currentFrame - lastFrame_;
     lastFrame_ = currentFrame;
-    
+
     ProcessInput(deltaTime_);
 
     for(auto it = entities_.begin(); it != entities_.end(); ++it) {

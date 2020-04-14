@@ -11,6 +11,7 @@ Cube::Cube(const std::shared_ptr<Material>& material)
 {
     material_ = material;
 
+    mesh_ = std::shared_ptr<Mesh>(new Mesh());
     mesh_->GenArrayBuffer(CubeFactory::GetPositions());
     mesh_->GenArrayBuffer(CubeFactory::GetNormals());
     mesh_->GenArrayBuffer(CubeFactory::GetTexCoords());

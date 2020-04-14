@@ -18,7 +18,7 @@ void Mover::Drag(float deltaTime)
     vec3 drag = glm::normalize(velocity_ * -1.f);
     float speed = glm::length(velocity_);
     if (!speed) return; // TODO: when commented out, we get NaN
-    drag *= dragC_ * speed * speed;
+    drag *= drag_ * speed * speed;
     ApplyForce(deltaTime, drag);
 }
 

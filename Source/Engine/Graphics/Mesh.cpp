@@ -103,6 +103,7 @@ void Mesh::Render()
 
 Mesh::~Mesh()
 {
+    std::cout << "~Mesh called" << "\n";
     glDeleteBuffers(1, &EBO_);
     glDeleteBuffers(VBOs_.size(), &VBOs_.front());
     glDeleteVertexArrays(1, &VAO_);

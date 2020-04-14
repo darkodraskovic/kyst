@@ -23,13 +23,13 @@ class EntityFactory
 {
 public:
     EntityFactory(Application* app);
-
+    
     std::shared_ptr<Entity> CreateEntity(EntityType type, bool vCol);
     std::shared_ptr<Entity> CreateLineGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol);
     std::shared_ptr<Entity> CreateTriGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol);
 
     std::shared_ptr<Entity> CreateSnowflake(int numDivisions);
-    
+
     std::shared_ptr<Shader> colShader_;
     std::shared_ptr<Shader> vColShader_;
 
@@ -41,7 +41,7 @@ public:
     
 private:
     Application* app_;
-    Mesh* snowflakeMesh_;    
+    std::shared_ptr<Mesh> snowflakeMesh_;
 };
 
 #endif

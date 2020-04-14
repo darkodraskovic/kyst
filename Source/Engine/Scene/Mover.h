@@ -22,7 +22,7 @@ public:
     vec3 acceleration_ = vec3(0,0,0);
     float mass_ = 1.0f;
     vec3 gravity_ = vec3(0,0,0);
-    float dragC_ = 0.0f;
+    float drag_ = 0.0f;
 
     // angular
     vec3 aVelocity_ = vec3(0,0,0);

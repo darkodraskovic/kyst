@@ -28,6 +28,8 @@ public:
     std::shared_ptr<Mesh> mesh_;
     
 private:
+    void InitTransform_();
+    
     glm::mat4 id_;
     glm::mat4 rotation_;
     glm::mat4 scale_;

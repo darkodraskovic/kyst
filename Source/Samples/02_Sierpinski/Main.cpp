@@ -38,30 +38,33 @@ int main()
     // Application CONTENT
     // ---------------------------------------------------------------------------
     
-    app.camera_.position_.z = 5.0f;
+    app.camera_.position_.z = 7.0f;
+    app.camera_.position_.y = 1.0f;
 
     createEntites();
     
     // auto e1 = eFactory.CreateTriGasket(3, vec2(-limit, limit), true, true);
 
 
-    EntityFactory eFactory(&app);
-    eFactory.color1_ = ShapeUtils::Hex2rgb("E84A5F");
-    eFactory.color2_ = ShapeUtils::Hex2rgb("FF847C");
-    eFactory.color3_ = ShapeUtils::Hex2rgb("FECEAB");
+    EntityFactory* eFactory = new EntityFactory(&app);
+    eFactory->color1_ = ShapeUtils::Hex2rgb("E84A5F");
+    eFactory->color2_ = ShapeUtils::Hex2rgb("FF847C");
+    eFactory->color3_ = ShapeUtils::Hex2rgb("FECEAB");
     float limit = 0.05;
-    eFactory.CreateLineGasket(4, vec2(-limit, limit), true, true);
+    eFactory->CreateLineGasket(4, vec2(-limit, limit), true, true);
 
     // Application loop
     // ---------------------------------------------------------------------------
     int i = 0;
     while (!app.ShouldClose())
     {
-        if (i%40 == 0) eFactory.CreateSnowflake(3);        
+        if (i%40 == 0) eFactory->CreateSnowflake(3);
         i++;
         app.Update();
     }
 
+    delete eFactory;
+    
     // Application termination
     // ---------------------------------------------------------------------------
     app.Terminate();

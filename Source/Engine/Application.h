@@ -11,10 +11,6 @@
 #include "Entity.h"
 #include "Camera.h"
 
-// settings
-const unsigned int SCR_WIDTH = 1280;
-const unsigned int SCR_HEIGHT = 800;
-
 class Application
 {
 public:
@@ -22,7 +18,6 @@ public:
     int Init();
     void ProcessInput(float deltaTime);
     void Render(float deltaTime);
-    float GetDeltaTime();
     void Update();
     bool ShouldClose();
     void Terminate();
@@ -31,6 +26,8 @@ public:
     
     std::vector<std::shared_ptr<Entity>> entities_;
     GLFWwindow* window_;
+    ivec2 windowPosition_ = vec2(0,0);
+    uvec2 windowSize_ = vec2(1152,720);
     Camera camera_;
 
     float deltaTime_ = 0.0f;	// Time between current frame and last frame
