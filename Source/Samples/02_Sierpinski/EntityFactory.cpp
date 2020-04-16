@@ -135,13 +135,15 @@ std::shared_ptr<Entity> EntityFactory::CreateSnowflake(int numDivisions)
 
 std::shared_ptr<ParticleEmitter> EntityFactory::CreateSnowflakeEmitter()
 {
-    auto material = new Material(colShader_);
+    auto emitter = std::shared_ptr<ParticleEmitter>(new ParticleEmitter());
+    emitter->mesh_ = snowflakeMesh_;
+    emitter->material_ = std::make_shared<Material>(colShader_);
     SetColor(color3_);
-    auto emitter = std::make_shared<ParticleEmitter>(snowflakeMesh_.get(), material);
     
     emitter->emissionFreq_ = .03f;
     
-    emitter->position_ = UP;
+    emitter->Translate(UP);
+    emitter->GetTranslation();
     emitter->minScale_ = 0.01; emitter->maxScale_ = 0.1;
     
     emitter->minVelocity_.y = 1.f; emitter->maxVelocity_.y = 1.5f;

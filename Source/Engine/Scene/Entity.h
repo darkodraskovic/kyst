@@ -16,6 +16,7 @@ public:
     void Scale(const glm::vec3& scale);
     void Scale(float scale);    
     void SetTranslation(const glm::vec3& translation);
+    const glm::vec3& GetTranslation();
     void Translate(const glm::vec3& translation);
 
     virtual void Update(float deltaTime);
@@ -26,10 +27,13 @@ public:
     
     std::shared_ptr<Material> material_;
     std::shared_ptr<Mesh> mesh_;
-    
+
+    bool visible_ = true;
+    vec3 position_;
+
 private:
     void InitTransform_();
-    
+
     glm::mat4 id_;
     glm::mat4 rotation_;
     glm::mat4 scale_;

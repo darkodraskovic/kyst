@@ -16,8 +16,8 @@ class Application
 public:
     int Init();
     void ProcessInput(float deltaTime);
-    void Render(float deltaTime);
     void Update();
+    void Draw(float deltaTime);
     bool ShouldClose();
     void Terminate();
     static Application& Instance();

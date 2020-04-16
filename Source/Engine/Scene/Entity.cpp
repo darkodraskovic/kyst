@@ -56,6 +56,11 @@ void Entity::Translate(const glm::vec3& translation)
     translation_ = glm::translate(translation_, translation);
 }
 
+const glm::vec3& Entity::GetTranslation()
+{
+    return translation_[3];
+}
+
 void Entity::Update(float deltaTime)
 {
 }

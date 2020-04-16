@@ -3,22 +3,21 @@
 
 #include <glm/glm.hpp>
 
-#include "Mesh.h"
-#include "Material.h"
+#include "Entity.h"
 #include "Particle.h"
 #include "VecConsts.h"
 
 using namespace glm;
 using namespace VecConsts;
 
-class ParticleEmitter
+class ParticleEmitter : public Entity
 {
 public:
-    ParticleEmitter(Mesh* mesh, Material* material);
+    ParticleEmitter();
+    void Update(float deltaTime) override;
+    
     void CreateParticle();
-    void Update(float deltaTime);
 
-    vec3 position_ = ZERO;
     float emissionFreq_ = 1.f;
 
     float minLifespan_ = 0.5f; float maxLifespan_ = 1.5f;
@@ -36,8 +35,6 @@ public:
 private:
     void InitParticle(Particle* particle);
     
-    std::shared_ptr<Mesh> mesh_;
-    std::shared_ptr<Material> material_;
     float lastEmitted_ = 0;
 };
 

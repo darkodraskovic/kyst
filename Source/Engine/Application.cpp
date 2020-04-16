@@ -113,24 +113,6 @@ void Application::ProcessInput(float deltaTime)
 
 float cameraYaw = -90, cameraPitch = 0, cameraFov = 45.0f;
 
-void Application::Render(float deltaTime)
-{
-    glClearColor(clearColor_.r, clearColor_.g, clearColor_.b, clearColor_.a);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glm::mat4 view = camera_.GetViewMatrix();
-    glm::mat4 projection = camera_.GetProjectionMatrix(windowSize_.x, windowSize_.y);
-
-    for(auto it = entities_.begin(); it != entities_.end(); ++it) {
-        (*it)->Draw(deltaTime, view, projection);
-    }
-        
-    // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-    // -------------------------------------------------------------------------------
-    glfwSwapBuffers(window_);
-    glfwPollEvents();
-}
-
 void Application::Update()
 {
     for(auto it = entities_.begin(); it != entities_.end(); ++it) {
@@ -146,9 +128,27 @@ void Application::Update()
     for(auto it = entities_.begin(); it != entities_.end(); ++it) {
         (*it)->Update(deltaTime_);
     }
-    
-    Render(deltaTime_);
+
+    Draw(deltaTime_);
 };
+
+void Application::Draw(float deltaTime)
+{
+    glClearColor(clearColor_.r, clearColor_.g, clearColor_.b, clearColor_.a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glm::mat4 view = camera_.GetViewMatrix();
+    glm::mat4 projection = camera_.GetProjectionMatrix(windowSize_.x, windowSize_.y);
+
+    for(auto it = entities_.begin(); it != entities_.end(); ++it) {
+        if ((*it)->visible_) (*it)->Draw(deltaTime, view, projection);
+    }
+        
+    // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+    // -------------------------------------------------------------------------------
+    glfwSwapBuffers(window_);
+    glfwPollEvents();
+}
 
 bool Application::ShouldClose()
 {

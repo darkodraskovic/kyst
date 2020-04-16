@@ -4,10 +4,9 @@
 #include "Particle.h"
 #include "ParticleEmitter.h"
 
-ParticleEmitter::ParticleEmitter(Mesh* mesh, Material* material)
+ParticleEmitter::ParticleEmitter()
 {
-    mesh_ = std::shared_ptr<Mesh>(mesh);
-    material_ = std::shared_ptr<Material>(material);
+    visible_ = false;
 }
 
 void ParticleEmitter::CreateParticle()
@@ -21,7 +20,7 @@ void ParticleEmitter::CreateParticle()
 
 void ParticleEmitter::InitParticle(Particle* particle)
 {
-    particle->SetTranslation(position_);
+    // particle->SetTranslation(GetTranslation());
     particle->SetScale(linearRand(minScale_, maxScale_));
     
     particle->velocity_ = linearRand(minVelocity_, maxVelocity_);
