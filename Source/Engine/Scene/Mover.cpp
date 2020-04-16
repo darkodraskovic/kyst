@@ -8,18 +8,18 @@ Mover::Mover()
 {
 }
 
-void Mover::ApplyForce(float deltaTime,const vec3& force)
+void Mover::ApplyForce(const vec3& force)
 {
-    acceleration_ += (force / mass_) * deltaTime;
+    acceleration_ += force / mass_;
 }
 
-void Mover::Drag(float deltaTime)
+void Mover::Drag()
 {
     vec3 drag = glm::normalize(velocity_ * -1.f);
     float speed = glm::length(velocity_);
     if (!speed) return; // TODO: when commented out, we get NaN
     drag *= drag_ * speed * speed;
-    ApplyForce(deltaTime, drag);
+    ApplyForce(drag);
 }
 
 void Mover::Update(float deltaTime)
@@ -27,9 +27,9 @@ void Mover::Update(float deltaTime)
     Entity::Update(deltaTime);
 
     // linear
-    ApplyForce(deltaTime, gravity_);
-    Drag(deltaTime);
-    velocity_ += acceleration_;
+    ApplyForce(gravity_);
+    Drag();
+    velocity_ += acceleration_ * deltaTime;
     
     velocity_ = glm::clamp(velocity_, -maxVelocity_, maxVelocity_);
     if (glm::length(velocity_) < minSpeed_ && glm::length(acceleration_) < 1e-6) {
@@ -39,8 +39,8 @@ void Mover::Update(float deltaTime)
     acceleration_ *= 0.f;
 
     // angular
-    aVelocity_ *= ONE - deltaTime * aDrag_;
-    aVelocity_ += aAcceleration_ * deltaTime; // we don't use angular force
+    aVelocity_ *= ONE - aDrag_ * 1e-3f;
+    aVelocity_ += aAcceleration_ * deltaTime;
     
     if (glm::length(aVelocity_) < minASpeed_ && glm::length(aAcceleration_) < 1e-6) {
         aVelocity_ *= 0.0f;

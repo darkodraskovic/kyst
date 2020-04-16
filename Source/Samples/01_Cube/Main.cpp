@@ -14,7 +14,7 @@ int main()
 {
     // Application init
     // ---------------------------------------------------------------------------    
-    Application app;
+    Application app = Application::Instance();
     if (app.Init() < 0)
     {
         std::cout << "Failed to create an OpenGL app" << std::endl;

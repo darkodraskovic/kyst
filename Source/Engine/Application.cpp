@@ -26,6 +26,12 @@ void ScrollCallback(GLFWwindow* window, double offsetX, double offsetY);
     
 Application::Application() {};
 
+Application& Application::Instance()
+{
+    static Application *instance = new Application();
+    return *instance;
+}    
+
 int Application::Init()
 {
     // glfw: initialize and configure

@@ -7,7 +7,7 @@
 #include "SierpinskiFactory.h"
 #include "EntityFactory.h"
 
-EntityFactory::EntityFactory(Application* app) : app_(app)
+EntityFactory::EntityFactory() : app_(Application::Instance())
 {
     colShader_ = std::make_shared<Shader>("../Shaders/Col.vs", "../Shaders/Col.fs");
     vColShader_ = std::make_shared<Shader>("../Shaders/VCol.vs", "../Shaders/VCol.fs");
@@ -37,7 +37,7 @@ std::shared_ptr<Entity> EntityFactory::CreateEntity(EntityType type, bool vCol)
     }
     
     entity->material_ = std::make_shared<Material>();
-    app_->entities_.push_back(entity);
+    app_.entities_.push_back(entity);
     entity->material_->shader_ = colShader_;
     if (vCol) {
         entity->material_->shader_ = vColShader_;
@@ -131,4 +131,23 @@ std::shared_ptr<Entity> EntityFactory::CreateSnowflake(int numDivisions)
     particle->Translate(UP);
 
     return entity;
+}
+
+std::shared_ptr<ParticleEmitter> EntityFactory::CreateSnowflakeEmitter()
+{
+    auto material = new Material(colShader_);
+    SetColor(color3_);
+    auto emitter = std::make_shared<ParticleEmitter>(snowflakeMesh_.get(), material);
+    
+    emitter->emissionFreq_ = .03f;
+    
+    emitter->position_ = UP;
+    emitter->minScale_ = 0.01; emitter->maxScale_ = 0.1;
+    
+    emitter->minVelocity_.y = 1.f; emitter->maxVelocity_.y = 1.5f;
+    emitter->minGravity_ = DOWN * .7f; emitter->maxGravity_ = DOWN * .8f;
+
+    emitter->minLifespan_ = 2.f; emitter->minLifespan_ = 3.f;
+    
+    return emitter;
 }

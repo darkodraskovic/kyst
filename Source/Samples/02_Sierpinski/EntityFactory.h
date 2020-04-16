@@ -3,10 +3,11 @@
 
 #pragma once
 
+#include "Application.h"
 #include "Entity.h"
 #include "Shader.h"
-#include "Application.h"
 #include "VecConsts.h"
+#include "ParticleEmitter.h"
 
 using namespace VecConsts;
 
@@ -22,13 +23,14 @@ enum EntityType{
 class EntityFactory
 {
 public:
-    EntityFactory(Application* app);
+    EntityFactory();
     
     std::shared_ptr<Entity> CreateEntity(EntityType type, bool vCol);
     std::shared_ptr<Entity> CreateLineGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol);
     std::shared_ptr<Entity> CreateTriGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol);
 
     std::shared_ptr<Entity> CreateSnowflake(int numDivisions);
+    std::shared_ptr<ParticleEmitter> CreateSnowflakeEmitter();
 
     std::shared_ptr<Shader> colShader_;
     std::shared_ptr<Shader> vColShader_;
@@ -40,7 +42,7 @@ public:
     vec3 color3_ = BLUE;
     
 private:
-    Application* app_;
+    Application& app_;
     std::shared_ptr<Mesh> snowflakeMesh_;
 };
 

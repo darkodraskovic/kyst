@@ -16,12 +16,14 @@ using namespace VecConsts;
 
 void createEntites();
 
-Application app;
+// Application app;
 
 int main()
 {
     // Application init
     // ---------------------------------------------------------------------------    
+
+    Application& app = Application::Instance();
     
     if (app.Init() < 0)
     {
@@ -46,20 +48,23 @@ int main()
     // auto e1 = eFactory.CreateTriGasket(3, vec2(-limit, limit), true, true);
 
 
-    EntityFactory* eFactory = new EntityFactory(&app);
+    EntityFactory* eFactory = new EntityFactory();
     eFactory->color1_ = ShapeUtils::Hex2rgb("E84A5F");
     eFactory->color2_ = ShapeUtils::Hex2rgb("FF847C");
     eFactory->color3_ = ShapeUtils::Hex2rgb("FECEAB");
     float limit = 0.05;
     eFactory->CreateLineGasket(4, vec2(-limit, limit), true, true);
 
+    auto emitter = eFactory->CreateSnowflakeEmitter();
+
     // Application loop
     // ---------------------------------------------------------------------------
     int i = 0;
     while (!app.ShouldClose())
     {
-        if (i%40 == 0) eFactory->CreateSnowflake(3);
-        i++;
+        // if (i%50 == 0) eFactory->CreateSnowflake(3);
+        // i++;
+        emitter->Update(app.deltaTime_);
         app.Update();
     }
 
