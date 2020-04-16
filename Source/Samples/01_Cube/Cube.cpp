@@ -57,5 +57,5 @@ Cube::Cube(const std::shared_ptr<Material>& material)
 }
 
 void Cube::Update(float deltaTime) {
-    Rotate(deltaTime * glm::quarter_pi<float>(), ONE);
+    rotation_.y += deltaTime * glm::quarter_pi<float>();
 }

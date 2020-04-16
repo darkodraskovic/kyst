@@ -40,27 +40,24 @@ int main()
     app.camera_.position_.y = 1.0f;
 
     auto eFactory = new EntityFactory();
+    
     eFactory->color1_ = ShapeUtils::Hex2rgb("E84A5F");
     eFactory->color2_ = ShapeUtils::Hex2rgb("FF847C");
     eFactory->color3_ = ShapeUtils::Hex2rgb("FECEAB");
     float limit = 0.05;
-    auto gasket = eFactory->CreateLineGasket(4, vec2(-limit, limit), true, true);
-    gasket->Translate(UP);
-    // gasket->GetTranslation();
-
-    auto emitter = eFactory->CreateSnowflakeEmitter();
+    eFactory->CreateLineGasket(4, vec2(-limit, limit), true, true);
+    
+    eFactory->CreateSnowflakeEmitter();
 
     // Application loop
     // ---------------------------------------------------------------------------
     int i = 0;
     while (!app.ShouldClose())
     {
-        emitter->Update(app.deltaTime_);
         app.Update();
     }
 
     delete eFactory;
-    emitter.reset();
     
     // Application termination
     // ---------------------------------------------------------------------------

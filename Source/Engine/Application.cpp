@@ -113,11 +113,21 @@ void Application::ProcessInput(float deltaTime)
 
 float cameraYaw = -90, cameraPitch = 0, cameraFov = 45.0f;
 
+void Application::CreateEntity(std::shared_ptr<Entity> entity)
+{
+    entitiesToCreate_.push_back(entity);
+}
+
 void Application::Update()
 {
-    for(auto it = entities_.begin(); it != entities_.end(); ++it) {
-        if ((*it)->GetRemove()) entities_.erase(it--);
+    for (auto it = entities_.begin(); it != entities_.end(); ++it) {
+        if ((*it)->remove_) entities_.erase(it--);
     }
+
+    for (auto it = entitiesToCreate_.begin(); it != entitiesToCreate_.end(); ++it) {
+        entities_.push_back(*it);
+    }
+    entitiesToCreate_.clear();
     
     float currentFrame = glfwGetTime();
     deltaTime_ = currentFrame - lastFrame_;

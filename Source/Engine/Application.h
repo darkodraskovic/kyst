@@ -20,6 +20,7 @@ public:
     void Draw(float deltaTime);
     bool ShouldClose();
     void Terminate();
+    void CreateEntity(std::shared_ptr<Entity> entity);
     static Application& Instance();
 
     ResourceManager resourceManager_;
@@ -35,7 +36,8 @@ public:
     vec4 clearColor_ = vec4(0.2f, 0.3f, 0.3f, 1.0f);
 
 private:
-    Application();    
+    Application();
+    std::vector<std::shared_ptr<Entity>> entitiesToCreate_;
 };
 
 #endif

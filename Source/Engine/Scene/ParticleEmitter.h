@@ -21,7 +21,7 @@ public:
     float emissionFreq_ = 1.f;
 
     float minLifespan_ = 0.5f; float maxLifespan_ = 1.5f;
-    float minScale_ = 0.5f,  maxScale_ = 1.5f;
+    vec3 minScale_ = ONE / 2.f,  maxScale_ = ONE * 2.f;
     
     vec3 minVelocity_ = LEFT/ 2.f, maxVelocity_ = RIGHT / 2.f;
     vec3 minAcceleration_ = ZERO, maxAcceleration_ = ZERO;

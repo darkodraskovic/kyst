@@ -39,7 +39,7 @@ int main()
     material->specular_ = specularMetal;
     material->shininess_ = 1024.0f;
     auto cube2 = std::make_shared<Cube>(material);
-    cube2->SetScale(2);
+    cube2->scale_ *= 2;
     app.entities_.push_back(cube2);
 
     material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));    
@@ -48,8 +48,8 @@ int main()
     material->emissive_ = emissiveBricks;
     material->shininess_ = 128.0f;
     auto cube4 = std::make_shared<Cube>(material);
-    cube4->Translate(ONE*2.0f);
-    cube4->Scale(2);
+    cube4->position_ = ONE*2.0f;
+    cube4->scale_*= 2;
     app.entities_.push_back(cube4);
 
     litTexShader->Use();

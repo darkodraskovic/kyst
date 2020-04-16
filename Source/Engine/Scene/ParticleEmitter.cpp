@@ -15,13 +15,13 @@ void ParticleEmitter::CreateParticle()
     particle->material_ = material_;
     particle->mesh_ = mesh_;
     InitParticle(particle.get());
-    Application::Instance().entities_.push_back(particle);
+    Application::Instance().CreateEntity(particle);
 }
 
 void ParticleEmitter::InitParticle(Particle* particle)
 {
-    // particle->SetTranslation(GetTranslation());
-    particle->SetScale(linearRand(minScale_, maxScale_));
+    particle->position_ = position_;
+    particle->scale_ = linearRand(minScale_, maxScale_);
     
     particle->velocity_ = linearRand(minVelocity_, maxVelocity_);
     particle->acceleration_ = linearRand(minAcceleration_, maxAcceleration_);
@@ -37,6 +37,8 @@ void ParticleEmitter::InitParticle(Particle* particle)
 
 void ParticleEmitter::Update(float deltaTime)
 {
+    Entity::Update(deltaTime);
+    
     lastEmitted_ += deltaTime;
     if (lastEmitted_ > emissionFreq_) {
         CreateParticle();

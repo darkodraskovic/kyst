@@ -7,7 +7,7 @@
 #include "SierpinskiFactory.h"
 #include "EntityFactory.h"
 
-EntityFactory::EntityFactory() : app_(Application::Instance())
+EntityFactory::EntityFactory()
 {
     colShader_ = std::make_shared<Shader>("../Shaders/Col.vs", "../Shaders/Col.fs");
     vColShader_ = std::make_shared<Shader>("../Shaders/VCol.vs", "../Shaders/VCol.fs");
@@ -37,7 +37,7 @@ std::shared_ptr<Entity> EntityFactory::CreateEntity(EntityType type, bool vCol)
     }
     
     entity->material_ = std::make_shared<Material>();
-    app_.entities_.push_back(entity);
+    Application::Instance().CreateEntity(entity);
     entity->material_->shader_ = colShader_;
     if (vCol) {
         entity->material_->shader_ = vColShader_;
@@ -115,24 +115,6 @@ std::shared_ptr<Entity> EntityFactory::CreateTriGasket(int numDivisions, const v
     return entity;
 }
 
-std::shared_ptr<Entity> EntityFactory::CreateSnowflake(int numDivisions)
-{
-    auto entity = CreateEntity(PARTICLE_ENTITY, false);
-    entity->mesh_ = snowflakeMesh_;
-    
-    SetColor(color3_);
-    Particle* particle = dynamic_cast<Particle*>(entity.get());
-    particle->velocity_ = linearRand(LEFT/2.f, RIGHT/2.f);
-    particle->velocity_.y = linearRand(0.8f, 1.2f);
-    particle->mass_ = linearRand(0.5f, 2.f);
-    particle->gravity_.y = -0.75f;
-    particle->SetScale(linearRand(0.02f, 0.1f));
-    particle->lifespan_ = linearRand(2.f, 3.f);
-    particle->Translate(UP);
-
-    return entity;
-}
-
 std::shared_ptr<ParticleEmitter> EntityFactory::CreateSnowflakeEmitter()
 {
     auto emitter = std::shared_ptr<ParticleEmitter>(new ParticleEmitter());
@@ -142,14 +124,15 @@ std::shared_ptr<ParticleEmitter> EntityFactory::CreateSnowflakeEmitter()
     
     emitter->emissionFreq_ = .03f;
     
-    emitter->Translate(UP);
-    emitter->GetTranslation();
-    emitter->minScale_ = 0.01; emitter->maxScale_ = 0.1;
+    emitter->position_ = UP;
+    emitter->minScale_ = ONE * 0.01f; emitter->maxScale_ = ONE * 0.1f;
     
     emitter->minVelocity_.y = 1.f; emitter->maxVelocity_.y = 1.5f;
     emitter->minGravity_ = DOWN * .7f; emitter->maxGravity_ = DOWN * .8f;
 
     emitter->minLifespan_ = 2.f; emitter->minLifespan_ = 3.f;
+
+    Application::Instance().CreateEntity(emitter);
     
     return emitter;
 }

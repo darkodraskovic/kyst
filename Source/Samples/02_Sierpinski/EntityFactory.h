@@ -29,7 +29,6 @@ public:
     std::shared_ptr<Entity> CreateLineGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol);
     std::shared_ptr<Entity> CreateTriGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol);
 
-    std::shared_ptr<Entity> CreateSnowflake(int numDivisions);
     std::shared_ptr<ParticleEmitter> CreateSnowflakeEmitter();
 
     std::shared_ptr<Shader> colShader_;
@@ -42,7 +41,6 @@ public:
     vec3 color3_ = BLUE;
     
 private:
-    Application& app_;
     std::shared_ptr<Mesh> snowflakeMesh_;
 };
 

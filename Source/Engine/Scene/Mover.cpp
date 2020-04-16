@@ -35,7 +35,7 @@ void Mover::Update(float deltaTime)
     if (glm::length(velocity_) < minSpeed_ && glm::length(acceleration_) < 1e-6) {
         velocity_ *= 0.f;
     }
-    Translate(velocity_ * deltaTime);
+    position_ += velocity_ * deltaTime;
     acceleration_ *= 0.f;
 
     // angular
@@ -46,9 +46,6 @@ void Mover::Update(float deltaTime)
         aVelocity_ *= 0.0f;
     }
     aVelocity_ = glm::clamp(aVelocity_, -maxAVelocity_, maxAVelocity_);
-    
-    Rotate(aVelocity_.x * deltaTime, RIGHT);
-    Rotate(aVelocity_.y * deltaTime, UP);
-    Rotate(aVelocity_.z * deltaTime, FORWARD);
+    rotation_ += aVelocity_ * deltaTime;
     aAcceleration_ *= 0.f;
 }
