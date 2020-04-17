@@ -17,8 +17,8 @@ public:
 
     bool visible_ = true;
 
-    vec3 position_;
-    vec3 rotation_;
+    vec3 position_ = vec3(0.f);
+    vec3 rotation_ = vec3(0.f);
     vec3 scale_ = vec3(1.f);
 
     bool remove_ = false;

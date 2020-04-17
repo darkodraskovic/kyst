@@ -20,7 +20,7 @@ public:
     void Draw(float deltaTime);
     bool ShouldClose();
     void Terminate();
-    void CreateEntity(std::shared_ptr<Entity> entity);
+    void AddEntity(std::shared_ptr<Entity> entity);
     static Application& Instance();
 
     ResourceManager resourceManager_;

@@ -24,7 +24,7 @@ void EntityFactory::SetColor(const vec3 &color)
     colShader_->SetVec4("uColor", vec4(color, 1.0));    
 }
 
-std::shared_ptr<Entity> EntityFactory::CreateEntity(EntityType type, bool vCol)
+std::shared_ptr<Entity> EntityFactory::AddEntity(EntityType type, bool vCol)
 {
     std::shared_ptr<Entity> entity;
     switch (type) {
@@ -37,7 +37,7 @@ std::shared_ptr<Entity> EntityFactory::CreateEntity(EntityType type, bool vCol)
     }
     
     entity->material_ = std::make_shared<Material>();
-    Application::Instance().CreateEntity(entity);
+    Application::Instance().AddEntity(entity);
     entity->material_->shader_ = colShader_;
     if (vCol) {
         entity->material_->shader_ = vColShader_;
@@ -47,7 +47,7 @@ std::shared_ptr<Entity> EntityFactory::CreateEntity(EntityType type, bool vCol)
 
 std::shared_ptr<Entity> EntityFactory::CreateLineGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol)
 {
-    auto entity = CreateEntity(MOVER_ENTITY, vCol);
+    auto entity = AddEntity(MOVER_ENTITY, vCol);
     entity->mesh_ = std::make_shared<Mesh>();
     
     SierpinskiFactory::varRange_ = varRange;
@@ -85,7 +85,7 @@ std::shared_ptr<Entity> EntityFactory::CreateLineGasket(int numDivisions, const 
 
 std::shared_ptr<Entity> EntityFactory::CreateTriGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol)
 {
-    auto entity = CreateEntity(BASE_ENTITY, vCol);
+    auto entity = AddEntity(BASE_ENTITY, vCol);
     entity->mesh_ = std::make_shared<Mesh>();
     
     SierpinskiFactory::varRange_ = varRange;
@@ -132,7 +132,7 @@ std::shared_ptr<ParticleEmitter> EntityFactory::CreateSnowflakeEmitter()
 
     emitter->minLifespan_ = 2.f; emitter->minLifespan_ = 3.f;
 
-    Application::Instance().CreateEntity(emitter);
+    Application::Instance().AddEntity(emitter);
     
     return emitter;
 }

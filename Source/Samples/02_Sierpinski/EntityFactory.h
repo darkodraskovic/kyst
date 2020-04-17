@@ -25,7 +25,7 @@ class EntityFactory
 public:
     EntityFactory();
     
-    std::shared_ptr<Entity> CreateEntity(EntityType type, bool vCol);
+    std::shared_ptr<Entity> AddEntity(EntityType type, bool vCol);
     std::shared_ptr<Entity> CreateLineGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol);
     std::shared_ptr<Entity> CreateTriGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol);
 

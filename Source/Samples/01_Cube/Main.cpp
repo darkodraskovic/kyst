@@ -33,6 +33,7 @@ int main()
     
     auto litTexShader = std::shared_ptr<Shader>(
         new Shader( "../Shaders/LitTex.vs", "../Shaders/LitTex.fs"));
+    
     auto material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));
     material->diffuse_ = diffuseMetal;
     material->emissive_ = emissiveMetal;
@@ -40,7 +41,7 @@ int main()
     material->shininess_ = 1024.0f;
     auto cube2 = std::make_shared<Cube>(material);
     cube2->scale_ *= 2;
-    app.entities_.push_back(cube2);
+    app.AddEntity(cube2);
 
     material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));    
     material->diffuse_ = diffuseBricks;
@@ -50,7 +51,7 @@ int main()
     auto cube4 = std::make_shared<Cube>(material);
     cube4->position_ = ONE*2.0f;
     cube4->scale_*= 2;
-    app.entities_.push_back(cube4);
+    app.AddEntity(cube4);
 
     litTexShader->Use();
     litTexShader->SetVec3("uLight.ambient",  DARK_GRAY);
@@ -74,6 +75,9 @@ int main()
         
         app.Update();
     }
+
+    cube2.reset();
+    cube4.reset();
 
     // Application termination
     // ---------------------------------------------------------------------------

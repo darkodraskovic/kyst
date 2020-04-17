@@ -113,7 +113,7 @@ void Application::ProcessInput(float deltaTime)
 
 float cameraYaw = -90, cameraPitch = 0, cameraFov = 45.0f;
 
-void Application::CreateEntity(std::shared_ptr<Entity> entity)
+void Application::AddEntity(std::shared_ptr<Entity> entity)
 {
     entitiesToCreate_.push_back(entity);
 }

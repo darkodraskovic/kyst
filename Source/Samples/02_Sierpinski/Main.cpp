@@ -38,7 +38,7 @@ int main()
     
     app.camera_.position_.z = 7.0f;
     app.camera_.position_.y = 1.0f;
-
+    
     auto eFactory = new EntityFactory();
     
     eFactory->color1_ = ShapeUtils::Hex2rgb("E84A5F");
@@ -62,5 +62,6 @@ int main()
     // Application termination
     // ---------------------------------------------------------------------------
     app.Terminate();
+    
     return 0;
 }
