@@ -32,22 +32,24 @@ int main()
     // glEnable(GL_LINE_SMOOTH);
     glLineWidth(2.0f);
     
+    app.camera_.position_.z = 7.0f;
+    app.camera_.position_.y = 1.0f;
 
     // Application CONTENT
     // ---------------------------------------------------------------------------
-    
-    app.camera_.position_.z = 7.0f;
-    app.camera_.position_.y = 1.0f;
     
     auto eFactory = new EntityFactory();
     
     eFactory->color1_ = ShapeUtils::Hex2rgb("E84A5F");
     eFactory->color2_ = ShapeUtils::Hex2rgb("FF847C");
     eFactory->color3_ = ShapeUtils::Hex2rgb("FECEAB");
-    float limit = 0.05;
-    eFactory->CreateLineGasket(4, vec2(-limit, limit), true, true);
+    eFactory->SetColor(eFactory->color3_);
+    // float limit = 0.05;
+    // eFactory->CreateLineGasket(4, vec2(-limit, limit), true, true);
     
-    eFactory->CreateSnowflakeEmitter();
+    // eFactory->CreateSnowflakeEmitter();
+
+    eFactory->CreateMaze(12, 8);
 
     // Application loop
     // ---------------------------------------------------------------------------

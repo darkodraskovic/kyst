@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -115,15 +116,18 @@ float cameraYaw = -90, cameraPitch = 0, cameraFov = 45.0f;
 
 void Application::AddEntity(std::shared_ptr<Entity> entity)
 {
+    if (std::find(entities_.begin(), entities_.end(), entity) != entities_.end()) return;
     entitiesToCreate_.push_back(entity);
 }
 
 void Application::Update()
 {
+    // remove entities
     for (auto it = entities_.begin(); it != entities_.end(); ++it) {
         if ((*it)->remove_) entities_.erase(it--);
     }
 
+    // add entities
     for (auto it = entitiesToCreate_.begin(); it != entitiesToCreate_.end(); ++it) {
         entities_.push_back(*it);
     }
@@ -135,6 +139,7 @@ void Application::Update()
 
     ProcessInput(deltaTime_);
 
+    // update entities
     for(auto it = entities_.begin(); it != entities_.end(); ++it) {
         (*it)->Update(deltaTime_);
     }
