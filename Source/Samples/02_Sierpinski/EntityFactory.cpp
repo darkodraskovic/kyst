@@ -147,7 +147,8 @@ std::shared_ptr<Entity> EntityFactory::CreateMaze(int width, int height)
 
     auto mesh = std::make_shared<Mesh>();
     entity->mesh_ = mesh;
-    mesh->GenArrayBuffer(vertexArray);
+    mesh->GenArrayBuffer(*vertexArray);
+    delete vertexArray;
     mesh->mode_ = GL_LINES;
 
     entity->scale_ = ONE / 3.f;

@@ -8,23 +8,22 @@
 using namespace std;
 using namespace glm;
 
-typedef pair<const vec3&, const vec3&> wall;
-
-typedef struct Cell {
-    wall* south = 0;
-    wall* east = 0;
-    wall* north = 0;
-    wall* west = 0;
-} Cell;
+typedef pair<vec3, vec3> wall;
 
 class Maze
 {
 public:
     Maze(int width, int height);
-    vector<vec3>& GetVertexArray();
+    vector<vec3>* GetVertexArray();
     void RandomWalk();
     
-    vector<vector<Cell*>> maze;
+    vector<vector<wall>> wallsHor_;
+    vector<vector<wall>> wallsVer_;
+
+private:
+    int width_;
+    int height_;
+    static int seed_;
 };
 
 

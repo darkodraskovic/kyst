@@ -50,6 +50,8 @@ int main()
     // eFactory->CreateSnowflakeEmitter();
 
     eFactory->CreateMaze(12, 8);
+    // auto m2 = eFactory->CreateMaze(12, 8);
+    // m2->rotation_.z += 0.03;
 
     // Application loop
     // ---------------------------------------------------------------------------
