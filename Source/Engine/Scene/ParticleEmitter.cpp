@@ -1,3 +1,4 @@
+#include <glm/fwd.hpp>
 #include <glm/gtc/random.hpp>
 
 #include "Application.h"
@@ -21,7 +22,12 @@ void ParticleEmitter::CreateParticle()
 void ParticleEmitter::InitParticle(Particle* particle)
 {
     particle->position_ = position_;
-    particle->scale_ = linearRand(minScale_, maxScale_);
+    if (uniformScale_) {
+        float scl = linearRand(minScale_.x, maxScale_.x);
+        particle->scale_ = vec3(scl);
+    } else {
+        particle->scale_ = linearRand(minScale_, maxScale_);        
+    }
     
     particle->velocity_ = linearRand(minVelocity_, maxVelocity_);
     particle->acceleration_ = linearRand(minAcceleration_, maxAcceleration_);

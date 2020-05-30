@@ -10,7 +10,7 @@ public:
     Entity();
     
     virtual void Update(float deltaTime);
-    virtual void Draw (float deltaTime, const glm::mat4& uView, const glm::mat4& uProjection);
+    virtual void Draw(float deltaTime, const glm::mat4& uView, const glm::mat4& uProjection);
 
     std::shared_ptr<Material> material_;
     std::shared_ptr<Mesh> mesh_;

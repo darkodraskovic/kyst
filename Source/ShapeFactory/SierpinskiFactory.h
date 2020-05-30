@@ -11,11 +11,11 @@ class SierpinskiFactory
 public:
     SierpinskiFactory();
 
-    static std::vector<vec3> Sierpinski2DDet(int numDivisions);
-    static std::vector<vec3> Sierpinski2DRnd(int numDivisions);
+    static const std::vector<vec3>& Sierpinski2DDet(int numDivisions);
+    static const std::vector<vec3>& Sierpinski2DRnd(int numDivisions);
 
-    static std::vector<vec3> Sierpinski3DDet(int numDivisions);
-    static std::vector<vec3> Sierpinski3DRnd(int numDivisions);
+    static const std::vector<vec3>& Sierpinski3DDet(int numDivisions);
+    static const std::vector<vec3>& Sierpinski3DRnd(int numDivisions);
 
     static vec2 varRange_;
     

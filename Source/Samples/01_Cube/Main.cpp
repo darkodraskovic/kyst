@@ -9,6 +9,7 @@
 #include "Cube.h"
 
 using namespace VecConsts;
+using namespace glm;
 
 int main()
 {
@@ -65,13 +66,11 @@ int main()
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())
     {
-
         float time = glfwGetTime();
-        float sinVal = glm::sin(time);
-        float cosVal = glm::cos(time);
-        vec3 col = vec3(cosVal, 0.0f, sinVal);
+        vec3 lightVar = vec3(cos(time), 0.0f, sin(time));
         litTexShader->Use();
-        litTexShader->SetVec3("uLight.position", col*5.0f);
+        litTexShader->SetVec3("uLight.position", lightVar * 5.0f);
+        litTexShader->SetVec3("uLight.diffuse", lightVar);
         
         app.Update();
     }

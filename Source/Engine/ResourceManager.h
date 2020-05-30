@@ -5,7 +5,7 @@ class ResourceManager
 {
 public:
     ResourceManager();
-    unsigned int LoadTexture(char const * path);
+    unsigned int LoadTexture(char const* path);
 };
 
 #endif

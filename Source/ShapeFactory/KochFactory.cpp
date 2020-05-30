@@ -12,7 +12,7 @@ KochFactory::KochFactory()
 {
 }
 
-std::vector<vec3> KochFactory::Snowflake(int numDivisions)
+const std::vector<vec3>& KochFactory::Snowflake(int numDivisions)
 {
     points_.clear();
 
@@ -28,7 +28,7 @@ std::vector<vec3> KochFactory::Snowflake(int numDivisions)
     return points_;
 }
 
-std::vector<vec3> KochFactory::SnowflakeCurve(vec3& a, vec3& b, int numDivisions)
+const std::vector<vec3>& KochFactory::SnowflakeCurve(vec3& a, vec3& b, int numDivisions)
 {
     points_.clear();
 

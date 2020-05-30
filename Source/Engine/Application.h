@@ -24,12 +24,14 @@ public:
     static Application& Instance();
 
     ResourceManager resourceManager_;
-    
-    std::vector<std::shared_ptr<Entity>> entities_;
+  
     GLFWwindow* window_;
     ivec2 windowPosition_ = vec2(0,0);
     uvec2 windowSize_ = vec2(1152,720);
+  
     Camera camera_;
+    
+    std::vector<std::shared_ptr<Entity>> entities_;
 
     float deltaTime_ = 0.0f;	// Time between current frame and last frame
     float lastFrame_ = 0.0f; // Time of last frame

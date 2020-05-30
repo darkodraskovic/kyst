@@ -3,26 +3,11 @@ project (opengl-cg)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(SOURCE "Source")
-set(ENGINE "${SOURCE}/Engine")
-set(SHAPE_FACTORY "${SOURCE}/ShapeFactory")
-set(SAMPLES "${SOURCE}/Samples")
+set(SAMPLES "Source/Samples")
 
-# engine
-file(GLOB_RECURSE ENGINE_C "${ENGINE}/*.c" "${ENGINE}/*.cpp")
-set(ENGINE_H "${ENGINE}" "${ENGINE}/Graphics" "${ENGINE}/Scene")
-
-add_library(engine SHARED ${ENGINE_C})
-target_include_directories(engine PUBLIC ${ENGINE_H})
-target_link_libraries(engine GL GLU glfw dl)
-  
-# shape factory
-file(GLOB SHAPE_FACTORY_C "${SHAPE_FACTORY}/*.cpp")
-set(SHAPE_FACTORY_H "${SHAPE_FACTORY}")
-
-add_library(shapeFactory SHARED ${SHAPE_FACTORY_C})
-target_include_directories(shapeFactory PUBLIC ${SHAPE_FACTORY_H})
-target_link_libraries(shapeFactory PRIVATE engine)
+# libraries
+add_subdirectory("Source/Engine")
+add_subdirectory("Source/ShapeFactory")
 
 # 01_Cube
 file(GLOB CUBE_C "${SAMPLES}/01_Cube/*.cpp")

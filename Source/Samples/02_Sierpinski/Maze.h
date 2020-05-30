@@ -14,16 +14,15 @@ class Maze
 {
 public:
     Maze(int width, int height);
-    vector<vec3>* GetVertexArray();
+    const vector<vec3>& GetVertexArray();
     void RandomWalk();
     
     vector<vector<wall>> wallsHor_;
     vector<vector<wall>> wallsVer_;
 
 private:
-    int width_;
-    int height_;
     static int seed_;
+    vector<vec3> points_;
 };
 
 

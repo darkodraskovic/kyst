@@ -11,8 +11,8 @@ class KochFactory
 public:
     KochFactory();
 
-    static std::vector<glm::vec3> Snowflake(int numDivisions);
-    static std::vector<glm::vec3> SnowflakeCurve(vec3& a, vec3& b, int numDivisions);
+    static const std::vector<glm::vec3>& Snowflake(int numDivisions);
+    static const std::vector<glm::vec3>& SnowflakeCurve(vec3& a, vec3& b, int numDivisions);
 
 private:
     static void Divide(const vec3& a, const vec3& b, int numDivisions);

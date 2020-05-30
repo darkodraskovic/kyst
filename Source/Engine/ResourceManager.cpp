@@ -12,7 +12,7 @@ ResourceManager::ResourceManager(){};
 
 // utility function for loading a 2D texture from file
 // ---------------------------------------------------
-unsigned int ResourceManager::LoadTexture(char const * path)
+unsigned int ResourceManager::LoadTexture(char const* path)
 {
     unsigned int textureID;
     glGenTextures(1, &textureID);

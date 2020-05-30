@@ -1,5 +1,5 @@
-#ifndef PHONG__H
-#define PHONG__H
+#ifndef PHONG_H
+#define PHONG_H
 
 #include "Material.h"
 

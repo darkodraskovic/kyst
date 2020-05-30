@@ -1,3 +1,4 @@
+#include <glm/fwd.hpp>
 #include <iostream>
 #include <algorithm>
 
@@ -24,7 +25,7 @@ using namespace MouseData;
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 void MouseCallback(GLFWwindow* window, double posX, double posY);
 void ScrollCallback(GLFWwindow* window, double offsetX, double offsetY);
-    
+
 Application::Application() {};
 
 Application& Application::Instance()
@@ -111,8 +112,6 @@ void Application::ProcessInput(float deltaTime)
         processMouseScroll = false;
     }
 }
-
-float cameraYaw = -90, cameraPitch = 0, cameraFov = 45.0f;
 
 void Application::AddEntity(std::shared_ptr<Entity> entity)
 {

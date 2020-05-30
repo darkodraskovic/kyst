@@ -16,12 +16,12 @@ public:
     ParticleEmitter();
     void Update(float deltaTime) override;
     
-    void CreateParticle();
-
     float emissionFreq_ = 1.f;
 
     float minLifespan_ = 0.5f; float maxLifespan_ = 1.5f;
+
     vec3 minScale_ = ONE / 2.f,  maxScale_ = ONE * 2.f;
+    bool uniformScale_ = true;
     
     vec3 minVelocity_ = LEFT/ 2.f, maxVelocity_ = RIGHT / 2.f;
     vec3 minAcceleration_ = ZERO, maxAcceleration_ = ZERO;
@@ -33,6 +33,7 @@ public:
     float minADrag_ = 0, maxADrag_ = 0;
 
 private:
+    void CreateParticle();    
     void InitParticle(Particle* particle);
     
     float lastEmitted_ = 0;

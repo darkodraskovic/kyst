@@ -8,11 +8,11 @@ using namespace VecConsts;
 
 int Maze::seed_ = 0;
 
-Maze::Maze(int width, int height) : width_(width), height_(height)
+Maze::Maze(int width, int height)
 {
+    wallsHor_ = vector<vector<wall>> (height+1);
+    wallsVer_ = vector<vector<wall>> (height);
     for (int i = 0; i < height; i++) {
-        wallsHor_.push_back(vector<wall>());
-        wallsVer_.push_back(vector<wall>());
         for (int j = 0; j < width; j++) {
             float x = float(j);
             float y = float(i);
@@ -23,7 +23,6 @@ Maze::Maze(int width, int height) : width_(width), height_(height)
         }
     }
 
-    wallsHor_.push_back(vector<wall>());
     for (int j = 0; j < width; j++) {
         wallsHor_[height].push_back(wall(vec3(j, height, 0), vec3(j+1, height, 0)));
     }
@@ -33,28 +32,26 @@ Maze::Maze(int width, int height) : width_(width), height_(height)
     }
 }
 
-vector<vec3>* Maze::GetVertexArray()
+const vector<vec3>& Maze::GetVertexArray()
 {
-    vector<vec3>* vertexArray = new vector<vec3>;
     for (vector<wall> column : wallsHor_) {
         for (wall w : column) {
             if (w.first.x > -1) {
-                vertexArray->push_back(w.first);
-                vertexArray->push_back(w.second);
-                
+                points_.push_back(w.first);
+                points_.push_back(w.second);
             }
         }
     }
     for (vector<wall> col : wallsVer_) {
         for (wall w : col) {
             if (w.first.x > -1) {
-                vertexArray->push_back(w.first);
-                vertexArray->push_back(w.second);
+                points_.push_back(w.first);
+                points_.push_back(w.second);
             }
         }
     }
     
-    return vertexArray;
+    return points_;
 }
 
 struct compareIVec2
@@ -70,32 +67,31 @@ struct compareIVec2
 void Maze::RandomWalk()
 {
     srand(time(NULL) + Maze::seed_++);
-    
-    int x = linearRand(0, width_-1);
-    int y = linearRand(0, height_-1);
+
+    int w = wallsHor_[0].size(), h = wallsVer_.size();
+    int x = linearRand(0, w-1), y = linearRand(0, h-1);
 
     vector<ivec2> visited; // visited cells
     visited.push_back(ivec2(x,y));
 
-    while (visited.size() < width_ * height_) {
+    while (visited.size() < w * h) {
         int prevX = x;
         int prevY = y;
 
         // random walk
         if (linearRand(0,1) == 0) {
             if(linearRand(0,1) == 0) x++; else x--;
-            if (x < 0 || x > width_-1) x = prevX; // either clamp or wrap x
+            if (x < 0 || x > w-1) x = prevX; // either clamp or wrap x
         } else {
             if(linearRand(0,1) == 0) y++; else y--;
-            if (y < 0 || y > height_-1) y = prevY;
+            if (y < 0 || y > h-1) y = prevY;
         }
 
         // if cell is visited, continue
         if (find_if(visited.begin(), visited.end(), compareIVec2(ivec2(x,y))) != visited.end()) continue;
-        
         visited.push_back(ivec2(x,y));
         
-        if (x - prevX != 0) {
+        if (x - prevX != 0) { // remove walls
             wallsVer_[y][x > prevX ? x : prevX].first.x = -1;
         } else {
             wallsHor_[y > prevY ? y : prevY][x].first.x = -1;

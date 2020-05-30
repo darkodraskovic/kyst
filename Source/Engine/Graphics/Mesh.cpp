@@ -7,10 +7,10 @@ Mesh::Mesh()
 
 // VBO interleaved
 
-void Mesh::GenArrayBuffer(float vertices[], int elemPerAttr, int numAttrs, int numVerts)
+void Mesh::GenArrayBuffer(const float vertices[], int elemPerAttr, int numAttrs, int numVerts)
 {
     numVerts_ = numVerts;
-    
+
     glBindVertexArray(VAO_);
 
     unsigned int VBO;
@@ -25,10 +25,10 @@ void Mesh::GenArrayBuffer(float vertices[], int elemPerAttr, int numAttrs, int n
     glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 
     // Define data
-    GLsizei stride = attrSize * numAttrs; 
+    GLsizei stride = attrSize * numAttrs;
     for (int i = 0; i < numAttrs; ++i) {
-        void* offset = (void*)(i*attrSize);
         glEnableVertexAttribArray(i);
+        void* offset = (void*)(i*attrSize);
         glVertexAttribPointer(i, elemPerAttr, GL_FLOAT, GL_FALSE, stride, offset);
     }
 
@@ -37,16 +37,16 @@ void Mesh::GenArrayBuffer(float vertices[], int elemPerAttr, int numAttrs, int n
 
 // VBOs separate
 
-void Mesh::GenArrayBuffer(float attribArray[], int elemPerAttr, int numVerts)
+void Mesh::GenArrayBuffer(const float attribArray[], int elemPerAttr, int numVerts)
 {
     numVerts_ = numVerts;
-    
+
     glBindVertexArray(VAO_);
-    
+
     unsigned int VBO;
     glGenBuffers(1, &VBO);
     VBOs_.push_back(VBO);
-    
+
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     size_t size = sizeof(float) * elemPerAttr * numVerts;
     glBufferData(GL_ARRAY_BUFFER, size, attribArray, GL_STATIC_DRAW);
@@ -57,20 +57,19 @@ void Mesh::GenArrayBuffer(float attribArray[], int elemPerAttr, int numVerts)
     glBindVertexArray(0);
 }
 
-
 void Mesh::GenArrayBuffer(const std::vector<vec3>& attribs)
 {
-    GenArrayBuffer((float*)&attribs[0], 3, attribs.size());
+    GenArrayBuffer(&attribs[0].x, 3, attribs.size());
 }
 
 // EBO
 
-void Mesh::GenElementBuffer(unsigned int indices[], int numIdx)
+void Mesh::GenElementBuffer(const unsigned int indices[], int numIdx)
 {
     numIdx_ = numIdx;
-    
+
     glBindVertexArray(VAO_);
-    
+
     glGenBuffers(1, &EBO_);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_);
     int size = sizeof(unsigned int) * numIdx_;
@@ -79,7 +78,7 @@ void Mesh::GenElementBuffer(unsigned int indices[], int numIdx)
     glBindVertexArray(0);
 }
 
-void Mesh::GenElementBuffer(std::vector<unsigned int> indices)
+void Mesh::GenElementBuffer(const std::vector<unsigned int>& indices)
 {
     GenElementBuffer(&indices[0], indices.size());
 }
@@ -103,8 +102,6 @@ void Mesh::Render()
 
 Mesh::~Mesh()
 {
-    std::cout << "~Mesh called" << "\n";
-    // std::cout << "Mesh VBO size " << VBOs_.size() << "\n";
     glDeleteBuffers(1, &EBO_);
     glDeleteBuffers(VBOs_.size(), &VBOs_.front());
     glDeleteVertexArrays(1, &VAO_);

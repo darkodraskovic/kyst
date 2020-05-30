@@ -58,7 +58,7 @@ public:
             std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
         }
         const char* vShaderCode = vertexCode.c_str();
-        const char * fShaderCode = fragmentCode.c_str();
+        const char* fShaderCode = fragmentCode.c_str();
         // 2. compile shaders
         unsigned int vertex, fragment;
         // vertex shader
@@ -130,7 +130,7 @@ public:
     // ------------------------------------------------------------------------
     void SetVec3(const std::string &name, const glm::vec3 &value) const
     { 
-        glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]); 
+        glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
     }
     void SetVec3(const std::string &name, float x, float y, float z) const
     { 

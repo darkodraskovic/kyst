@@ -31,9 +31,10 @@ void Mover::Update(float deltaTime)
     Drag();
     velocity_ += acceleration_ * deltaTime;
     
-    velocity_ = glm::clamp(velocity_, -maxVelocity_, maxVelocity_);
     if (glm::length(velocity_) < minSpeed_ && glm::length(acceleration_) < 1e-6) {
         velocity_ *= 0.f;
+    } else {
+      velocity_ = glm::clamp(velocity_, -maxVelocity_, maxVelocity_);
     }
     position_ += velocity_ * deltaTime;
     acceleration_ *= 0.f;
@@ -44,8 +45,9 @@ void Mover::Update(float deltaTime)
     
     if (glm::length(aVelocity_) < minASpeed_ && glm::length(aAcceleration_) < 1e-6) {
         aVelocity_ *= 0.0f;
+    } else {
+      aVelocity_ = glm::clamp(aVelocity_, -maxAVelocity_, maxAVelocity_);      
     }
-    aVelocity_ = glm::clamp(aVelocity_, -maxAVelocity_, maxAVelocity_);
     rotation_ += aVelocity_ * deltaTime;
     aAcceleration_ *= 0.f;
 }
