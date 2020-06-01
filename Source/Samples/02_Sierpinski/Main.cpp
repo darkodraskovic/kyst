@@ -43,9 +43,8 @@ int main()
     eFactory->color1_ = ShapeUtils::Hex2rgb("E84A5F");
     eFactory->color2_ = ShapeUtils::Hex2rgb("FF847C");
     eFactory->color3_ = ShapeUtils::Hex2rgb("FECEAB");
-    eFactory->SetColor(eFactory->color3_);
     float limit = 0.05;
-    eFactory->CreateLineGasket(4, vec2(-limit, limit), true, true);
+    auto e = eFactory->CreateLineGasket(4, vec2(-limit, limit), true, true);
     
     eFactory->CreateSnowflakeEmitter();
 

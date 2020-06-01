@@ -21,6 +21,7 @@ struct Light
 uniform Material uMaterial;
 uniform Light uLight;
 uniform vec3 uViewPos;
+uniform float uAlpha;
 
 in vec3 FragPos;
 in vec3 FragNorm;
@@ -50,5 +51,5 @@ void main()
     
     vec3 result = ambient + diffuse + specular + emissive;
     // vec3 result = ambient + diffuse + emissive;
-    FragCol = vec4(result, 1.0);
+    FragCol = vec4(result, uAlpha);
 }

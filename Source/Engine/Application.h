@@ -40,6 +40,7 @@ public:
 private:
     Application();
     std::vector<std::shared_ptr<Entity>> entitiesToCreate_;
+    std::vector<std::shared_ptr<Entity>> alphaEntities_;
 };
 
 #endif

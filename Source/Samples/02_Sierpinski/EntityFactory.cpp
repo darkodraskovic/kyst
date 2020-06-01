@@ -1,6 +1,7 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/random.hpp>
 
+#include "Material.h"
 #include "Mover.h"
 #include "Particle.h"
 #include "KochFactory.h"
@@ -11,17 +12,10 @@ EntityFactory::EntityFactory()
 {
     colShader_ = std::make_shared<Shader>("../Shaders/Col.vs", "../Shaders/Col.fs");
     vColShader_ = std::make_shared<Shader>("../Shaders/VCol.vs", "../Shaders/VCol.fs");
-    SetColor(MAGENTA);
 
     snowflakeMesh_ = std::shared_ptr<Mesh>(new Mesh());
     snowflakeMesh_->mode_ = GL_LINE_LOOP;
     snowflakeMesh_->GenArrayBuffer(KochFactory::Snowflake(3));
-}
-
-void EntityFactory::SetColor(const vec3 &color)
-{
-    colShader_->Use();
-    colShader_->SetVec4("uColor", vec4(color, 1.0));
 }
 
 std::shared_ptr<Entity> EntityFactory::AddEntity(EntityType type, bool vCol)
@@ -39,6 +33,7 @@ std::shared_ptr<Entity> EntityFactory::AddEntity(EntityType type, bool vCol)
     entity->material_ = std::make_shared<Material>();
     Application::Instance().AddEntity(entity);
     entity->material_->shader_ = colShader_;
+    entity->material_->color_ = color1_;
     if (vCol) {
         entity->material_->shader_ = vColShader_;
     }
@@ -120,7 +115,7 @@ std::shared_ptr<ParticleEmitter> EntityFactory::CreateSnowflakeEmitter()
     auto emitter = std::shared_ptr<ParticleEmitter>(new ParticleEmitter());
     emitter->mesh_ = snowflakeMesh_;
     emitter->material_ = std::make_shared<Material>(colShader_);
-    SetColor(color3_);
+    emitter->material_->color_ = color3_;
 
     emitter->emissionFreq_ = .03f;
 

@@ -33,7 +33,12 @@ int main()
     app.camera_.position_.z = 3.0f;
 
     // material
-    auto material = make_shared<Material>("../Shaders/Col.vs", "../Shaders/Col.fs");
+    auto material1 =
+        make_shared<Material>("../Shaders/Col.vs", "../Shaders/Col.fs");
+    material1->color_ = RED;
+    auto material2 = make_shared<Material>("../Shaders/Col.vs", "../Shaders/Col.fs");
+    material2->color_ = GREEN;
+    material2->alpha_ = 0.5;
 
     // mesh
     auto mesh = make_shared<Mesh>();
@@ -44,10 +49,16 @@ int main()
     mesh->GenArrayBuffer(points);
 
     // entity
-    auto entity = make_shared<Entity>(mesh, material);
+    auto entity = make_shared<Entity>(mesh, material1);
+    entity->position_ = (RIGHT + UP)/4.f;
+    app.AddEntity(entity);
+    entity = make_shared<Entity>(mesh, material2);
+    entity->position_ = (LEFT + DOWN)/4.f;
+    entity->position_.z = 0.25;
+    entity->rotation_.y = pi<float>() / 4;
     app.AddEntity(entity);
 
-    material.reset();
+    material1.reset();
     mesh.reset();
     entity.reset();
     

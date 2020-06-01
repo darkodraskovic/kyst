@@ -37,8 +37,6 @@ public:
     std::shared_ptr<Shader> colShader_;
     std::shared_ptr<Shader> vColShader_;
 
-    void SetColor(const vec3& color);
-    
     vec3 color1_ = RED;
     vec3 color2_ = GREEN;
     vec3 color3_ = BLUE;

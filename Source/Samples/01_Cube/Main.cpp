@@ -52,6 +52,7 @@ int main()
     auto cube4 = std::make_shared<Cube>(material);
     cube4->position_ = ONE*2.0f;
     cube4->scale_*= 2;
+    cube4->material_->alpha_ = 0.5;
     app.AddEntity(cube4);
 
     litTexShader->Use();

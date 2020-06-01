@@ -20,6 +20,9 @@ void Material::Update(float deltaTime, const glm::mat4& model, const glm::mat4& 
 {
     shader_->Use();
 
+    shader_->SetVec3("uColor", color_);
+    shader_->SetFloat("uAlpha", alpha_);
+    
     shader_->SetMat4("uModel", model);
     shader_->SetMat4("uView", view);
     shader_->SetMat4("uProjection", projection);

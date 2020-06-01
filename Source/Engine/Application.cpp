@@ -1,4 +1,5 @@
 #include <glm/fwd.hpp>
+#include <glm/geometric.hpp>
 #include <iostream>
 #include <algorithm>
 
@@ -8,6 +9,7 @@
 
 #include "Application.h"
 #include "Camera.h"
+#include "Entity.h"
 
 namespace MouseData
 {
@@ -73,6 +75,9 @@ int Application::Init()
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
 
     // configure mouse position
     // -----------------------------
@@ -154,10 +159,30 @@ void Application::Draw(float deltaTime)
     glm::mat4 view = camera_.GetViewMatrix();
     glm::mat4 projection = camera_.GetProjectionMatrix(windowSize_.x, windowSize_.y);
 
+    alphaEntities_.clear();
+    glEnable(GL_CULL_FACE);
     for(auto it = entities_.begin(); it != entities_.end(); ++it) {
-        if ((*it)->visible_) (*it)->Draw(deltaTime, view, projection);
+        auto e = *it;
+        if (e->material_->alpha_ < 1.0) {
+            alphaEntities_.push_back(e);
+        } else {
+            if (e->visible_) e->Draw(deltaTime, view, projection);
+        }
     }
-        
+    glDisable(GL_CULL_FACE);
+
+
+    std::sort(alphaEntities_.begin(), alphaEntities_.end(),
+              [this](std::shared_ptr<Entity> lhs, std::shared_ptr<Entity> rhs) {
+                  return glm::length(lhs->position_ - camera_.position_) <
+                  glm::length(rhs->position_ - camera_.position_); });
+    glEnable(GL_BLEND);
+    for(auto it = alphaEntities_.begin(); it != alphaEntities_.end(); ++it) {
+        auto e = *it;
+        if (e->visible_) e->Draw(deltaTime, view, projection);
+    }
+    glDisable(GL_BLEND);
+
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
     glfwSwapBuffers(window_);
