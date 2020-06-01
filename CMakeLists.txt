@@ -20,3 +20,8 @@ file(GLOB SIERPINSKI_C "${SAMPLES}/02_Sierpinski/*.cpp")
 add_executable(02_Sierpinski "${SIERPINSKI_C}")
 target_include_directories(02_Sierpinski PUBLIC "${SAMPLES}/02_Sierpinski")
 target_link_libraries(02_Sierpinski GL GLU glfw dl engine shapeFactory)
+
+file(GLOB SHAPES2D_C "${SAMPLES}/03_Shapes2D/*.cpp")
+add_executable(03_Shapes2D "${SHAPES2D_C}")
+target_include_directories(03_Shapes2D PUBLIC "${SAMPLES}/03_Shapes2D")
+target_link_libraries(03_Shapes2D GL GLU glfw dl engine shapeFactory)

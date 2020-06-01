@@ -3,11 +3,13 @@
 
 #include "Mesh.h"
 #include "Material.h"
+#include <memory>
 
 class Entity
 {
 public:
     Entity();
+    Entity(std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material);
     
     virtual void Update(float deltaTime);
     virtual void Draw(float deltaTime, const glm::mat4& uView, const glm::mat4& uProjection);

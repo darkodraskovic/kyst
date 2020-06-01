@@ -2,16 +2,23 @@
 #include <sstream>
 #include <glm/gtc/random.hpp>
 
-#include "ShapeUitls.h"
+#include "ShapeUtils.h"
 
 ShapeUtils::ShapeUtils()
 {
 }
 
-void ShapeUtils::prodPoint(vec3& point, float min, float max)
+void ShapeUtils::ProdPoint(vec3& point, float min, float max)
 {
     vec3 delta(linearRand(min, max), linearRand(min, max), linearRand(min, max));
     point += delta;
+}
+
+void ShapeUtils::MovePoints(std::vector<vec3> &points, const vec3& offset)
+{
+    for (int i = 0; i < points.size(); ++i) {
+        points[i] += offset;
+    }
 }
 
 vec3 ShapeUtils::Hex2rgb(std::string hex) {

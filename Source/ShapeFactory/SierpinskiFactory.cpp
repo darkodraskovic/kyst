@@ -1,4 +1,4 @@
-#include "ShapeUitls.h"
+#include "ShapeUtils.h"
 #include "SierpinskiFactory.h"
 
 SierpinskiFactory::SierpinskiFactory()
@@ -46,9 +46,9 @@ void SierpinskiFactory::Divide(const vec3& a, const vec3& b, const vec3& c, int 
     vec3 ac((a + c) * 0.5f);
     vec3 bc((b + c) * 0.5f);
 
-    ShapeUtils::prodPoint(ab, varRange_.x, varRange_.y);
-    ShapeUtils::prodPoint(ac, varRange_.x, varRange_.y);
-    ShapeUtils::prodPoint(bc, varRange_.x, varRange_.y);
+    ShapeUtils::ProdPoint(ab, varRange_.x, varRange_.y);
+    ShapeUtils::ProdPoint(ac, varRange_.x, varRange_.y);
+    ShapeUtils::ProdPoint(bc, varRange_.x, varRange_.y);
 
     numDivisions--;
     Divide(a, ab, ac, numDivisions);
@@ -84,12 +84,12 @@ void SierpinskiFactory::Divide(const vec3& a, const vec3& b, const vec3& c, cons
     vec3 bd = (b + d) * 0.5f;
     vec3 cd = (c + d) * 0.5f;
 
-    ShapeUtils::prodPoint(ab, varRange_.x, varRange_.y);
-    ShapeUtils::prodPoint(ac, varRange_.x, varRange_.y);
-    ShapeUtils::prodPoint(ad, varRange_.x, varRange_.y);
-    ShapeUtils::prodPoint(bc, varRange_.x, varRange_.y);
-    ShapeUtils::prodPoint(bd, varRange_.x, varRange_.y);
-    ShapeUtils::prodPoint(cd, varRange_.x, varRange_.y);
+    ShapeUtils::ProdPoint(ab, varRange_.x, varRange_.y);
+    ShapeUtils::ProdPoint(ac, varRange_.x, varRange_.y);
+    ShapeUtils::ProdPoint(ad, varRange_.x, varRange_.y);
+    ShapeUtils::ProdPoint(bc, varRange_.x, varRange_.y);
+    ShapeUtils::ProdPoint(bd, varRange_.x, varRange_.y);
+    ShapeUtils::ProdPoint(cd, varRange_.x, varRange_.y);
 
     numDivisions--;
     Divide(a, ab, ac, ad, numDivisions);

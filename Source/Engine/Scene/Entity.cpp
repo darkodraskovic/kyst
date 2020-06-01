@@ -1,4 +1,6 @@
 #include "Entity.h"
+#include "Material.h"
+#include "Mesh.h"
 #include "VecConsts.h"
 
 using namespace VecConsts;
@@ -7,6 +9,12 @@ using namespace VecConsts;
 
 Entity::Entity()
 {
+}
+
+Entity::Entity(std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material)
+{
+    mesh_ = mesh;
+    material_ = material;
 }
 
 void Entity::Update(float deltaTime)

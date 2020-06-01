@@ -8,7 +8,7 @@
 #include "VecConsts.h"
 #include "Application.h"
 #include "EntityFactory.h"
-#include "ShapeUitls.h"
+#include "ShapeUtils.h"
 #include "Mover.h"
 #include "Particle.h"
 
