@@ -7,7 +7,8 @@ Mesh::Mesh()
 
 // VBO interleaved
 
-void Mesh::GenArrayBuffer(const float vertices[], int elemPerAttr, int numAttrs, int numVerts)
+void Mesh::GenArrayBuffer(const float* data, int elemPerAttr, int numAttrs,
+                          int numVerts)
 {
     numVerts_ = numVerts;
 
@@ -22,13 +23,13 @@ void Mesh::GenArrayBuffer(const float vertices[], int elemPerAttr, int numAttrs,
     // Buffer data
     size_t attrSize = elemPerAttr * sizeof(float);
     int size = attrSize * numAttrs * numVerts;
-    glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 
     // Define data
     GLsizei stride = attrSize * numAttrs;
     for (int i = 0; i < numAttrs; ++i) {
         glEnableVertexAttribArray(i);
-        void* offset = (void*)(i*attrSize);
+        void *offset = (void *)(i * attrSize);
         glVertexAttribPointer(i, elemPerAttr, GL_FLOAT, GL_FALSE, stride, offset);
     }
 
@@ -37,8 +38,7 @@ void Mesh::GenArrayBuffer(const float vertices[], int elemPerAttr, int numAttrs,
 
 // VBOs separate
 
-void Mesh::GenArrayBuffer(const float attribArray[], int elemPerAttr, int numVerts)
-{
+void Mesh::GenArrayBuffer(const float* data, int elemPerAttr, int numVerts) {
     numVerts_ = numVerts;
 
     glBindVertexArray(VAO_);
@@ -49,12 +49,17 @@ void Mesh::GenArrayBuffer(const float attribArray[], int elemPerAttr, int numVer
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     size_t size = sizeof(float) * elemPerAttr * numVerts;
-    glBufferData(GL_ARRAY_BUFFER, size, attribArray, GL_STATIC_DRAW);
-    int idx = VBOs_.size()-1;
+    glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+    int idx = VBOs_.size() - 1;
     glEnableVertexAttribArray(idx);
     glVertexAttribPointer(idx, elemPerAttr, GL_FLOAT, GL_FALSE, 0, 0);
 
     glBindVertexArray(0);
+}
+
+void Mesh::GenArrayBuffer(const std::vector<vec2>& attribs)
+{
+    GenArrayBuffer(&attribs[0].x, 2, attribs.size());
 }
 
 void Mesh::GenArrayBuffer(const std::vector<vec3>& attribs)
@@ -64,8 +69,7 @@ void Mesh::GenArrayBuffer(const std::vector<vec3>& attribs)
 
 // EBO
 
-void Mesh::GenElementBuffer(const unsigned int indices[], int numIdx)
-{
+void Mesh::GenElementBuffer(const unsigned int *data, int numIdx) {
     numIdx_ = numIdx;
 
     glBindVertexArray(VAO_);
@@ -73,7 +77,7 @@ void Mesh::GenElementBuffer(const unsigned int indices[], int numIdx)
     glGenBuffers(1, &EBO_);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_);
     int size = sizeof(unsigned int) * numIdx_;
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 
     glBindVertexArray(0);
 }

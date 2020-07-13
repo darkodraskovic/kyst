@@ -159,18 +159,17 @@ void Application::Draw(float deltaTime)
     glm::mat4 view = camera_.GetViewMatrix();
     glm::mat4 projection = camera_.GetProjectionMatrix(windowSize_.x, windowSize_.y);
 
-    alphaEntities_.clear();
     glEnable(GL_CULL_FACE);
     for(auto it = entities_.begin(); it != entities_.end(); ++it) {
         auto e = *it;
+        if (!e->visible_) continue;
         if (e->material_->alpha_ < 1.0) {
             alphaEntities_.push_back(e);
         } else {
-            if (e->visible_) e->Draw(deltaTime, view, projection);
+            e->Draw(deltaTime, view, projection);
         }
     }
     glDisable(GL_CULL_FACE);
-
 
     std::sort(alphaEntities_.begin(), alphaEntities_.end(),
               [this](std::shared_ptr<Entity> lhs, std::shared_ptr<Entity> rhs) {
@@ -178,11 +177,11 @@ void Application::Draw(float deltaTime)
                   glm::length(rhs->position_ - camera_.position_); });
     glEnable(GL_BLEND);
     for(auto it = alphaEntities_.begin(); it != alphaEntities_.end(); ++it) {
-        auto e = *it;
-        if (e->visible_) e->Draw(deltaTime, view, projection);
+        (*it)->Draw(deltaTime, view, projection);
     }
     glDisable(GL_BLEND);
-
+    alphaEntities_.clear();
+    
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
     glfwSwapBuffers(window_);

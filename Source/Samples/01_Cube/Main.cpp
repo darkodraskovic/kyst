@@ -78,9 +78,10 @@ int main()
 
     cube2.reset();
     cube4.reset();
-
+    
     // Application termination
     // ---------------------------------------------------------------------------
     app.Terminate();
+
     return 0;
 }

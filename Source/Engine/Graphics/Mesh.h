@@ -11,14 +11,15 @@ public:
     ~Mesh();
 
     // interleaved VBO
-    void GenArrayBuffer(const float vertices[], int elemPerAttr, int numAttrs, int numVerts);
+    void GenArrayBuffer(const float* data, int elemPerAttr, int numAttrs, int numVerts);
 
     // separate VBOs
-    void GenArrayBuffer(const float attribArray[], int elemPerAttr, int numVerts);
+    void GenArrayBuffer(const float* data, int elemPerAttr, int numVerts);
+    void GenArrayBuffer(const std::vector<vec2>&);
     void GenArrayBuffer(const std::vector<vec3>&);
 
     // indices - EBO
-    void GenElementBuffer(const unsigned int indices[], int numIdx);
+    void GenElementBuffer(const unsigned int* data, int numIdx);
     void GenElementBuffer(const std::vector<unsigned int>&);
 
     void Render();

@@ -44,10 +44,8 @@ int main()
     eFactory->color2_ = ShapeUtils::Hex2rgb("FF847C");
     eFactory->color3_ = ShapeUtils::Hex2rgb("FECEAB");
     float limit = 0.05;
-    auto e = eFactory->CreateLineGasket(4, vec2(-limit, limit), true, true);
-    
+    eFactory->CreateLineGasket(4, vec2(-limit, limit), true, true);
     eFactory->CreateSnowflakeEmitter();
-
     eFactory->CreateMaze(12, 8);
 
     // Application loop
@@ -58,8 +56,6 @@ int main()
         app.Update();
     }
 
-    delete eFactory;
-    
     // Application termination
     // ---------------------------------------------------------------------------
     app.Terminate();
