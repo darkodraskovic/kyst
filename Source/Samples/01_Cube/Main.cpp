@@ -2,11 +2,13 @@
 #include <GLFW/glfw3.h>
 
 #include "Application.h"
+#include "Camera.h"
 #include "PhongMap.h"
 #include "Shader.h"
 
 #include "VecConsts.h"
 #include "Cube.h"
+#include "Framebuffer.h"
 
 using namespace VecConsts;
 using namespace glm;
@@ -34,50 +36,46 @@ int main()
     
     auto litTexShader = std::shared_ptr<Shader>(
         new Shader( "../Shaders/LitTex.vs", "../Shaders/LitTex.fs"));
+
+
+    auto fb = std::make_shared<Framebuffer>();
+    unsigned int size = 640;
+    unsigned int texture = fb->GenTexture(size, size, "../Shaders/Tex2D.fs");
     
     auto material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));
     material->diffuse_ = diffuseMetal;
+    // material->diffuse_ = texture;
     material->emissive_ = emissiveMetal;
     material->specular_ = specularMetal;
     material->shininess_ = 1024.0f;
+    material->lightPosition_ = vec3(0.5f, 0.0f, 5.0f);
     auto cube2 = std::make_shared<Cube>(material);
     cube2->scale_ *= 2;
     app.AddEntity(cube2);
+    cube2.reset();
 
     material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));    
     material->diffuse_ = diffuseBricks;
-    material->specular_ = specularBricks;
     material->emissive_ = emissiveBricks;
+    material->specular_ = specularBricks;
     material->shininess_ = 128.0f;
+    material->lightPosition_ = vec3(0.5f, 0.0f, 5.0f);
     auto cube4 = std::make_shared<Cube>(material);
     cube4->position_ = ONE*2.0f;
     cube4->scale_*= 2;
     cube4->material_->alpha_ = 0.5;
     app.AddEntity(cube4);
-
-    litTexShader->Use();
-    litTexShader->SetVec3("uLight.ambient",  DARK_GRAY);
-    litTexShader->SetVec3("uLight.diffuse",  GRAY);
-    litTexShader->SetVec3("uLight.specular", GRAY);
-    litTexShader->SetVec3("uLight.position", 0.5f, 0.0f, 5.0f);
-
+    cube4.reset();
+    
     app.camera_.position_.z = 12.0f;
     
     // Application loop
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())
     {
-        float time = glfwGetTime();
-        vec3 lightVar = vec3(cos(time), 0.0f, sin(time));
-        litTexShader->Use();
-        litTexShader->SetVec3("uLight.position", lightVar * 5.0f);
-        litTexShader->SetVec3("uLight.diffuse", lightVar);
-        
         app.Update();
     }
 
-    cube2.reset();
-    cube4.reset();
     
     // Application termination
     // ---------------------------------------------------------------------------

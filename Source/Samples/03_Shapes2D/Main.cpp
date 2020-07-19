@@ -48,6 +48,7 @@ int main()
     // entity
     auto entity = make_shared<Entity>(mesh, material1);
     app.AddEntity(entity);
+    
     entity = make_shared<Entity>(mesh, material2);
     entity->position_ = (LEFT + DOWN) / 4.f;
     entity->position_.z = 0.25;
@@ -63,10 +64,7 @@ int main()
     entity.reset();
     
     glLineWidth(10);
-
-    // auto sh = make_shared<Shader>("../Shaders/Tex2D.vs", "../Shaders/Tex2D.fs");
-    auto fb = std::make_shared<Framebuffer>();
-
+    
     // Application loop
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())
@@ -76,7 +74,6 @@ int main()
         app.Update();
     }
 
-    fb.reset();
     // Application termination
     // ---------------------------------------------------------------------------
     app.Terminate();

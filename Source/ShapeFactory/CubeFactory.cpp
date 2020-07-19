@@ -57,7 +57,7 @@ std::vector<vec3> CubeFactory::GetTexCoords() {
         // top
         ZERO, RIGHT, ONE, UP,
         // bottom
-        ZERO, RIGHT, ONE,UP,
+        ZERO, RIGHT, ONE, UP,
     };
         
     return attribs;

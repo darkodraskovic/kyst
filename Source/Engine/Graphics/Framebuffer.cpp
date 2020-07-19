@@ -39,9 +39,10 @@ Framebuffer::Framebuffer()
 
 void Framebuffer::GenFramebuffer(unsigned int width, unsigned int height)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
     
     glGenFramebuffers(1, &framebuffer_);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
     glGenTextures(1, &colorbuffer_);
     glBindTexture(GL_TEXTURE_2D, colorbuffer_);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
