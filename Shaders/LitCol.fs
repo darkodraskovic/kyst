@@ -23,8 +23,8 @@ uniform Light uLight;
 uniform vec3 uViewPos;
 uniform float uAlpha;
 
-in vec3 FragPos;
-in vec3 FragNorm;
+in vec3 vFragPos;
+in vec3 vFragNorm;
 
 out vec4 FragCol;
 
@@ -34,13 +34,13 @@ void main()
     vec3 ambient = uLight.ambient * uMaterial.ambient;
 
     // diffuse
-    vec3 norm = normalize(FragNorm);
-    vec3 lightDir = normalize(uLight.position - FragPos);
+    vec3 norm = normalize(vFragNorm);
+    vec3 lightDir = normalize(uLight.position - vFragPos);
     float intensity = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = uLight.diffuse * (intensity * uMaterial.diffuse);
 
     // specular
-    vec3 viewDir = normalize(uViewPos - FragPos);
+    vec3 viewDir = normalize(uViewPos - vFragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), uMaterial.shininess);
     vec3 specular = uLight.specular * (spec * uMaterial.specular);

@@ -23,31 +23,31 @@ uniform Light uLight;
 uniform vec3 uViewPos;
 uniform float uAlpha;
 
-in vec3 FragPos;
-in vec3 FragNorm;
-in vec2 TexCoords;
+in vec3 vFragPos;
+in vec3 vFragNorm;
+in vec2 vTexCoords;
 
 out vec4 FragCol;
 
 void main()
 {
     // ambient
-    vec3 ambient = uLight.ambient * texture(uMaterial.diffuse, TexCoords).rgb;
+    vec3 ambient = uLight.ambient * texture(uMaterial.diffuse, vTexCoords).rgb;
 
     // diffuse
-    vec3 norm = normalize(FragNorm);
-    vec3 lightDir = normalize(uLight.position - FragPos);
+    vec3 norm = normalize(vFragNorm);
+    vec3 lightDir = normalize(uLight.position - vFragPos);
     float intensity = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = uLight.diffuse * (intensity * texture(uMaterial.diffuse, TexCoords).rgb);
+    vec3 diffuse = uLight.diffuse * (intensity * texture(uMaterial.diffuse, vTexCoords).rgb);
 
     // specular
-    vec3 viewDir = normalize(uViewPos - FragPos);
+    vec3 viewDir = normalize(uViewPos - vFragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), uMaterial.shininess);
-    vec3 specular = uLight.specular * (spec * texture(uMaterial.specular, TexCoords).rgb);
+    vec3 specular = uLight.specular * (spec * texture(uMaterial.specular, vTexCoords).rgb);
 
     // emissive
-    vec3 emissive = texture(uMaterial.emissive, TexCoords).rgb;
+    vec3 emissive = texture(uMaterial.emissive, vTexCoords).rgb;
     
     vec3 result = ambient + diffuse + specular + emissive;
     // vec3 result = ambient + diffuse + emissive;
