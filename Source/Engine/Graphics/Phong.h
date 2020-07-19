@@ -2,8 +2,11 @@
 #define PHONG_H
 
 #include "Material.h"
+#include <glm/fwd.hpp>
+#include "VecConsts.h"
 
 using namespace glm;
+using namespace VecConsts;
 
 class Phong : public Material
 {
@@ -11,10 +14,11 @@ public:
     Phong(std::shared_ptr<Shader> shader);
     virtual void Update(float deltaTime, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) override;
 
-    vec3 ambient_;
-    vec3 diffuse_;
-    vec3 specular_;
-    
+    vec3 lightAmbient_ = GRAY;
+    vec3 lightDiffuse_ = GRAY;
+    vec3 lightSpecular_ = GRAY;
+    vec3 lightPosition_ = ZERO;
+
     float shininess_;
 };
 

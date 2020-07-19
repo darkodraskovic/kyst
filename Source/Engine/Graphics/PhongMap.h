@@ -1,9 +1,9 @@
 #ifndef PHONG_MAP_H
 #define PHONG_MAP_H
 
-#include "Material.h"
+#include "Phong.h"
 
-class PhongMap : public Material
+class PhongMap : public Phong
 {
 public:
     PhongMap(std::shared_ptr<Shader> shader);
@@ -13,8 +13,6 @@ public:
     unsigned int diffuse_;
     unsigned int specular_;
     unsigned int emissive_;
-    
-    float shininess_;
 };
 
 #endif
