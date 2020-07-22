@@ -6,10 +6,12 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <memory>
 
 #include "Application.h"
 #include "Camera.h"
 #include "Entity.h"
+#include "Framebuffer.h"
 
 namespace MouseData
 {
@@ -72,21 +74,28 @@ int Application::Init()
         return -1;
     }
 
-    // configure global opengl state
+    // configure global opengl state and init screen frambuffer
     // -----------------------------
-    glEnable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
+    InitFramebuffer();
 
     // configure mouse position
     // -----------------------------
     lastMouseX = (float)windowSize_.x / 2;
     lastMouseX = (float)windowSize_.y / 2;
-    
+
     return 0;
 };
 
+void Application::InitFramebuffer()
+{
+    framebuffer_ = std::make_shared<Framebuffer>();
+    framebuffer_->GenFramebuffer(windowSize_.x, windowSize_.y);
+    framebuffer_->GenRenderbuffer(windowSize_.x, windowSize_.y);
+    framebuffer_->GenShader("../Shaders/Framebuffer/Screen.fs");
+}
 
 void Application::ProcessInput(float deltaTime)
 {
@@ -151,10 +160,11 @@ void Application::Update()
     Draw(deltaTime_);
 };
 
-void Application::Draw(float deltaTime)
+void Application::DrawScene(float deltaTime)
 {
     glClearColor(clearColor_.r, clearColor_.g, clearColor_.b, clearColor_.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
 
     glm::mat4 view = camera_.GetViewMatrix();
     glm::mat4 projection = camera_.GetProjectionMatrix(windowSize_.x, windowSize_.y);
@@ -181,6 +191,15 @@ void Application::Draw(float deltaTime)
     }
     glDisable(GL_BLEND);
     alphaEntities_.clear();
+}
+
+void Application::Draw(float deltaTime)
+{
+    // draw scene to framebuffer and render framebuffer
+    framebuffer_->Bind();
+    DrawScene(deltaTime);
+    framebuffer_->Unbind();
+    framebuffer_->Render();
     
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
@@ -196,6 +215,7 @@ bool Application::ShouldClose()
 void Application::Terminate()
 {
     entities_.clear();
+    framebuffer_.reset();
     glfwTerminate();
 };
 
@@ -204,6 +224,8 @@ void Application::Terminate()
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+    Application::Instance().windowSize_ = glm::vec2(width, height);
+    Application::Instance().InitFramebuffer();
 }
 
 // glfw: whenever the mouse moves, this callback is called

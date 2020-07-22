@@ -37,14 +37,15 @@ int main()
     auto litTexShader = std::shared_ptr<Shader>(
         new Shader( "../Shaders/LitTex.vs", "../Shaders/LitTex.fs"));
 
-
     auto fb = std::make_shared<Framebuffer>();
-    unsigned int size = 640;
-    unsigned int texture = fb->GenTexture(size, size, "../Shaders/Tex2D.fs");
+    fb->GenFramebuffer(640, 640);
+    fb->GenShader("../Shaders/Textures/Tex2D.fs");
+    unsigned int texture = fb->RenderTexture();
+    fb.reset();
     
     auto material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));
     material->diffuse_ = diffuseMetal;
-    // material->diffuse_ = texture;
+    material->diffuse_ = texture;
     material->emissive_ = emissiveMetal;
     material->specular_ = specularMetal;
     material->shininess_ = 1024.0f;

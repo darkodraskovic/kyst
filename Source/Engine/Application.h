@@ -9,15 +9,18 @@
 
 #include "ResourceManager.h"
 #include "Entity.h"
+#include "Framebuffer.h"
 #include "Camera.h"
 
 class Application
 {
 public:
     int Init();
+    void InitFramebuffer();
     void ProcessInput(float deltaTime);
     void Update();
     void Draw(float deltaTime);
+    void DrawScene(float deltaTime);
     bool ShouldClose();
     void Terminate();
     void AddEntity(std::shared_ptr<Entity> entity);
@@ -41,6 +44,9 @@ private:
     Application();
     std::vector<std::shared_ptr<Entity>> entitiesToCreate_;
     std::vector<std::shared_ptr<Entity>> alphaEntities_;
+
+    std::shared_ptr<Framebuffer> framebuffer_;
+    std::shared_ptr<Shader> shader_;
 };
 
 #endif

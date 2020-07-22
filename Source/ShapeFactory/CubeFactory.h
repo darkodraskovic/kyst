@@ -1,10 +1,12 @@
 #ifndef CUBE_FACTORY_H
 #define CUBE_FACTORY_H
 
+#include <memory>
 #include <vector>
 #include <glm/glm.hpp>
 
 #include "VecConsts.h"
+#include "Mesh.h"
 
 using namespace glm;
 using namespace VecConsts;
@@ -32,9 +34,7 @@ public:
     static std::vector<vec3> GetTexCoords();
     static std::vector<unsigned int> GetIndices();
 
-private:
-    static const std::vector<vec3> attribs_;
-
+    static std::shared_ptr<Mesh> GetMesh();
 };
 
 #endif

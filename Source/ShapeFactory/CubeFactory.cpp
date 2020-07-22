@@ -1,14 +1,15 @@
+#include <memory>
 #include <vector>
 
 #include "CubeFactory.h"
+#include "Mesh.h"
 
 
-CubeFactory::CubeFactory()
+CubeFactory::CubeFactory() {}
+
+std::vector<vec3> CubeFactory::GetPositions()
 {
-}
-
-std::vector<vec3> CubeFactory::GetPositions() {
-    std::vector<vec3> attribs = {// top
+    return std::vector<vec3>{// top
         frontBL, frontBR, frontTR, frontTL,
         // back
         backBR, backBL, backTL, backTR,
@@ -21,12 +22,11 @@ std::vector<vec3> CubeFactory::GetPositions() {
         // bottom
         backBL, backBR, frontBR, frontBL,
     };
-        
-    return attribs;
 }
 
-std::vector<vec3> CubeFactory::GetNormals() {
-    std::vector<vec3> attribs = {
+std::vector<vec3> CubeFactory::GetNormals()
+{
+    return std::vector<vec3>{
         // top
         FORWARD, FORWARD, FORWARD, FORWARD,
         // back
@@ -40,12 +40,10 @@ std::vector<vec3> CubeFactory::GetNormals() {
         // bottom
         DOWN, DOWN, DOWN, DOWN,
     };
-        
-    return attribs;
 }
 
 std::vector<vec3> CubeFactory::GetTexCoords() {
-    std::vector<vec3> attribs = {
+    return std::vector<vec3>{
         // top
         ZERO, RIGHT, ONE, UP,
         // back
@@ -59,12 +57,10 @@ std::vector<vec3> CubeFactory::GetTexCoords() {
         // bottom
         ZERO, RIGHT, ONE, UP,
     };
-        
-    return attribs;
 }
 
 std::vector<unsigned int> CubeFactory::GetIndices() {
-    std::vector<unsigned int> indices = {
+    return std::vector<unsigned int>{
         // top
         0, 1, 2, 0, 2, 3,
         // back
@@ -78,6 +74,16 @@ std::vector<unsigned int> CubeFactory::GetIndices() {
         // bottom
         20, 21, 22, 20, 22, 23,
     };
-        
-    return indices;
+}
+
+std::shared_ptr<Mesh> CubeFactory::GetMesh()
+{
+    auto mesh = std::make_shared<Mesh>();
+    
+    mesh->GenArrayBuffer(CubeFactory::GetPositions());
+    mesh->GenArrayBuffer(CubeFactory::GetNormals());
+    mesh->GenArrayBuffer(CubeFactory::GetTexCoords());
+    mesh->GenElementBuffer(CubeFactory::GetIndices());
+
+    return mesh;
 }

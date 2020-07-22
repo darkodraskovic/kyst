@@ -35,12 +35,12 @@ Framebuffer::Framebuffer()
     texCoords.push_back(cTexCoord);
     texCoords.push_back(dTexCoord);
     mesh_->GenArrayBuffer(texCoords);
+
+    glGenFramebuffers(1, &framebuffer_);
 }
 
 void Framebuffer::GenFramebuffer(unsigned int width, unsigned int height)
 {
-    
-    glGenFramebuffers(1, &framebuffer_);
     
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
     glGenTextures(1, &colorbuffer_);
@@ -58,7 +58,6 @@ void Framebuffer::GenFramebuffer(unsigned int width, unsigned int height)
 void Framebuffer::GenRenderbuffer(unsigned int width, unsigned int height)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
-    
     glGenRenderbuffers(1, &renderbuffer_);
     glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer_);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
@@ -69,17 +68,35 @@ void Framebuffer::GenRenderbuffer(unsigned int width, unsigned int height)
     glBindFramebuffer(GL_FRAMEBUFFER, 0);    
 }
 
-unsigned int Framebuffer::GenTexture(unsigned int width, unsigned int height, const char* fragmentPath)
+void Framebuffer::GenShader(const char *fragmentPath)
 {
-    auto shader = std::make_shared<Shader>("../Shaders/Tex2D.vs", fragmentPath);
-    GenFramebuffer(width, height);
+    shader_ = std::make_shared<Shader>("../Shaders/Framebuffer/Framebuffer.vs", fragmentPath);
+}
 
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
-    glClearColor(0, 0, 0, 1);
+void Framebuffer::Bind() { glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_); }
+void Framebuffer::Unbind() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
+
+void Framebuffer::Render()
+{
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 
     glClear(GL_COLOR_BUFFER_BIT);
-    shader->Use();
+    glDisable(GL_DEPTH_TEST);
+    shader_->Use();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, colorbuffer_);
     mesh_->Render();
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
+}
+
+unsigned int Framebuffer::RenderTexture()
+{
+    Bind();
+    shader_->Use();
+    mesh_->Render();
+    Unbind();
     return colorbuffer_;
+}
+
+Framebuffer::~Framebuffer()
+{
+    glDeleteFramebuffers(1, &framebuffer_);
 }
