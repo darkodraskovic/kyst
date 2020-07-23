@@ -8,7 +8,6 @@
 #include "Shader.h"
 #include "VecConsts.h"
 #include "ParticleEmitter.h"
-#include "Maze.h"
 
 using namespace VecConsts;
 

@@ -2,6 +2,7 @@
 #include <glm/gtc/random.hpp>
 
 #include "Material.h"
+#include "MazeFactory.h"
 #include "Mover.h"
 #include "Particle.h"
 #include "KochFactory.h"
@@ -136,7 +137,7 @@ std::shared_ptr<Entity> EntityFactory::CreateMaze(int width, int height)
 {
     auto entity = AddEntity(BASE_ENTITY, false);
 
-    auto maze = new Maze(width, height);
+    auto maze = new MazeFactory(width, height);
     maze->RandomWalk();
     auto vertexArray = maze->GetVertexArray();
 
