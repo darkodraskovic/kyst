@@ -45,10 +45,10 @@ const std::vector<vec3>& Shape2DFactory::Rect(const vec3& position, const vec2& 
         points_.push_back(b); points_.push_back(c); points_.push_back(d);
     }
     else {
-        points_.push_back(a); points_.push_back(b);
-        points_.push_back(b); points_.push_back(c);
-        points_.push_back(c); points_.push_back(d);
-        points_.push_back(d); points_.push_back(a);
+        points_.push_back(a);
+        points_.push_back(b);
+        points_.push_back(c);
+        points_.push_back(d);
     }
 
     return points_;
@@ -58,7 +58,7 @@ std::shared_ptr<Mesh> Shape2DFactory::RectMesh(const vec3& position, const vec2&
 {
     Rect(position, size, filled);
     auto mesh = std::make_shared<Mesh>();
-    mesh->mode_ = GL_LINES;
+    mesh->mode_ = GL_LINE_LOOP;
     if (filled) {
         mesh->mode_ = GL_TRIANGLES;
     }

@@ -14,7 +14,6 @@ public:
     ShapeUtils();
 
     static void ProdPoint(vec3& point, float min, float max);
-    static void MovePoints(std::vector<vec3>& points, const vec3& offset);
     static vec3 Hex2rgb(std::string hex);
 };
 

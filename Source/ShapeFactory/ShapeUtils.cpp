@@ -14,13 +14,6 @@ void ShapeUtils::ProdPoint(vec3& point, float min, float max)
     point += delta;
 }
 
-void ShapeUtils::MovePoints(std::vector<vec3> &points, const vec3& offset)
-{
-    for (int i = 0; i < points.size(); ++i) {
-        points[i] += offset;
-    }
-}
-
 vec3 ShapeUtils::Hex2rgb(std::string hex) {
     using namespace std;
     ivec3 rgb;
