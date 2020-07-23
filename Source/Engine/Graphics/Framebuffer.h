@@ -14,8 +14,11 @@ public:
     void GenFramebuffer(unsigned int width, unsigned int height);
     void GenRenderbuffer(unsigned int width, unsigned int height);
     void GenShader(const char* fragmentPath);
+    
     void Bind();
-    void Render();
+    static void Unbind();
+    
+    void RenderScene();
     unsigned int RenderTexture();
     
     unsigned int framebuffer_;
@@ -24,7 +27,7 @@ public:
     std::shared_ptr<Shader> shader_;
     std::shared_ptr<Mesh> mesh_;
     
-    static void Unbind();
+
 };
 
 #endif /* FRAMBUFFER_H */

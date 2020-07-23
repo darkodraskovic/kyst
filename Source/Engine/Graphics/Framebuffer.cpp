@@ -76,7 +76,7 @@ void Framebuffer::GenShader(const char *fragmentPath)
 void Framebuffer::Bind() { glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_); }
 void Framebuffer::Unbind() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
 
-void Framebuffer::Render()
+void Framebuffer::RenderScene()
 {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 
     glClear(GL_COLOR_BUFFER_BIT);

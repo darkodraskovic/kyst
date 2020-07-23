@@ -199,7 +199,7 @@ void Application::Draw(float deltaTime)
     framebuffer_->Bind();
     DrawScene(deltaTime);
     framebuffer_->Unbind();
-    framebuffer_->Render();
+    framebuffer_->RenderScene();
     
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
