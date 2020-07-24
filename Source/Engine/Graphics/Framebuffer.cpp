@@ -84,6 +84,7 @@ void Framebuffer::RenderScene()
     shader_->Use();
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, colorbuffer_);
+    shader_->SetInt("uTexture", 0);
     mesh_->Render();
 }
 

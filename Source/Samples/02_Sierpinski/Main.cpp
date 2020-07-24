@@ -48,6 +48,9 @@ int main()
     eFactory->CreateSnowflakeEmitter();
     eFactory->CreateMaze(12, 8);
 
+    app.AddEffect("../Shaders/Effects/Noop.fs");
+    app.AddEffect("../Shaders/Effects/Inversion.fs");
+
     // Application loop
     // ---------------------------------------------------------------------------
     int i = 0;

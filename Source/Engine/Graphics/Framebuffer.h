@@ -26,8 +26,6 @@ public:
     unsigned int renderbuffer_;
     std::shared_ptr<Shader> shader_;
     std::shared_ptr<Mesh> mesh_;
-    
-
 };
 
 #endif /* FRAMBUFFER_H */

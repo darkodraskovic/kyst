@@ -91,10 +91,20 @@ int Application::Init()
 
 void Application::InitFramebuffer()
 {
-    framebuffer_ = std::make_shared<Framebuffer>();
-    framebuffer_->GenFramebuffer(windowSize_.x, windowSize_.y);
-    framebuffer_->GenRenderbuffer(windowSize_.x, windowSize_.y);
-    framebuffer_->GenShader("../Shaders/Framebuffer/Screen.fs");
+    frontbuffer_ = std::make_shared<Framebuffer>();
+    frontbuffer_->GenFramebuffer(windowSize_.x, windowSize_.y);
+    frontbuffer_->GenRenderbuffer(windowSize_.x, windowSize_.y);
+    frontbuffer_->GenShader("../Shaders/Framebuffer/Screen.fs");
+
+    backbuffer_ = std::make_shared<Framebuffer>();
+    backbuffer_->GenFramebuffer(windowSize_.x, windowSize_.y);
+    backbuffer_->GenRenderbuffer(windowSize_.x, windowSize_.y);
+    backbuffer_->GenShader("../Shaders/Framebuffer/Screen.fs");
+}
+
+void Application::AddEffect(const char *fragmentPath)
+{
+    shaders_.push_back(std::make_shared<Shader>("../Shaders/Framebuffer/Framebuffer.vs", fragmentPath));
 }
 
 void Application::ProcessInput(float deltaTime)
@@ -169,6 +179,7 @@ void Application::DrawScene(float deltaTime)
     glm::mat4 view = camera_.GetViewMatrix();
     glm::mat4 projection = camera_.GetProjectionMatrix(windowSize_.x, windowSize_.y);
 
+    // solid
     glEnable(GL_CULL_FACE);
     for(auto it = entities_.begin(); it != entities_.end(); ++it) {
         auto e = *it;
@@ -181,6 +192,7 @@ void Application::DrawScene(float deltaTime)
     }
     glDisable(GL_CULL_FACE);
 
+    // alpha
     std::sort(alphaEntities_.begin(), alphaEntities_.end(),
               [this](std::shared_ptr<Entity> lhs, std::shared_ptr<Entity> rhs) {
                   return glm::length(lhs->position_ - camera_.position_) <
@@ -190,16 +202,34 @@ void Application::DrawScene(float deltaTime)
         (*it)->Draw(deltaTime, view, projection);
     }
     glDisable(GL_BLEND);
+    
     alphaEntities_.clear();
 }
 
 void Application::Draw(float deltaTime)
 {
-    // draw scene to framebuffer and render framebuffer
-    framebuffer_->Bind();
+    frontbuffer_->Bind();
     DrawScene(deltaTime);
-    framebuffer_->Unbind();
-    framebuffer_->RenderScene();
+    auto bound = frontbuffer_;
+    if (!shaders_.empty()) {
+        glDisable(GL_DEPTH_TEST);
+        glActiveTexture(GL_TEXTURE0);
+        auto unbound = backbuffer_;
+        for (int i = 0; i < shaders_.size(); i++) {
+            auto texture = bound->colorbuffer_;
+            auto tmp = bound;
+            bound->Unbind();
+            unbound->Bind();
+            bound = unbound;
+            unbound = tmp;
+            glBindTexture(GL_TEXTURE_2D, texture);
+            shaders_[i]->Use();
+            shaders_[i]->SetInt("uTexture", 0);
+            bound->mesh_->Render();
+        }
+    }
+    bound->Unbind();
+    bound->RenderScene();
     
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
@@ -215,7 +245,8 @@ bool Application::ShouldClose()
 void Application::Terminate()
 {
     entities_.clear();
-    framebuffer_.reset();
+    frontbuffer_.reset();
+    backbuffer_.reset();
     glfwTerminate();
 };
 

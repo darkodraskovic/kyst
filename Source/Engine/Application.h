@@ -40,13 +40,16 @@ public:
     float lastFrame_ = 0.0f; // Time of last frame
     vec4 clearColor_ = vec4(0.2f, 0.3f, 0.3f, 1.0f);
 
+    void AddEffect(const char* fragmentPath);
+    
 private:
     Application();
     std::vector<std::shared_ptr<Entity>> entitiesToCreate_;
     std::vector<std::shared_ptr<Entity>> alphaEntities_;
 
-    std::shared_ptr<Framebuffer> framebuffer_;
-    std::shared_ptr<Shader> shader_;
+    std::shared_ptr<Framebuffer> frontbuffer_;
+    std::shared_ptr<Framebuffer> backbuffer_;
+    std::vector<std::shared_ptr<Shader>> shaders_;
 };
 
 #endif
