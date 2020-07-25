@@ -71,8 +71,8 @@ int main()
     app.camera_.position_.z = 12.0f;
 
     app.AddEffect("../Shaders/Effects/Noop.fs");
-    app.AddEffect("../Shaders/Effects/Remove.fs");
-    app.AddEffect("../Shaders/Effects/Inversion.fs");
+    // app.AddEffect("../Shaders/Effects/Remove.fs");
+    // app.AddEffect("../Shaders/Effects/Inversion.fs");
     
     // Application loop
     // ---------------------------------------------------------------------------

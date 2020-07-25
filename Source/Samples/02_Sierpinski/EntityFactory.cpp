@@ -19,79 +19,71 @@ EntityFactory::EntityFactory()
     snowflakeMesh_->GenArrayBuffer(KochFactory::Snowflake(3));
 }
 
-std::shared_ptr<Entity> EntityFactory::AddEntity(EntityType type, bool vCol)
+std::shared_ptr<Mover> EntityFactory::AddMover(bool vCol)
 {
-    std::shared_ptr<Entity> entity;
-    switch (type) {
-    case MOVER_ENTITY: entity = std::make_shared<Mover>();
-        break;
-    case PARTICLE_ENTITY: entity = std::make_shared<Particle>();
-        break;
-    default: entity = std::make_shared<Entity>();
-        break;
-    }
-
-    entity->material_ = std::make_shared<Material>();
-    Application::Instance().AddEntity(entity);
-    entity->material_->shader_ = colShader_;
-    entity->material_->color_ = color1_;
+    std::shared_ptr<Mover> mover = std::make_shared<Mover>();
+    mover->material_ = std::make_shared<Material>();
+    mover->material_->shader_ = colShader_;
+    mover->material_->color_ = color1_;
     if (vCol) {
-        entity->material_->shader_ = vColShader_;
+        mover->material_->shader_ = vColShader_;
     }
-    return entity;
+    
+    Application::Instance().AddEntity(mover);
+    return mover;
 }
 
-std::shared_ptr<Entity> EntityFactory::CreateLineGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol)
+std::shared_ptr<Mover> EntityFactory::CreateLineGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol)
 {
-    auto entity = AddEntity(MOVER_ENTITY, vCol);
-    entity->mesh_ = std::make_shared<Mesh>();
-
+    auto gasket = AddMover(vCol);
+    gasket->aVelocity_.y = quarter_pi<float>();
+    
+    gasket->mesh_ = std::make_shared<Mesh>();
     SierpinskiFactory::varRange_ = varRange;
     auto points = threeD ? SierpinskiFactory::Sierpinski3DDet(numDivisions) :
         SierpinskiFactory::Sierpinski2DDet(numDivisions);
-    std::vector<vec3> line;
-    entity->mesh_->mode_ = GL_LINES;
+    std::vector<vec3> lines;
+    gasket->mesh_->mode_ = GL_LINES;
     for (int i = 0; i < points.size(); i += 3)
     {
-        line.push_back(points.at(i));
-        line.push_back(points.at(i+1));
-        line.push_back(points.at(i+1));
-        line.push_back(points.at(i+2));
-        line.push_back(points.at(i+2));
-        line.push_back(points.at(i));
+        lines.push_back(points.at(i));
+        lines.push_back(points.at(i + 1));
+        lines.push_back(points.at(i + 1));
+        lines.push_back(points.at(i + 2));
+        lines.push_back(points.at(i + 2));
+        lines.push_back(points.at(i));
     }
-    entity->mesh_->GenArrayBuffer(line);
+    gasket->mesh_->GenArrayBuffer(lines);
 
-    if (!vCol) return entity;
+    if (!vCol) return gasket;
 
     std::vector<vec3> colors;
-    for (int i = 0; i < line.size(); i += 6)
-    {
-        colors.push_back(color1_); colors.push_back(color1_);
-        colors.push_back(color2_); colors.push_back(color2_);
-        colors.push_back(color3_); colors.push_back(color3_);
+    for (int i = 0; i < lines.size(); i += 6) {
+        colors.push_back(color1_);
+        colors.push_back(color1_);
+        colors.push_back(color2_);
+        colors.push_back(color2_);
+        colors.push_back(color3_);
+        colors.push_back(color3_);
     }
-    entity->mesh_->GenArrayBuffer(colors);
+    gasket->mesh_->GenArrayBuffer(colors);
 
-    auto mover = dynamic_cast<Mover*>(entity.get());
-    mover->aVelocity_.y = quarter_pi<float>();
-
-    return entity;
+    return gasket;
 }
 
-std::shared_ptr<Entity> EntityFactory::CreateTriGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol)
+std::shared_ptr<Mover> EntityFactory::CreateTriGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol)
 {
-    auto entity = AddEntity(BASE_ENTITY, vCol);
-    entity->mesh_ = std::make_shared<Mesh>();
-
+    auto gasket = AddMover(vCol);
+    gasket->aVelocity_.y = quarter_pi<float>();
+    
+    gasket->mesh_ = std::make_shared<Mesh>();
     SierpinskiFactory::varRange_ = varRange;
     auto points = threeD ? SierpinskiFactory::Sierpinski3DDet(numDivisions) :
         SierpinskiFactory::Sierpinski2DDet(numDivisions);
-    entity->mesh_->GenArrayBuffer(points);
+    gasket->mesh_->GenArrayBuffer(points);
+    gasket->mesh_->mode_ = GL_TRIANGLES;
 
-    entity->mesh_->mode_ = GL_TRIANGLES;
-
-    if (!vCol) return entity;
+    if (!vCol) return gasket;
 
     std::vector<vec3> colors;
     for (int i = 0; i < points.size(); i += 3)
@@ -106,9 +98,9 @@ std::shared_ptr<Entity> EntityFactory::CreateTriGasket(int numDivisions, const v
         for (int j = 0; j < 3; ++j) colors.push_back(color);
     }
 
-    entity->mesh_->GenArrayBuffer(colors);
+    gasket->mesh_->GenArrayBuffer(colors);
 
-    return entity;
+    return gasket;
 }
 
 std::shared_ptr<ParticleEmitter> EntityFactory::CreateSnowflakeEmitter()
@@ -131,22 +123,4 @@ std::shared_ptr<ParticleEmitter> EntityFactory::CreateSnowflakeEmitter()
     Application::Instance().AddEntity(emitter);
 
     return emitter;
-}
-
-std::shared_ptr<Entity> EntityFactory::CreateMaze(int width, int height)
-{
-    auto entity = AddEntity(BASE_ENTITY, false);
-
-    auto maze = new MazeFactory(width, height);
-    maze->RandomWalk();
-    auto vertexArray = maze->GetVertexArray();
-
-    auto mesh = std::make_shared<Mesh>();
-    entity->mesh_ = mesh;
-    mesh->GenArrayBuffer(vertexArray);
-    mesh->mode_ = GL_LINES;
-
-    entity->scale_ = ONE / 3.f;
-
-    return entity;
 }
