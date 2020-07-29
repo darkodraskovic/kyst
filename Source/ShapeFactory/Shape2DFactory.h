@@ -20,7 +20,7 @@ public:
 
     static const std::vector<vec3>& Line(const vec3& point1, const vec3& point2);
     static std::shared_ptr<Mesh> LineMesh(const vec3& point1, const vec3& point2);
-    static const std::vector<vec3>& Rect(const vec3& position, const vec2& size, bool filled);
+    static const std::vector<vec3>& Rect(const vec3& position, const vec2& size);
     static std::shared_ptr<Mesh> RectMesh(const vec3& position, const vec2& size, bool filled);
 
 private:

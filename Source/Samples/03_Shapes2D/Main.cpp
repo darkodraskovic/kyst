@@ -9,6 +9,7 @@
 #include "Entity.h"
 #include "Framebuffer.h"
 #include "Material.h"
+#include "Material2D.h"
 #include "Mesh.h"
 #include "Shader.h"
 #include "Shape2DFactory.h"
@@ -35,15 +36,17 @@ int main()
     app.camera_.position_.z = 3.0f;
 
     // material
-    auto shader = make_shared<Shader>("../Shaders/Col.vs", "../Shaders/Col.fs");
-    auto material1 = make_shared<Material>(shader);
+    auto material1 = make_shared<Material2D>();
     material1->color_ = RED;
-    auto material2 = make_shared<Material>(shader);
+    auto material2 = make_shared<Material2D>();
     material2->color_ = GREEN;
     material2->alpha_ = 0.5;
+    auto material3 = make_shared<Material2D>();
+    material3->color_ = BLUE;
+    material3->pctColor_ = 1.0;
 
     // mesh
-    auto mesh = Shape2DFactory::RectMesh((LEFT + DOWN)/2.f, vec2(1), false);
+    auto mesh = Shape2DFactory::RectMesh((LEFT + DOWN)/2.f, vec2(1), true);
 
     // entity
     auto entity = make_shared<Entity>(mesh, material1);
@@ -56,14 +59,20 @@ int main()
     app.AddEntity(entity);
 
     mesh = Shape2DFactory::LineMesh(LEFT, RIGHT);
-    entity = make_shared<Entity>(mesh, material2);
+    mesh->colors_.push_back(GREEN);
+    mesh->colors_.push_back(RED);
+    mesh->GenArrayBuffer(mesh->colors_);
+    entity = make_shared<Entity>(mesh, material3);
+    entity->position_.z = 1;
+    app.AddEntity(entity);
 
     material1.reset();
     material2.reset();
+    material3.reset();
     mesh.reset();
     entity.reset();
     
-    glLineWidth(10);
+    glLineWidth(5);
     
     // Application loop
     // ---------------------------------------------------------------------------
