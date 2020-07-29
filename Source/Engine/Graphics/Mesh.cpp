@@ -87,6 +87,21 @@ void Mesh::GenElementBuffer(const std::vector<unsigned int>& indices)
     GenElementBuffer(&indices[0], indices.size());
 }
 
+void Mesh::Generate()
+{
+    if (positions_.empty()) {
+        std::cout << "ERROR: Mesh position array empty" << std::endl;
+        return;
+    }
+    GenArrayBuffer(positions_);
+    
+    if (!normals_.empty()) GenArrayBuffer(normals_);
+    if (!colors_.empty()) GenArrayBuffer(colors_);
+    if (!texCoords_.empty()) GenArrayBuffer(texCoords_);
+    
+    if (!indices_.empty()) GenElementBuffer(indices_);
+}
+
 // RENDER
 
 void Mesh::Render()

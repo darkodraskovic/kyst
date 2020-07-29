@@ -1,6 +1,7 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <glm/fwd.hpp>
 #include <vector>
 #include "Material.h"
 
@@ -22,6 +23,7 @@ public:
     void GenElementBuffer(const unsigned int* data, int numIdx);
     void GenElementBuffer(const std::vector<unsigned int>&);
 
+    void Generate();
     void Render();
 
     GLuint VAO_;
@@ -29,6 +31,11 @@ public:
     GLuint EBO_;
 
     GLenum mode_ = GL_TRIANGLES;
+    std::vector<glm::vec3> positions_;
+    std::vector<glm::vec3> normals_;
+    std::vector<glm::vec3> colors_;
+    std::vector<glm::vec2> texCoords_;
+    std::vector<unsigned int> indices_;
     
 private:
     int numVerts_ = 0;
