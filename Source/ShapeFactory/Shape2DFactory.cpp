@@ -15,49 +15,50 @@ Shape2DFactory::Shape2DFactory()
 {
 }
 
-const std::vector<vec3>& Shape2DFactory::Line(const vec3 &point1,
+std::shared_ptr<Mesh> Shape2DFactory::Line(const vec3 &point1,
                                              const vec3 &point2) {
-  points_.clear();
-  points_.push_back(point1);
-  points_.push_back(point2);
-  return points_;
-}
-
-std::shared_ptr<Mesh> Shape2DFactory::LineMesh(const vec3 &point1,
-                                             const vec3 &point2) {
-    Line(point1, point2);
     auto mesh = std::make_shared<Mesh>();
     mesh->mode_ = GL_LINES;
-    mesh->positions_ = points_;
-    mesh->Generate();
+    mesh->positions_.push_back(point1);
+    mesh->positions_.push_back(point2);
     return mesh;
 }
 
-const std::vector<vec3>& Shape2DFactory::Rect(const vec3& position, const vec2& size)
+const std::vector<vec3>& Shape2DFactory::RectPoints(const vec3& offset, const vec2& size)
 {
     points_.clear();
 
-    points_.push_back(position);
-    points_.push_back(vec3(position.x + size.x, position.y, 0.0));
-    points_.push_back(vec3(position.x + size.x, position.y + size.y, 0.0));
-    points_.push_back(vec3(position.x, position.y + size.y, 0.0));
+    points_.push_back(offset);
+    points_.push_back(vec3(offset.x + size.x, offset.y, 0.0));
+    points_.push_back(vec3(offset.x + size.x, offset.y + size.y, 0.0));
+    points_.push_back(vec3(offset.x, offset.y + size.y, 0.0));
         
     return points_;
 }
 
-std::shared_ptr<Mesh> Shape2DFactory::RectMesh(const vec3& position, const vec2& size, bool filled)
+std::shared_ptr<Mesh> Shape2DFactory::RectMesh(const vec3& offset, const vec2& size)
 {
-    Rect(position, size);
+    RectPoints(offset, size);
     auto mesh = std::make_shared<Mesh>();
-    if (filled) {
-        auto& pos = mesh->positions_;
-        pos.push_back(points_[0]); pos.push_back(points_[1]); pos.push_back(points_[3]);
-        pos.push_back(points_[1]); pos.push_back(points_[2]); pos.push_back(points_[3]);
-        mesh->mode_ = GL_TRIANGLES;
-    } else {
-        mesh->positions_ = points_;
-        mesh->mode_ = GL_LINE_LOOP;
-    }
-    mesh->Generate();
+    mesh->positions_ = points_;
+    mesh->texCoords_.push_back(vec2(0,0)); mesh->texCoords_.push_back(vec2(1,0));
+    mesh->texCoords_.push_back(vec2(1,1)); mesh->texCoords_.push_back(vec2(0,1));
+    return mesh;
+}
+std::shared_ptr<Mesh> Shape2DFactory::SolidRect(const vec3& offset, const vec2& size)
+{
+    auto mesh = RectMesh(offset, size);
+    auto& idx = mesh->indices_;
+    idx.push_back(0); idx.push_back(1); idx.push_back(3);
+    idx.push_back(1); idx.push_back(2); idx.push_back(3);
+    mesh->mode_ = GL_TRIANGLES;
+    return mesh;
+}
+
+std::shared_ptr<Mesh> Shape2DFactory::LineRect(const vec3& offset, const vec2& size)
+{
+    auto mesh = RectMesh(offset, size);
+    mesh->positions_ = points_;
+    mesh->mode_ = GL_LINE_LOOP;
     return mesh;
 }

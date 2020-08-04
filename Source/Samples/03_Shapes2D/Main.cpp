@@ -38,15 +38,16 @@ int main()
     // material
     auto material1 = make_shared<Material2D>();
     material1->color_ = RED;
-    auto material2 = make_shared<Material2D>();
+    auto material2 = make_shared<Material2D>(material1->shader_);
     material2->color_ = GREEN;
     material2->alpha_ = 0.5;
-    auto material3 = make_shared<Material2D>();
+    auto material3 = make_shared<Material2D>(material1->shader_);
     material3->color_ = BLUE;
     material3->pctColor_ = 1.0;
 
     // mesh
-    auto mesh = Shape2DFactory::RectMesh((LEFT + DOWN)/2.f, vec2(1), true);
+    auto mesh = Shape2DFactory::SolidRect((LEFT + DOWN)/2.f, vec2(1));
+    mesh->Generate();
 
     // entity
     auto entity = make_shared<Entity>(mesh, material1);
@@ -58,10 +59,10 @@ int main()
     entity->rotation_.y = pi<float>() / 4;
     app.AddEntity(entity);
 
-    mesh = Shape2DFactory::LineMesh(LEFT, RIGHT);
+    mesh = Shape2DFactory::Line(LEFT, RIGHT);
     mesh->colors_.push_back(GREEN);
     mesh->colors_.push_back(RED);
-    mesh->GenArrayBuffer(mesh->colors_);
+    mesh->Generate(material2->shader_->id_);
     entity = make_shared<Entity>(mesh, material3);
     entity->position_.z = 1;
     app.AddEntity(entity);
