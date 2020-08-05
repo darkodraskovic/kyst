@@ -44,21 +44,27 @@ int main()
     auto material3 = make_shared<Material2D>(material1->shader_);
     material3->color_ = BLUE;
     material3->pctColor_ = 1.0;
+    auto material4 = make_shared<Material2D>(material1->shader_);
+    material4->color_ = BLUE;
+    auto material5 = make_shared<Material2D>(material1->shader_);
+    material5->pctColor_ = 1.0;
 
-    // mesh
+    // rect mesh
     auto mesh = Shape2DFactory::SolidRect((LEFT + DOWN)/2.f, vec2(1));
     mesh->Generate();
 
-    // entity
+    // rect entity 1
     auto entity = make_shared<Entity>(mesh, material1);
     app.AddEntity(entity);
-    
+
+    // rect entity 2
     entity = make_shared<Entity>(mesh, material2);
     entity->position_ = (LEFT + DOWN) / 4.f;
     entity->position_.z = 0.25;
     entity->rotation_.y = pi<float>() / 4;
     app.AddEntity(entity);
 
+    // line entity 2
     mesh = Shape2DFactory::Line(LEFT, RIGHT);
     mesh->colors_.push_back(GREEN);
     mesh->colors_.push_back(RED);
@@ -67,6 +73,24 @@ int main()
     entity->position_.z = 1;
     app.AddEntity(entity);
 
+    // polygons
+    vector<vec3> points = {LEFT, DOWN, RIGHT, UP};
+    mesh = Shape2DFactory::LinePolygon(ZERO, points);
+    mesh->Generate();
+    entity = make_shared<Entity>(mesh, material4);
+    app.AddEntity(entity);
+    
+    mesh = Shape2DFactory::SolidPolygon(ZERO, points);
+    mesh->colors_ = {GREEN, BLUE, RED, BLUE};
+    mesh->Generate(material5->shader_->id_);
+    entity = make_shared<Entity>(mesh, material5);
+    entity->scale_ *= 0.33f;
+    entity->position_.z = 0.5;
+    app.AddEntity(entity);
+    
+
+    
+    // reset pointers
     material1.reset();
     material2.reset();
     material3.reset();
