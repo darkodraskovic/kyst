@@ -88,8 +88,6 @@ int main()
     entity->position_.z = 0.5;
     app.AddEntity(entity);
     
-
-    
     // reset pointers
     material1.reset();
     material2.reset();
@@ -98,6 +96,9 @@ int main()
     entity.reset();
     
     glLineWidth(5);
+
+    // app.AddEffect("../Shaders/Effects/Remove.fs");
+    // app.AddEffect("../Shaders/Effects/Inversion.fs");
     
     // Application loop
     // ---------------------------------------------------------------------------

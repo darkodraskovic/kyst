@@ -9,6 +9,12 @@ set(SAMPLES "Source/Samples")
 add_subdirectory("Source/Engine")
 add_subdirectory("Source/ShapeFactory")
 
+# make 00_BasicApp && ./00_BasicApp
+file(GLOB BASIC_APP_C "${SAMPLES}/00_BasicApp/*.cpp")
+add_executable(00_BasicApp ${BASIC_APP_C})
+target_include_directories(00_BasicApp PUBLIC "${SAMPLES}/00_BasicApp/")
+target_link_libraries(00_BasicApp GL GLU glfw dl engine shapeFactory)
+
 # make 01_Cube && ./01_Cube
 file(GLOB CUBE_C "${SAMPLES}/01_Cube/*.cpp")
 add_executable(01_Cube ${CUBE_C})
@@ -32,3 +38,9 @@ file(GLOB MAZE_C "${SAMPLES}/04_Maze/*.cpp")
 add_executable(04_Maze "${MAZE_C}")
 target_include_directories(04_Maze PUBLIC "${SAMPLES}/04_Maze")
 target_link_libraries(04_Maze GL GLU glfw dl engine shapeFactory)
+
+# make 05_GenArt && ./05_GenArt
+file(GLOB GENART_C "${SAMPLES}/05_GenArt/*.cpp")
+add_executable(05_GenArt ${GENART_C})
+target_include_directories(05_GenArt PUBLIC "${SAMPLES}/05_GenArt/")
+target_link_libraries(05_GenArt GL GLU glfw dl engine shapeFactory)
