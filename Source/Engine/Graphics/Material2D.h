@@ -11,6 +11,7 @@ class Material2D : public Material
 {
 public:
     Material2D();
+    Material2D(const char* vertexPath, const char* fragmentPath);
     Material2D(std::shared_ptr<Shader> shader);
     virtual void Update(float deltaTime, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) override;
 

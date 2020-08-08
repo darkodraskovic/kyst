@@ -21,9 +21,8 @@ int main()
     // Application CONTENT
     // ---------------------------------------------------------------------------
 
-    // shader & material
-    auto shader = std::make_shared<Shader>("../Shaders/2D.vs", "../Shaders/GenArt/01.fs");
-    auto material = make_shared<Material2D>(shader);
+    // material
+    auto material = make_shared<Material2D>("../Shaders/2D.vs", "../Shaders/GenArt/01.fs");
 
     // mesh
     auto mesh = Shape2DFactory::SolidRect(LEFT + DOWN, glm::vec2(2, 2));

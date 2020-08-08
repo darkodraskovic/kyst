@@ -5,6 +5,11 @@ Material2D::Material2D()
     shader_ = std::make_shared<Shader>("../Shaders/2D.vs", "../Shaders/2D.fs");
 }
 
+Material2D::Material2D(const char* vertexPath, const char* fragmentPath)
+{
+    shader_ = std::make_shared<Shader>(vertexPath, fragmentPath);
+}
+
 Material2D::Material2D(std::shared_ptr<Shader> shader) : Material(shader)
 {
 }
