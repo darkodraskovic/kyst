@@ -1,17 +1,7 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/ext/scalar_constants.hpp>
-#include <glm/fwd.hpp>
 #include <iostream>
-#include <memory>
 
 #include "Application.h"
-#include "Entity.h"
-#include "Framebuffer.h"
-#include "Material.h"
 #include "Material2D.h"
-#include "Mesh.h"
-#include "Shader.h"
 #include "Shape2DFactory.h"
 #include "VecConsts.h"
 

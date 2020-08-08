@@ -3,7 +3,22 @@
 #include <iostream>
 #include "Framebuffer.h"
 
+const std::string Framebuffer::vertexPath_ = "../Shaders/Framebuffer/Framebuffer.vs";
+
 Framebuffer::Framebuffer()
+{
+    glGenFramebuffers(1, &framebuffer_);
+    GenMesh();
+}
+
+Framebuffer::Framebuffer(const std::string& fragmentPath)
+{
+    shader_ = std::make_shared<Shader>(vertexPath_, fragmentPath);
+    glGenFramebuffers(1, &framebuffer_);
+    GenMesh();
+}
+
+void Framebuffer::GenMesh()
 {
     mesh_ = std::make_shared<Mesh>();
     mesh_->mode_ = GL_TRIANGLES;
@@ -35,8 +50,6 @@ Framebuffer::Framebuffer()
     texCoords.push_back(cTexCoord);
     texCoords.push_back(dTexCoord);
     mesh_->GenArrayBuffer(texCoords);
-
-    glGenFramebuffers(1, &framebuffer_);
 }
 
 void Framebuffer::GenFramebuffer(unsigned int width, unsigned int height)
@@ -66,11 +79,6 @@ void Framebuffer::GenRenderbuffer(unsigned int width, unsigned int height)
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);    
-}
-
-void Framebuffer::GenShader(const char *fragmentPath)
-{
-    shader_ = std::make_shared<Shader>("../Shaders/Framebuffer/Framebuffer.vs", fragmentPath);
 }
 
 void Framebuffer::Bind() { glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_); }

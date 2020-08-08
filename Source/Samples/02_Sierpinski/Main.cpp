@@ -1,16 +1,7 @@
-#include <algorithm>
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include <glm/gtc/random.hpp>
-
-#include "VecConsts.h"
 #include "Application.h"
+#include "VecConsts.h"
 #include "EntityFactory.h"
 #include "ShapeUtils.h"
-#include "Mover.h"
-#include "Particle.h"
 
 using namespace VecConsts;
 
@@ -50,6 +41,7 @@ int main()
 
     // app.AddEffect("../Shaders/Effects/Noop.fs");
     // app.AddEffect("../Shaders/Effects/Inversion.fs");
+    // app.AddEffect("../Shaders/Effects/Remove.fs");
 
     // Application loop
     // ---------------------------------------------------------------------------

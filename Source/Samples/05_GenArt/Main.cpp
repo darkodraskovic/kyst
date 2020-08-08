@@ -1,5 +1,4 @@
 #include "Application.h"
-#include "Shader.h"
 #include "Material2D.h"
 #include "Shape2DFactory.h"
 #include "VecConsts.h"
@@ -22,7 +21,7 @@ int main()
     // ---------------------------------------------------------------------------
 
     // material
-    auto material = make_shared<Material2D>("../Shaders/2D.vs", "../Shaders/GenArt/01.fs");
+    auto material = make_shared<Material2D>("../Shaders/GenArt/01.fs");
 
     // mesh
     auto mesh = Shape2DFactory::SolidRect(LEFT + DOWN, glm::vec2(2, 2));

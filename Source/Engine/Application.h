@@ -50,6 +50,8 @@ private:
     std::shared_ptr<Framebuffer> frontbuffer_;
     std::shared_ptr<Framebuffer> backbuffer_;
     std::vector<std::shared_ptr<Shader>> shaders_;
+
+    static const std::string fragmentPath_;
 };
 
 #endif

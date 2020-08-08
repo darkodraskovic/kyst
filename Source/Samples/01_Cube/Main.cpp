@@ -1,14 +1,9 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include "Application.h"
-#include "Camera.h"
 #include "PhongMap.h"
-#include "Shader.h"
-
-#include "VecConsts.h"
-#include "Cube.h"
 #include "Framebuffer.h"
+#include "VecConsts.h"
+
+#include "Cube.h"
 
 using namespace VecConsts;
 using namespace glm;
@@ -37,9 +32,8 @@ int main()
     auto litTexShader = std::shared_ptr<Shader>(
         new Shader( "../Shaders/LitTex.vs", "../Shaders/LitTex.fs"));
 
-    auto fb = std::make_shared<Framebuffer>();
+    auto fb = std::make_shared<Framebuffer>("../Shaders/Textures/Tex2D.fs");
     fb->GenFramebuffer(640, 640);
-    fb->GenShader("../Shaders/Textures/Tex2D.fs");
     unsigned int texture = fb->RenderTexture();
     fb.reset();
     

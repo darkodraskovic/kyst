@@ -1,13 +1,16 @@
 #include "Material2D.h"
 
+const std::string Material2D::vertexPath_ = "../Shaders/2D.vs";
+const std::string Material2D::fragmentPath_ = "../Shaders/2D.fs";
+
 Material2D::Material2D()
 {
-    shader_ = std::make_shared<Shader>("../Shaders/2D.vs", "../Shaders/2D.fs");
+    shader_ = std::make_shared<Shader>(vertexPath_, fragmentPath_);
 }
 
-Material2D::Material2D(const char* vertexPath, const char* fragmentPath)
+Material2D::Material2D(const std::string& fragmentPath)
 {
-    shader_ = std::make_shared<Shader>(vertexPath, fragmentPath);
+    shader_ = std::make_shared<Shader>(vertexPath_, fragmentPath);
 }
 
 Material2D::Material2D(std::shared_ptr<Shader> shader) : Material(shader)

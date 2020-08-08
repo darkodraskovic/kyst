@@ -1,10 +1,3 @@
-#include <algorithm>
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include <glm/gtc/random.hpp>
-
 #include "VecConsts.h"
 #include "Application.h"
 #include "MazeGen.h"

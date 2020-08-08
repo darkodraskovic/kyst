@@ -30,6 +30,8 @@ void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 void MouseCallback(GLFWwindow* window, double posX, double posY);
 void ScrollCallback(GLFWwindow* window, double offsetX, double offsetY);
 
+const std::string Application::fragmentPath_ = "../Shaders/Framebuffer/Screen.fs";
+    
 Application::Application() {};
 
 Application& Application::Instance()
@@ -91,20 +93,18 @@ int Application::Init()
 
 void Application::InitFramebuffer()
 {
-    frontbuffer_ = std::make_shared<Framebuffer>();
+    frontbuffer_ = std::make_shared<Framebuffer>(fragmentPath_);
     frontbuffer_->GenFramebuffer(windowSize_.x, windowSize_.y);
     frontbuffer_->GenRenderbuffer(windowSize_.x, windowSize_.y);
-    frontbuffer_->GenShader("../Shaders/Framebuffer/Screen.fs");
 
-    backbuffer_ = std::make_shared<Framebuffer>();
+    backbuffer_ = std::make_shared<Framebuffer>(fragmentPath_);
     backbuffer_->GenFramebuffer(windowSize_.x, windowSize_.y);
     backbuffer_->GenRenderbuffer(windowSize_.x, windowSize_.y);
-    backbuffer_->GenShader("../Shaders/Framebuffer/Screen.fs");
 }
 
 void Application::AddEffect(const char *fragmentPath)
 {
-    shaders_.push_back(std::make_shared<Shader>("../Shaders/Framebuffer/Framebuffer.vs", fragmentPath));
+    shaders_.push_back(std::make_shared<Shader>(Framebuffer::vertexPath_, fragmentPath));
 }
 
 void Application::ProcessInput(float deltaTime)
