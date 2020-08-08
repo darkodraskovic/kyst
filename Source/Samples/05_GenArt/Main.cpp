@@ -1,7 +1,6 @@
 #include "Application.h"
 #include "Shader.h"
 #include "Material2D.h"
-#include "Includer.h"
 #include "Shape2DFactory.h"
 #include "VecConsts.h"
 #include <glm/fwd.hpp>
@@ -23,9 +22,7 @@ int main()
     // ---------------------------------------------------------------------------
 
     // shader & material
-    string vCode = Includer::Include("../Shaders/2D.vs");
-    string fCode = Includer::Include("../Shaders/GenArt/03.fs");
-    auto shader = std::make_shared<Shader>(vCode, fCode);
+    auto shader = std::make_shared<Shader>("../Shaders/2D.vs", "../Shaders/GenArt/01.fs");
     auto material = make_shared<Material2D>(shader);
 
     // mesh
@@ -37,8 +34,8 @@ int main()
     app.AddEntity(entity);
 
     app.camera_.position_.z = 3.0f;
-    // app.AddEffect("../Shaders/Effects/Remove.fs");
     // app.AddEffect("../Shaders/Effects/Inversion.fs");
+    // app.AddEffect("../Shaders/Effects/Remove.fs");
 
     material.reset();
     mesh.reset();

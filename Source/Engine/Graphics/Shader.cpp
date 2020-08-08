@@ -2,58 +2,16 @@
 
 // constructor generates the shader on the fly
 // ------------------------------------------------------------------------
-Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath)
+Shader::Shader(const string& vertexPath, const string& fragmentPath, const string& geometryPath, string include)
 {
-    // 1. retrieve the vertex/fragment source code from filePath
-    std::string vertexCode;
-    std::string fragmentCode;
-    std::string geometryCode;
-    std::ifstream vShaderFile;
-    std::ifstream fShaderFile;
-    std::ifstream gShaderFile;
-    // ensure ifstream objects can throw exceptions:
-    vShaderFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
-    fShaderFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
-    gShaderFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
-    try 
-    {
-        // open files
-        vShaderFile.open(vertexPath);
-        fShaderFile.open(fragmentPath);
-        std::stringstream vShaderStream, fShaderStream;
-        // read file's buffer contents into streams
-        vShaderStream << vShaderFile.rdbuf();
-        fShaderStream << fShaderFile.rdbuf();		
-        // close file handlers
-        vShaderFile.close();
-        fShaderFile.close();
-        // convert stream into string
-        vertexCode = vShaderStream.str();
-        fragmentCode = fShaderStream.str();			
-        // if geometry shader path is present, also load a geometry shader
-        if(geometryPath != nullptr)
-        {
-            gShaderFile.open(geometryPath);
-            std::stringstream gShaderStream;
-            gShaderStream << gShaderFile.rdbuf();
-            gShaderFile.close();
-            geometryCode = gShaderStream.str();
-        }
-    }
-    catch (std::ifstream::failure e)
-    {
-        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
-    }
-
-    GenShader(vertexCode, fragmentCode, geometryCode);
-}
-
-Shader::Shader(const string& vertexCode, const string& fragmentCode, const string& geometryCode)
-{
-    GenShader(vertexCode, fragmentCode, geometryCode);
+    string vertexCode = Load(vertexPath, include);
+    string fragmentCode = Load(fragmentPath, include);
+    string geometryCode; if (geometryPath != "") geometryCode = Load(geometryPath, include);
+    
+    id_ = GenShader(vertexCode, fragmentCode, geometryCode);
 }
     
-void Shader::GenShader(const string& vertexCode, const string& fragmentCode, const string& geometryCode)
+unsigned int Shader::GenShader(const string& vertexCode, const string& fragmentCode, const string& geometryCode)
 {
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
@@ -80,19 +38,21 @@ void Shader::GenShader(const string& vertexCode, const string& fragmentCode, con
         CheckCompileErrors(geometry, "GEOMETRY");
     }
     // shader Program
-    id_ = glCreateProgram();
-    glAttachShader(id_, vertex);
-    glAttachShader(id_, fragment);
+    unsigned int id;
+    id = glCreateProgram();
+    glAttachShader(id, vertex);
+    glAttachShader(id, fragment);
     if(geometryCode != "")
-        glAttachShader(id_, geometry);
-    glLinkProgram(id_);
-    CheckCompileErrors(id_, "PROGRAM");
+        glAttachShader(id, geometry);
+    glLinkProgram(id);
+    CheckCompileErrors(id, "PROGRAM");
     // delete the shaders as they're linked into our program now and no longer necessery
     glDeleteShader(vertex);
     glDeleteShader(fragment);
     if(geometryCode != "")
         glDeleteShader(geometry);
-        
+
+    return id;
 }
 
 // activate the shader
@@ -103,66 +63,119 @@ void Shader::Use() const
 }
 // utility uniform functions
 // ------------------------------------------------------------------------
-void Shader::SetBool(const std::string &name, bool value) const
+void Shader::SetBool(const string& name, bool value) const
 {         
     glUniform1i(glGetUniformLocation(id_, name.c_str()), (int)value); 
 }
 // ------------------------------------------------------------------------
-void Shader::SetInt(const std::string &name, int value) const
+void Shader::SetInt(const string& name, int value) const
 { 
     glUniform1i(glGetUniformLocation(id_, name.c_str()), value); 
 }
 // ------------------------------------------------------------------------
-void Shader::SetFloat(const std::string &name, float value) const
+void Shader::SetFloat(const string& name, float value) const
 { 
     glUniform1f(glGetUniformLocation(id_, name.c_str()), value); 
 }
 // ------------------------------------------------------------------------
-void Shader::SetVec2(const std::string &name, const glm::vec2 &value) const
+void Shader::SetVec2(const string& name, const vec2& value) const
 { 
-    glUniform2fv(glGetUniformLocation(id_, name.c_str()), 1, &value[0]); 
+    glUniform2fv(glGetUniformLocation(id_, name.c_str()), 1,& value[0]); 
 }
-void Shader::SetVec2(const std::string &name, float x, float y) const
+void Shader::SetVec2(const string& name, float x, float y) const
 { 
     glUniform2f(glGetUniformLocation(id_, name.c_str()), x, y); 
 }
 // ------------------------------------------------------------------------
-void Shader::SetVec3(const std::string &name, const glm::vec3 &value) const
+void Shader::SetVec3(const string& name, const vec3& value) const
 { 
     glUniform3fv(glGetUniformLocation(id_, name.c_str()), 1, &value[0]);
 }
-void Shader::SetVec3(const std::string &name, float x, float y, float z) const
+void Shader::SetVec3(const string& name, float x, float y, float z) const
 { 
     glUniform3f(glGetUniformLocation(id_, name.c_str()), x, y, z); 
 }
 // ------------------------------------------------------------------------
-void Shader::SetVec4(const std::string &name, const glm::vec4 &value) const
+void Shader::SetVec4(const string& name, const vec4& value) const
 { 
     glUniform4fv(glGetUniformLocation(id_, name.c_str()), 1, &value[0]); 
 }
-void Shader::SetVec4(const std::string &name, float x, float y, float z, float w) 
+void Shader::SetVec4(const string& name, float x, float y, float z, float w) 
 { 
     glUniform4f(glGetUniformLocation(id_, name.c_str()), x, y, z, w); 
 }
 // ------------------------------------------------------------------------
-void Shader::SetMat2(const std::string &name, const glm::mat2 &mat) const
+void Shader::SetMat2(const string& name, const mat2& mat) const
 {
     glUniformMatrix2fv(glGetUniformLocation(id_, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 // ------------------------------------------------------------------------
-void Shader::SetMat3(const std::string &name, const glm::mat3 &mat) const
+void Shader::SetMat3(const string& name, const mat3& mat) const
 {
     glUniformMatrix3fv(glGetUniformLocation(id_, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 // ------------------------------------------------------------------------
-void Shader::SetMat4(const std::string &name, const glm::mat4 &mat) const
+void Shader::SetMat4(const string& name, const mat4& mat) const
 {
     glUniformMatrix4fv(glGetUniformLocation(id_, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
+// utility function for loading shader file and processing shader #include directves
+// ---------------------------------------------------------------------------------
+
+/*
+#include include/uniforms.incl
+#include include/functions.incl
+*/
+
+// Return the source code of the complete shader
+string Shader::Load(string path, string include)
+{
+    static bool isRecursiveCall = false;
+
+    string sourceCode = "";
+    ifstream file(path);
+
+    if (!file.is_open())
+    {
+        cerr << "ERROR: could not open the shader at: " << path << "\n" << endl;
+        return sourceCode;
+    }
+
+    string lineBuffer;
+    while (getline(file, lineBuffer))
+    {
+        // Look for the new shader include identifier
+        if (lineBuffer.find(include) != lineBuffer.npos)
+        {
+            // Remove the include identifier, this will cause the path to remain
+            lineBuffer.erase(0, include.size());
+
+            // The include path is relative to the current shader file path
+            lineBuffer.insert(0, path.substr(0, path.find_last_of("/\\") + 1));
+
+            // By using recursion, the new include file can be extracted
+            // and inserted at this location in the shader source code
+            isRecursiveCall = true;
+            sourceCode += Load(lineBuffer);
+        } else
+        {
+            sourceCode += lineBuffer + '\n';
+        }
+    }
+
+    // Only add the null terminator at the end of the complete file,
+    // essentially skipping recursive function calls this way
+    if (!isRecursiveCall) sourceCode += '\0';
+
+    file.close();
+
+    return sourceCode;
+}
+
 // utility function for checking shader compilation/linking errors.
 // ------------------------------------------------------------------------
-void Shader::CheckCompileErrors(GLuint shader, std::string type)
+void Shader::CheckCompileErrors(GLuint shader, string type)
 {
     GLint success;
     GLchar infoLog[1024];
@@ -172,7 +185,7 @@ void Shader::CheckCompileErrors(GLuint shader, std::string type)
         if(!success)
         {
             glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-            std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+            cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << endl;
         }
     }
     else
@@ -181,7 +194,7 @@ void Shader::CheckCompileErrors(GLuint shader, std::string type)
         if(!success)
         {
             glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-            std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+            cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << endl;
         }
     }
 }

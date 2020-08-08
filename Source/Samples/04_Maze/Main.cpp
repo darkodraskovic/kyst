@@ -44,10 +44,10 @@ int main()
     mazeGen->CreateMaze(12, 8, color1_);
     auto maze = mazeGen->CreateMaze(6, 18, color2_);
     maze->position_.x = -2;
-    maze.reset();
     maze = mazeGen->CreateMaze(20, 6, color3_);
     maze->position_.y = -1.75;
     maze->position_.x = -2;
+    maze.reset();
     
 
     // app.AddEffect("../Shaders/Effects/Noop.fs");
