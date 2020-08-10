@@ -1,43 +1,27 @@
 #include "Framebuffer.h"
 #include "VecConsts.h"
-#include <memory>
+#include "Viewport.h"
 #include <vector>
 
 using namespace VecConsts;
 
 const string Framebuffer::vertexPath_ = "../Shaders/Framebuffer/Framebuffer.vs";
 
-Framebuffer::Framebuffer()
+Framebuffer::Framebuffer(unsigned int width, unsigned int height)
 {
-    GenMesh();
     glGenFramebuffers(1, &framebuffer_);
+    GenFramebuffer(width, height);
+    GenRenderbuffer(width, height);    
 }
 
 Framebuffer::Framebuffer(const string& fragmentPath, unsigned int width, unsigned int height)
 {
-    GenMesh();
-    shader_ = GenShader(fragmentPath);
     glGenFramebuffers(1, &framebuffer_);
     GenFramebuffer(width, height);
     GenRenderbuffer(width, height);
-}
 
-void Framebuffer::GenMesh()
-{
-    mesh_ = std::make_shared<Mesh>();
-    mesh_->mode_ = GL_TRIANGLE_FAN;
-
-    mesh_->positions_.push_back(LEFT+DOWN);
-    mesh_->positions_.push_back(RIGHT+DOWN);
-    mesh_->positions_.push_back(RIGHT+UP);
-    mesh_->positions_.push_back(LEFT+UP);
-
-    mesh_->texCoords_.push_back(vec2(0, 0));
-    mesh_->texCoords_.push_back(vec2(1, 0));
-    mesh_->texCoords_.push_back(vec2(1, 1));
-    mesh_->texCoords_.push_back(vec2(0, 1));
-
-    mesh_->Generate();
+    quad_ = Viewport::GenQuad();
+    shader_ = GenShader(fragmentPath);    
 }
 
 void Framebuffer::GenFramebuffer(unsigned int width, unsigned int height)
@@ -77,23 +61,11 @@ std::shared_ptr<Shader> Framebuffer::GenShader(const std::string& fragmentPath)
 void Framebuffer::Bind() { glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_); }
 void Framebuffer::Unbind() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
 
-void Framebuffer::Draw()
-{
-    // glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 
-    // glClear(GL_COLOR_BUFFER_BIT);
-    glDisable(GL_DEPTH_TEST);
-    shader_->Use();
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, colorbuffer_);
-    shader_->SetInt("uTexture", 0);
-    mesh_->Render();
-}
-
 unsigned int Framebuffer::Texture()
 {
     Bind();
     shader_->Use();
-    mesh_->Render();
+    quad_->Render();
     Unbind();
     return colorbuffer_;
 }

@@ -1,17 +1,11 @@
-#include <glm/fwd.hpp>
-#include <glm/geometric.hpp>
 #include <iostream>
 #include <algorithm>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <memory>
 
 #include "Application.h"
 #include "Camera.h"
 #include "Entity.h"
 #include "Framebuffer.h"
+#include "Viewport.h"
 
 namespace MouseData
 {
@@ -29,8 +23,6 @@ using namespace MouseData;
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 void MouseCallback(GLFWwindow* window, double posX, double posY);
 void ScrollCallback(GLFWwindow* window, double offsetX, double offsetY);
-
-const std::string Application::fragmentPath_ = "../Shaders/Framebuffer/Screen.fs";
     
 Application::Application() {};
 
@@ -93,13 +85,7 @@ int Application::Init()
 
 void Application::InitFramebuffer()
 {
-    frontbuffer_ = std::make_shared<Framebuffer>(fragmentPath_, windowSize_.x, windowSize_.y);
-    backbuffer_ = std::make_shared<Framebuffer>(fragmentPath_, windowSize_.x, windowSize_.y);
-}
-
-void Application::AddEffect(const char *fragmentPath)
-{
-    shaders_.push_back(Framebuffer::GenShader(fragmentPath));
+    viewport_ = std::make_shared<Viewport>(windowSize_.x, windowSize_.y);
 }
 
 void Application::ProcessInput(float deltaTime)
@@ -203,28 +189,9 @@ void Application::DrawScene(float deltaTime)
 
 void Application::Draw(float deltaTime)
 {
-    frontbuffer_->Bind();
+    viewport_->Bind();
     DrawScene(deltaTime);
-    auto bound = frontbuffer_;
-    if (!shaders_.empty()) {
-        glDisable(GL_DEPTH_TEST);
-        glActiveTexture(GL_TEXTURE0);
-        auto unbound = backbuffer_;
-        for (int i = 0; i < shaders_.size(); i++) {
-            auto texture = bound->colorbuffer_;
-            auto tmp = bound;
-            bound->Unbind();
-            unbound->Bind();
-            bound = unbound;
-            unbound = tmp;
-            glBindTexture(GL_TEXTURE_2D, texture);
-            shaders_[i]->Use();
-            shaders_[i]->SetInt("uTexture", 0);
-            bound->mesh_->Render();
-        }
-    }
-    bound->Unbind();
-    bound->Draw();
+    viewport_->Render();
     
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------

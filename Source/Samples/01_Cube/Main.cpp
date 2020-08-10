@@ -60,12 +60,14 @@ int main()
     cube4->material_->alpha_ = 0.5;
     app.AddEntity(cube4);
     cube4.reset();
+
+    material.reset();
     
     app.camera_.position_.z = 12.0f;
 
-    app.AddEffect("../Shaders/Effects/Noop.fs");
-    // app.AddEffect("../Shaders/Effects/Remove.fs");
-    // app.AddEffect("../Shaders/Effects/Inversion.fs");
+    app.viewport_->AddEffect("../Shaders/Effects/Noop.fs");
+    // app.viewport_->AddEffect("../Shaders/Effects/Remove.fs");
+    app.viewport_->AddEffect("../Shaders/Effects/Inversion.fs");
     
     // Application loop
     // ---------------------------------------------------------------------------

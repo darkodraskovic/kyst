@@ -2,7 +2,6 @@
 #define APPLICATION_H
 
 #include <vector>
-#include <memory>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -11,6 +10,7 @@
 #include "Entity.h"
 #include "Framebuffer.h"
 #include "Camera.h"
+#include "Viewport.h"
 
 class Application
 {
@@ -32,6 +32,7 @@ public:
     ivec2 windowPosition_ = vec2(0,0);
     uvec2 windowSize_ = vec2(1152,720);
   
+    std::shared_ptr<Viewport> viewport_;
     Camera camera_;
     
     std::vector<std::shared_ptr<Entity>> entities_;
@@ -40,8 +41,6 @@ public:
     float lastFrame_ = 0.0f; // Time of last frame
     vec4 clearColor_ = vec4(0.2f, 0.3f, 0.3f, 1.0f);
 
-    void AddEffect(const char* fragmentPath);
-    
 private:
     Application();
     std::vector<std::shared_ptr<Entity>> entitiesToCreate_;
@@ -49,9 +48,8 @@ private:
 
     std::shared_ptr<Framebuffer> frontbuffer_;
     std::shared_ptr<Framebuffer> backbuffer_;
-    std::vector<std::shared_ptr<Shader>> shaders_;
+    std::vector<std::shared_ptr<Shader>> effects_;
 
-    static const std::string fragmentPath_;
 };
 
 #endif

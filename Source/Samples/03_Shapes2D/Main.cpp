@@ -87,8 +87,9 @@ int main()
     
     glLineWidth(5);
 
-    // app.AddEffect("../Shaders/Effects/Remove.fs");
-    app.AddEffect("../Shaders/Effects/Inversion.fs");
+    app.viewport_->AddEffect("../Shaders/Effects/Noop.fs");
+    // app.viewport_->AddEffect("../Shaders/Effects/Remove.fs");
+    app.viewport_->AddEffect("../Shaders/Effects/Inversion.fs");
     
     // Application loop
     // ---------------------------------------------------------------------------

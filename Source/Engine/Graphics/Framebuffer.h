@@ -7,7 +7,7 @@
 class Framebuffer
 {
 public:
-    Framebuffer();
+    Framebuffer(unsigned int width, unsigned int height);
     Framebuffer(const std::string& fragmentPath, unsigned int width, unsigned int height);
     ~Framebuffer();
     
@@ -18,19 +18,16 @@ public:
     void Bind();
     static void Unbind();
 
-    void Draw();
     unsigned int Texture();
     
     unsigned int framebuffer_;
     unsigned int colorbuffer_;
     unsigned int renderbuffer_;
     std::shared_ptr<Shader> shader_;
-    std::shared_ptr<Mesh> mesh_;
-
+    std::shared_ptr<Mesh> quad_;
 
 private:
     static const std::string vertexPath_;
-    void GenMesh();
 };
 
 #endif /* FRAMBUFFER_H */

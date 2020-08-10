@@ -1,6 +1,7 @@
 #version 330 core
 out vec4 FragColor;
 
+in vec3 vPos;
 in vec2 vTexCoords;
 
 uniform sampler2D uTexture;
