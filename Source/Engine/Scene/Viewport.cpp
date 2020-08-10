@@ -48,6 +48,8 @@ void Viewport::Render()
 {
     auto bound = frontbuffer_;
     if (!effects_.empty()) {
+        glDisable(GL_DEPTH_TEST);
+        glActiveTexture(GL_TEXTURE0);
         auto unbound = backbuffer_;
         for (int i = 0; i < effects_.size(); i++) {
             bound->Unbind();
@@ -55,31 +57,23 @@ void Viewport::Render()
             auto tmp = bound;
             bound = unbound;
             unbound = tmp;
-            Draw(effects_[i].get(), unbound->colorbuffer_);
+            glBindTexture(GL_TEXTURE_2D, unbound->colorbuffer_);
+            effects_[i]->Use();
+            effects_[i]->SetInt("uTexture", 0);
+            quad_->Render();            
         }
     }
     bound->Unbind();
     texture_ = bound->colorbuffer_;
 }
 
-void Viewport::Draw(Shader* shader, unsigned int texture)
-{
-    glDisable(GL_DEPTH_TEST);
-    shader->Use();
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    shader->SetInt("uTexture", 0);
-    quad_->Render();
-}
-
 void Viewport::Draw()
 {
-    auto transform = glm::mat4(1.f);
-    transform = glm::translate(transform, position_);
-    Draw(shader_.get(), texture_);
-}
-
-unsigned int Viewport::Texture()
-{
-    return texture_;
+    glDisable(GL_DEPTH_TEST);
+    glActiveTexture(GL_TEXTURE0);
+    shader_->Use();
+    glBindTexture(GL_TEXTURE_2D, texture_);
+    shader_->SetInt("uTexture", 0);
+    shader_->SetMat4("uModel", glm::translate(glm::mat4(1.f), position_));    
+    quad_->Render();
 }

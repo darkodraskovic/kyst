@@ -37,12 +37,10 @@ int main()
     vp->AddEffect("../Shaders/Textures/Tex2D.fs");
     // vp->AddEffect("../Shaders/Effects/Inversion.fs");
     vp->Render();
-    unsigned int texture = vp->Texture();
-    vp.reset();
     
     auto material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));
-    material->diffuse_ = diffuseMetal;
-    material->diffuse_ = texture;
+    // material->diffuse_ = diffuseMetal;
+    material->diffuse_ = vp->texture_;
     material->emissive_ = emissiveMetal;
     material->specular_ = specularMetal;
     material->shininess_ = 1024.0f;
@@ -65,6 +63,7 @@ int main()
     app.AddEntity(cube4);
     cube4.reset();
 
+    vp.reset();
     material.reset();
     
     app.camera_.position_.z = 12.0f;
