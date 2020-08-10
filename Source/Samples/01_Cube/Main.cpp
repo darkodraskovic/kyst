@@ -32,9 +32,8 @@ int main()
     auto litTexShader = std::shared_ptr<Shader>(
         new Shader( "../Shaders/LitTex.vs", "../Shaders/LitTex.fs"));
 
-    auto fb = std::make_shared<Framebuffer>("../Shaders/Textures/Tex2D.fs");
-    fb->GenFramebuffer(640, 640);
-    unsigned int texture = fb->RenderTexture();
+    auto fb = std::make_shared<Framebuffer>("../Shaders/Textures/Tex2D.fs", 640, 640);
+    unsigned int texture = fb->Texture();
     fb.reset();
     
     auto material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));

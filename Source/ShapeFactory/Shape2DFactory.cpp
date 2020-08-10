@@ -24,6 +24,14 @@ std::shared_ptr<Mesh> Shape2DFactory::Line(const vec3 &point1,
     return mesh;
 }
 
+std::shared_ptr<Mesh> Shape2DFactory::Lines(const vec3& offset, const std::vector<vec3>& points)
+{
+    auto mesh = std::make_shared<Mesh>();
+    mesh->positions_ = points;
+    mesh->mode_ = GL_LINE_STRIP;
+    return mesh;
+}
+
 const std::vector<vec3>& Shape2DFactory::RectPoints(const vec3& offset, const vec2& size)
 {
     points_.clear();
@@ -49,7 +57,6 @@ std::shared_ptr<Mesh> Shape2DFactory::RectMesh(const vec3& offset, const vec2& s
 std::shared_ptr<Mesh> Shape2DFactory::LineRect(const vec3& offset, const vec2& size)
 {
     auto mesh = RectMesh(offset, size);
-    mesh->positions_ = points_;
     mesh->mode_ = GL_LINE_LOOP;
     return mesh;
 }
@@ -57,10 +64,7 @@ std::shared_ptr<Mesh> Shape2DFactory::LineRect(const vec3& offset, const vec2& s
 std::shared_ptr<Mesh> Shape2DFactory::SolidRect(const vec3& offset, const vec2& size)
 {
     auto mesh = RectMesh(offset, size);
-    auto& idx = mesh->indices_;
-    idx.push_back(0); idx.push_back(1); idx.push_back(3);
-    idx.push_back(1); idx.push_back(2); idx.push_back(3);
-    mesh->mode_ = GL_TRIANGLES;
+    mesh->mode_ = GL_TRIANGLE_FAN;
     return mesh;
 }
 

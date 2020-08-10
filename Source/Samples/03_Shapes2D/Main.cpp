@@ -23,7 +23,7 @@ int main()
     // Application CONTENT
     // ---------------------------------------------------------------------------
 
-    app.camera_.position_.z = 3.0f;
+    app.camera_.position_.z = 4.0f;
 
     // material
     auto material1 = make_shared<Material2D>();
@@ -88,7 +88,7 @@ int main()
     glLineWidth(5);
 
     // app.AddEffect("../Shaders/Effects/Remove.fs");
-    // app.AddEffect("../Shaders/Effects/Inversion.fs");
+    app.AddEffect("../Shaders/Effects/Inversion.fs");
     
     // Application loop
     // ---------------------------------------------------------------------------

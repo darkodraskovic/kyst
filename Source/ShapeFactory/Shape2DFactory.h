@@ -19,7 +19,7 @@ public:
     Shape2DFactory();
 
     static std::shared_ptr<Mesh> Line(const vec3& point1, const vec3& point2);
-    
+    static std::shared_ptr<Mesh> Lines(const vec3& offset, const std::vector<vec3>& points);
     static const std::vector<vec3>& RectPoints(const vec3& offset, const vec2& size);
     static std::shared_ptr<Mesh> LineRect(const vec3& offset, const vec2& size);
     static std::shared_ptr<Mesh> SolidRect(const vec3& offset, const vec2& size);
