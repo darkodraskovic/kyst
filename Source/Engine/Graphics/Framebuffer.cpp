@@ -1,55 +1,43 @@
-#include <glad/glad.h>
-#include <glm/fwd.hpp>
-#include <iostream>
 #include "Framebuffer.h"
+#include "VecConsts.h"
+#include <memory>
+#include <vector>
 
-const std::string Framebuffer::vertexPath_ = "../Shaders/Framebuffer/Framebuffer.vs";
+using namespace VecConsts;
+
+const string Framebuffer::vertexPath_ = "../Shaders/Framebuffer/Framebuffer.vs";
 
 Framebuffer::Framebuffer()
 {
-    glGenFramebuffers(1, &framebuffer_);
     GenMesh();
+    glGenFramebuffers(1, &framebuffer_);
 }
 
-Framebuffer::Framebuffer(const std::string& fragmentPath)
+Framebuffer::Framebuffer(const string& fragmentPath, unsigned int width, unsigned int height)
 {
-    shader_ = std::make_shared<Shader>(vertexPath_, fragmentPath);
-    glGenFramebuffers(1, &framebuffer_);
     GenMesh();
+    shader_ = GenShader(fragmentPath);
+    glGenFramebuffers(1, &framebuffer_);
+    GenFramebuffer(width, height);
+    GenRenderbuffer(width, height);
 }
 
 void Framebuffer::GenMesh()
 {
     mesh_ = std::make_shared<Mesh>();
-    mesh_->mode_ = GL_TRIANGLES;
+    mesh_->mode_ = GL_TRIANGLE_FAN;
 
-    // aPos
-    vec2 aPos = vec2(-1, -1);
-    vec2 bPos = vec2(1, -1);
-    vec2 cPos = vec2(1, 1);
-    vec2 dPos = vec2(-1, 1);
-    std::vector<vec2> pos;
-    pos.push_back(aPos);
-    pos.push_back(bPos);
-    pos.push_back(dPos);
-    pos.push_back(bPos);
-    pos.push_back(cPos);
-    pos.push_back(dPos);
-    mesh_->GenArrayBuffer(pos);
+    mesh_->positions_.push_back(LEFT+DOWN);
+    mesh_->positions_.push_back(RIGHT+DOWN);
+    mesh_->positions_.push_back(RIGHT+UP);
+    mesh_->positions_.push_back(LEFT+UP);
 
-    // aTexCoords
-    vec2 aTexCoord = vec2(0, 0);
-    vec2 bTexCoord = vec2(1, 0);
-    vec2 cTexCoord = vec2(1, 1);
-    vec2 dTexCoord = vec2(0, 1);
-    std::vector<vec2> texCoords;
-    texCoords.push_back(aTexCoord);
-    texCoords.push_back(bTexCoord);
-    texCoords.push_back(dTexCoord);
-    texCoords.push_back(bTexCoord);
-    texCoords.push_back(cTexCoord);
-    texCoords.push_back(dTexCoord);
-    mesh_->GenArrayBuffer(texCoords);
+    mesh_->texCoords_.push_back(vec2(0, 0));
+    mesh_->texCoords_.push_back(vec2(1, 0));
+    mesh_->texCoords_.push_back(vec2(1, 1));
+    mesh_->texCoords_.push_back(vec2(0, 1));
+
+    mesh_->Generate();
 }
 
 void Framebuffer::GenFramebuffer(unsigned int width, unsigned int height)
@@ -81,13 +69,18 @@ void Framebuffer::GenRenderbuffer(unsigned int width, unsigned int height)
     glBindFramebuffer(GL_FRAMEBUFFER, 0);    
 }
 
+std::shared_ptr<Shader> Framebuffer::GenShader(const std::string& fragmentPath)
+{
+    return std::make_shared<Shader>(vertexPath_, fragmentPath);
+}
+
 void Framebuffer::Bind() { glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_); }
 void Framebuffer::Unbind() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
 
-void Framebuffer::RenderScene()
+void Framebuffer::Draw()
 {
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 
-    glClear(GL_COLOR_BUFFER_BIT);
+    // glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 
+    // glClear(GL_COLOR_BUFFER_BIT);
     glDisable(GL_DEPTH_TEST);
     shader_->Use();
     glActiveTexture(GL_TEXTURE0);
@@ -96,7 +89,7 @@ void Framebuffer::RenderScene()
     mesh_->Render();
 }
 
-unsigned int Framebuffer::RenderTexture()
+unsigned int Framebuffer::Texture()
 {
     Bind();
     shader_->Use();

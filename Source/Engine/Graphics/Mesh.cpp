@@ -124,7 +124,7 @@ void Mesh::Generate()
     glDeleteBuffers(VBOs_.size(), &VBOs_.front());
     
     if (positions_.empty()) {
-        std::cout << "ERROR: Mesh position array empty" << std::endl;
+        std::cout << "ERROR::MESH:: Position array empty!" << std::endl;
         return;
     }
     GenArrayBuffer(positions_);
@@ -144,7 +144,7 @@ void Mesh::Generate(unsigned int program)
     glDeleteBuffers(VBOs_.size(), &VBOs_.front());
     
     if (positions_.empty()) {
-        std::cout << "ERROR: Mesh position array empty" << std::endl;
+        std::cout << "ERROR::MESH:: Position array empty!" << std::endl;
         return;
     }
     GenArrayBuffer(positions_, program, "aPos");

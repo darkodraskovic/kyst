@@ -3,24 +3,23 @@
 
 #include "Mesh.h"
 #include "Shader.h"
-#include <memory>
-#include <string>
 
 class Framebuffer
 {
 public:
     Framebuffer();
-    Framebuffer(const std::string& fragmentPath);
+    Framebuffer(const std::string& fragmentPath, unsigned int width, unsigned int height);
     ~Framebuffer();
     
     void GenFramebuffer(unsigned int width, unsigned int height);
     void GenRenderbuffer(unsigned int width, unsigned int height);
+    static std::shared_ptr<Shader> GenShader(const std::string& fragmentPath);
     
     void Bind();
     static void Unbind();
-    
-    void RenderScene();
-    unsigned int RenderTexture();
+
+    void Draw();
+    unsigned int Texture();
     
     unsigned int framebuffer_;
     unsigned int colorbuffer_;
@@ -28,9 +27,9 @@ public:
     std::shared_ptr<Shader> shader_;
     std::shared_ptr<Mesh> mesh_;
 
-    static const std::string vertexPath_;
 
 private:
+    static const std::string vertexPath_;
     void GenMesh();
 };
 

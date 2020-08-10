@@ -93,18 +93,13 @@ int Application::Init()
 
 void Application::InitFramebuffer()
 {
-    frontbuffer_ = std::make_shared<Framebuffer>(fragmentPath_);
-    frontbuffer_->GenFramebuffer(windowSize_.x, windowSize_.y);
-    frontbuffer_->GenRenderbuffer(windowSize_.x, windowSize_.y);
-
-    backbuffer_ = std::make_shared<Framebuffer>(fragmentPath_);
-    backbuffer_->GenFramebuffer(windowSize_.x, windowSize_.y);
-    backbuffer_->GenRenderbuffer(windowSize_.x, windowSize_.y);
+    frontbuffer_ = std::make_shared<Framebuffer>(fragmentPath_, windowSize_.x, windowSize_.y);
+    backbuffer_ = std::make_shared<Framebuffer>(fragmentPath_, windowSize_.x, windowSize_.y);
 }
 
 void Application::AddEffect(const char *fragmentPath)
 {
-    shaders_.push_back(std::make_shared<Shader>(Framebuffer::vertexPath_, fragmentPath));
+    shaders_.push_back(Framebuffer::GenShader(fragmentPath));
 }
 
 void Application::ProcessInput(float deltaTime)
@@ -229,7 +224,7 @@ void Application::Draw(float deltaTime)
         }
     }
     bound->Unbind();
-    bound->RenderScene();
+    bound->Draw();
     
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
