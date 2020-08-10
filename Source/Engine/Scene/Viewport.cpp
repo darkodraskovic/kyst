@@ -1,36 +1,36 @@
 #include "Viewport.h"
-#include "VecConsts.h"
-
-using namespace VecConsts;
+#include "Application.h"
 
 const std::string Viewport::vertexPath_ = "../Shaders/Viewport/Viewport.vs";
 const std::string Viewport::fragmentPath_ = "../Shaders/Viewport/Viewport.fs";
 
 Viewport::Viewport(unsigned int width, unsigned int height)
 {
-    quad_ = GenQuad();
+    GenQuad(width, height);
     shader_ = std::make_shared<Shader>(vertexPath_, fragmentPath_);
     frontbuffer_ = std::make_shared<Framebuffer>(width, height);
     backbuffer_ = std::make_shared<Framebuffer>(width, height);
 }
 
-std::shared_ptr<Mesh> Viewport::GenQuad()
+void Viewport::GenQuad(float width, float height)
 {
-    auto quad = std::make_shared<Mesh>();
-    quad->mode_ = GL_TRIANGLE_FAN;
+    quad_ = std::make_shared<Mesh>();
+    quad_->mode_ = GL_TRIANGLE_FAN;
 
-    quad->positions_.push_back(LEFT+DOWN);
-    quad->positions_.push_back(RIGHT+DOWN);
-    quad->positions_.push_back(RIGHT+UP);
-    quad->positions_.push_back(LEFT+UP);
+    float right = -1 + 2 * (width / Application::Instance().windowSize_.x);
+    float up = -1 + 2 * (height / Application::Instance().windowSize_.y);
 
-    quad->texCoords_.push_back(vec2(0, 0));
-    quad->texCoords_.push_back(vec2(1, 0));
-    quad->texCoords_.push_back(vec2(1, 1));
-    quad->texCoords_.push_back(vec2(0, 1));
+    quad_->positions_.push_back(vec3(-1, -1, 0));
+    quad_->positions_.push_back(vec3(right, -1, 0));
+    quad_->positions_.push_back(vec3(right, up, 0));
+    quad_->positions_.push_back(vec3(-1, up, 0));
 
-    quad->Generate();
-    return quad;
+    quad_->texCoords_.push_back(vec2(0, 0));
+    quad_->texCoords_.push_back(vec2(1, 0));
+    quad_->texCoords_.push_back(vec2(1, 1));
+    quad_->texCoords_.push_back(vec2(0, 1));
+
+    quad_->Generate();
 }
 
 void Viewport::AddEffect(const char *fragmentPath)
@@ -59,7 +59,7 @@ void Viewport::Render()
         }
     }
     bound->Unbind();
-    Draw(shader_.get(), bound->colorbuffer_);
+    texture_ = bound->colorbuffer_;
 }
 
 void Viewport::Draw(Shader* shader, unsigned int texture)
@@ -70,4 +70,16 @@ void Viewport::Draw(Shader* shader, unsigned int texture)
     glBindTexture(GL_TEXTURE_2D, texture);
     shader->SetInt("uTexture", 0);
     quad_->Render();
+}
+
+void Viewport::Draw()
+{
+    auto transform = glm::mat4(1.f);
+    transform = glm::translate(transform, position_);
+    Draw(shader_.get(), texture_);
+}
+
+unsigned int Viewport::Texture()
+{
+    return texture_;
 }

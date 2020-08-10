@@ -10,22 +10,27 @@ public:
     Viewport(unsigned int width, unsigned int height);
     void Bind();
     void Render();
-    void Draw(Shader* shader, unsigned int texture);
-
-    static std::shared_ptr<Mesh> GenQuad();
-
+    void Draw();
+    unsigned int Texture();
     void AddEffect(const char* fragmentPath);
+
+    vec3 position_ = vec3(0.f);
     
     static const std::string vertexPath_;
     static const std::string fragmentPath_;
 
 private:
+    void GenQuad(float width, float height);
+    void Draw(Shader* shader, unsigned int texture);
+    
     std::shared_ptr<Mesh> quad_;
     std::shared_ptr<Shader> shader_;
 
     std::shared_ptr<Framebuffer> frontbuffer_;
     std::shared_ptr<Framebuffer> backbuffer_;
     std::vector<std::shared_ptr<Shader>> effects_;
+
+    unsigned int texture_;
 };
 
 #endif /* VIEWPORT_H */

@@ -1,9 +1,4 @@
 #include "Framebuffer.h"
-#include "VecConsts.h"
-#include "Viewport.h"
-#include <vector>
-
-using namespace VecConsts;
 
 const string Framebuffer::vertexPath_ = "../Shaders/Framebuffer/Framebuffer.vs";
 
@@ -12,16 +7,6 @@ Framebuffer::Framebuffer(unsigned int width, unsigned int height)
     glGenFramebuffers(1, &framebuffer_);
     GenFramebuffer(width, height);
     GenRenderbuffer(width, height);    
-}
-
-Framebuffer::Framebuffer(const string& fragmentPath, unsigned int width, unsigned int height)
-{
-    glGenFramebuffers(1, &framebuffer_);
-    GenFramebuffer(width, height);
-    GenRenderbuffer(width, height);
-
-    quad_ = Viewport::GenQuad();
-    shader_ = GenShader(fragmentPath);    
 }
 
 void Framebuffer::GenFramebuffer(unsigned int width, unsigned int height)
@@ -53,22 +38,8 @@ void Framebuffer::GenRenderbuffer(unsigned int width, unsigned int height)
     glBindFramebuffer(GL_FRAMEBUFFER, 0);    
 }
 
-std::shared_ptr<Shader> Framebuffer::GenShader(const std::string& fragmentPath)
-{
-    return std::make_shared<Shader>(vertexPath_, fragmentPath);
-}
-
 void Framebuffer::Bind() { glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_); }
 void Framebuffer::Unbind() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
-
-unsigned int Framebuffer::Texture()
-{
-    Bind();
-    shader_->Use();
-    quad_->Render();
-    Unbind();
-    return colorbuffer_;
-}
 
 Framebuffer::~Framebuffer()
 {

@@ -73,7 +73,7 @@ int Application::Init()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
-    InitFramebuffer();
+    InitViewport(windowSize_.x, windowSize_.y);
 
     // configure mouse position
     // -----------------------------
@@ -83,9 +83,10 @@ int Application::Init()
     return 0;
 };
 
-void Application::InitFramebuffer()
+void Application::InitViewport(unsigned int width, unsigned int height)
 {
-    viewport_ = std::make_shared<Viewport>(windowSize_.x, windowSize_.y);
+    windowSize_ = glm::vec2(width, height);
+    viewport_ = std::make_shared<Viewport>(width, height);
 }
 
 void Application::ProcessInput(float deltaTime)
@@ -192,6 +193,7 @@ void Application::Draw(float deltaTime)
     viewport_->Bind();
     DrawScene(deltaTime);
     viewport_->Render();
+    viewport_->Draw();
     
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
@@ -207,8 +209,6 @@ bool Application::ShouldClose()
 void Application::Terminate()
 {
     entities_.clear();
-    frontbuffer_.reset();
-    backbuffer_.reset();
     glfwTerminate();
 };
 
@@ -217,8 +217,7 @@ void Application::Terminate()
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
-    Application::Instance().windowSize_ = glm::vec2(width, height);
-    Application::Instance().InitFramebuffer();
+    Application::Instance().InitViewport(width, height);
 }
 
 // glfw: whenever the mouse moves, this callback is called

@@ -4,6 +4,7 @@
 #include "VecConsts.h"
 
 #include "Cube.h"
+#include "Viewport.h"
 
 using namespace VecConsts;
 using namespace glm;
@@ -32,9 +33,12 @@ int main()
     auto litTexShader = std::shared_ptr<Shader>(
         new Shader( "../Shaders/LitTex.vs", "../Shaders/LitTex.fs"));
 
-    auto fb = std::make_shared<Framebuffer>("../Shaders/Textures/Tex2D.fs", 640, 640);
-    unsigned int texture = fb->Texture();
-    fb.reset();
+    auto vp = std::make_shared<Viewport>(640, 640);
+    vp->AddEffect("../Shaders/Textures/Tex2D.fs");
+    // vp->AddEffect("../Shaders/Effects/Inversion.fs");
+    vp->Render();
+    unsigned int texture = vp->Texture();
+    vp.reset();
     
     auto material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));
     material->diffuse_ = diffuseMetal;
@@ -67,7 +71,7 @@ int main()
 
     app.viewport_->AddEffect("../Shaders/Effects/Noop.fs");
     // app.viewport_->AddEffect("../Shaders/Effects/Remove.fs");
-    app.viewport_->AddEffect("../Shaders/Effects/Inversion.fs");
+    // app.viewport_->AddEffect("../Shaders/Effects/Inversion.fs");
     
     // Application loop
     // ---------------------------------------------------------------------------

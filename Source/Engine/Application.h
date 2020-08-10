@@ -16,7 +16,7 @@ class Application
 {
 public:
     int Init();
-    void InitFramebuffer();
+    void InitViewport(unsigned int width, unsigned int height);
     void ProcessInput(float deltaTime);
     void Update();
     void Draw(float deltaTime);
@@ -45,11 +45,6 @@ private:
     Application();
     std::vector<std::shared_ptr<Entity>> entitiesToCreate_;
     std::vector<std::shared_ptr<Entity>> alphaEntities_;
-
-    std::shared_ptr<Framebuffer> frontbuffer_;
-    std::shared_ptr<Framebuffer> backbuffer_;
-    std::vector<std::shared_ptr<Shader>> effects_;
-
 };
 
 #endif
