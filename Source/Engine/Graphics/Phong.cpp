@@ -4,9 +4,9 @@ Phong::Phong(std::shared_ptr<Shader> shader) : Material(shader)
 {
 }
 
-void Phong::Update(float deltaTime, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+void Phong::Update(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
 {
-    Material::Update(deltaTime, model, view, projection);
+    Material::Update(model, view, projection);
 
     shader_->SetVec3("uLight.ambient",  lightAmbient_);
     shader_->SetVec3("uLight.diffuse",  lightDiffuse_);

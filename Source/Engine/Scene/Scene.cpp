@@ -32,7 +32,7 @@ void Scene::Update(float deltaTime)
     }
 };
 
-void Scene::Draw(float deltaTime)
+void Scene::Draw()
 {
     glClearColor(clearColor_.r, clearColor_.g, clearColor_.b, clearColor_.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -49,7 +49,7 @@ void Scene::Draw(float deltaTime)
         if (e->material_->alpha_ < 1.0) {
             alphaEntities_.push_back(e);
         } else {
-            e->Draw(deltaTime, view, projection);
+            e->Draw(view, projection);
         }
     }
     glDisable(GL_CULL_FACE);
@@ -61,7 +61,7 @@ void Scene::Draw(float deltaTime)
                   glm::length(rhs->position_ - camera_.position_); });
     glEnable(GL_BLEND);
     for(auto it = alphaEntities_.begin(); it != alphaEntities_.end(); ++it) {
-        (*it)->Draw(deltaTime, view, projection);
+        (*it)->Draw(view, projection);
     }
     glDisable(GL_BLEND);
     

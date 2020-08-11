@@ -13,7 +13,7 @@ public:
     Material2D();
     Material2D(const std::string& fragmentPath);
     Material2D(std::shared_ptr<Shader> shader);
-    virtual void Update(float deltaTime, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) override;
+    virtual void Update(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) override;
 
     float pctColor_ = .0f;
     float pctTexture_ = .0f;

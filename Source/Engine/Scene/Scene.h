@@ -9,7 +9,7 @@ class Scene
 public:
     Scene();
     void Update(float deltaTime);
-    void Draw(float deltaTime);
+    void Draw();
     void AddEntity(std::shared_ptr<Entity> entity);
 
     vec4 clearColor_ = vec4(0.2f, 0.3f, 0.3f, 1.0f);

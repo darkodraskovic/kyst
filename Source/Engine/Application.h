@@ -19,8 +19,8 @@ public:
     void InitViewport(unsigned int width, unsigned int height);
     void ProcessInput(float deltaTime);
     void Update();
-    void Draw(float deltaTime);
-    void DrawScene(float deltaTime);
+    void Draw();
+    void DrawScene();
     bool ShouldClose();
     void Terminate();
     void AddEntity(std::shared_ptr<Entity> entity);

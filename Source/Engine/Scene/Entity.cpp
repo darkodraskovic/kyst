@@ -21,7 +21,7 @@ void Entity::Update(float deltaTime)
 {
 }
 
-void Entity::Draw(float deltaTime, const glm::mat4& uView, const glm::mat4& uProjection)
+void Entity::Draw(const glm::mat4& uView, const glm::mat4& uProjection)
 {
     auto transform = glm::mat4(1.f);
     transform = glm::translate(transform, position_);
@@ -29,6 +29,6 @@ void Entity::Draw(float deltaTime, const glm::mat4& uView, const glm::mat4& uPro
     transform = glm::rotate(transform, rotation_.y, UP);
     transform = glm::rotate(transform, rotation_.z, FORWARD);
     transform = glm::scale(transform, scale_);
-    material_->Update(deltaTime, transform, uView, uProjection);
+    material_->Update(transform, uView, uProjection);
     mesh_->Render();
 }

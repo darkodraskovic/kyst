@@ -17,9 +17,9 @@ Material2D::Material2D(std::shared_ptr<Shader> shader) : Material(shader)
 {
 }
 
-void Material2D::Update(float deltaTime, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+void Material2D::Update(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
 {
-    Material::Update(deltaTime, model, view, projection);
+    Material::Update(model, view, projection);
 
     // set sampler2d
     glActiveTexture(GL_TEXTURE0);

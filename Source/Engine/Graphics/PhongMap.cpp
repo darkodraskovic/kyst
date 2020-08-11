@@ -4,9 +4,9 @@ PhongMap::PhongMap(std::shared_ptr<Shader> shader) : Phong(shader)
 {
 }
 
-void PhongMap::Update(float deltaTime, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+void PhongMap::Update(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
 {
-    Phong::Update(deltaTime, model, view, projection);
+    Phong::Update(model, view, projection);
     
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, diffuse_);
