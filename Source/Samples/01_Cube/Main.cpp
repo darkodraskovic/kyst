@@ -66,11 +66,11 @@ int main()
     vp.reset();
     material.reset();
     
-    app.camera_.position_.z = 12.0f;
+    app.camera_->position_.z = 12.0f;
 
     app.viewport_->AddEffect("../Shaders/Effects/Noop.fs");
     // app.viewport_->AddEffect("../Shaders/Effects/Remove.fs");
-    // app.viewport_->AddEffect("../Shaders/Effects/Inversion.fs");
+    app.viewport_->AddEffect("../Shaders/Effects/Inversion.fs");
     
     // Application loop
     // ---------------------------------------------------------------------------

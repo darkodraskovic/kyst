@@ -23,7 +23,7 @@ int main()
     // Application CONTENT
     // ---------------------------------------------------------------------------
 
-    app.camera_.position_.z = 4.0f;
+    app.camera_->position_.z = 4.0f;
 
     // material
     auto material1 = make_shared<Material2D>();

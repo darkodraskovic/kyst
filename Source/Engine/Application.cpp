@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <memory>
 
 #include "Application.h"
 #include "Camera.h"
@@ -73,7 +74,10 @@ int Application::Init()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
+
     InitViewport(windowSize_.x, windowSize_.y);
+    camera_ = std::make_shared<Camera>();
+    scene_ = std::make_shared<Scene>(camera_);
 
     // configure mouse position
     // -----------------------------
@@ -96,102 +100,46 @@ void Application::ProcessInput(float deltaTime)
     }
     
     if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS)
-        camera_.ProcessKeyboard(CAM_FORWARD, deltaTime);
+        camera_->ProcessKeyboard(CAM_FORWARD, deltaTime);
     if (glfwGetKey(window_, GLFW_KEY_S) == GLFW_PRESS)
-        camera_.ProcessKeyboard(CAM_BACKWARD, deltaTime);
+        camera_->ProcessKeyboard(CAM_BACKWARD, deltaTime);
     if (glfwGetKey(window_, GLFW_KEY_A) == GLFW_PRESS)
-        camera_.ProcessKeyboard(CAM_LEFT, deltaTime);
+        camera_->ProcessKeyboard(CAM_LEFT, deltaTime);
     if (glfwGetKey(window_, GLFW_KEY_D) == GLFW_PRESS)
-        camera_.ProcessKeyboard(CAM_RIGHT, deltaTime);
+        camera_->ProcessKeyboard(CAM_RIGHT, deltaTime);
     if (glfwGetKey(window_, GLFW_KEY_E) == GLFW_PRESS)
-        camera_.ProcessKeyboard(CAM_UP, deltaTime);
+        camera_->ProcessKeyboard(CAM_UP, deltaTime);
     if (glfwGetKey(window_, GLFW_KEY_Q) == GLFW_PRESS)
-        camera_.ProcessKeyboard(CAM_DOWN, deltaTime);
+        camera_->ProcessKeyboard(CAM_DOWN, deltaTime);
 
     if (processMouseMovement) {
-        camera_.ProcessMouseMovement(mouseOffsetX, mouseOffsetY);    
+        camera_->ProcessMouseMovement(mouseOffsetX, mouseOffsetY);    
         processMouseMovement = false;
     }
 
     if (processMouseScroll) {
-        camera_.ProcessMouseScroll(mouseScrollY);
+        camera_->ProcessMouseScroll(mouseScrollY);
         processMouseScroll = false;
     }
 }
 
 void Application::AddEntity(std::shared_ptr<Entity> entity)
 {
-    if (std::find(entities_.begin(), entities_.end(), entity) != entities_.end()) return;
-    entitiesToCreate_.push_back(entity);
+    scene_->AddEntity(entity);
 }
 
 void Application::Update()
 {
-    // remove entities
-    for (auto it = entities_.begin(); it != entities_.end(); ++it) {
-        if ((*it)->remove_) entities_.erase(it--);
-    }
-
-    // add entities
-    for (auto it = entitiesToCreate_.begin(); it != entitiesToCreate_.end(); ++it) {
-        entities_.push_back(*it);
-    }
-    entitiesToCreate_.clear();
-    
     float currentFrame = glfwGetTime();
     deltaTime_ = currentFrame - lastFrame_;
     lastFrame_ = currentFrame;
 
     ProcessInput(deltaTime_);
 
-    // update entities
-    for(auto it = entities_.begin(); it != entities_.end(); ++it) {
-        (*it)->Update(deltaTime_);
-    }
+    scene_->Update(deltaTime_);
 
-    Draw();
-};
-
-void Application::DrawScene()
-{
-    glClearColor(clearColor_.r, clearColor_.g, clearColor_.b, clearColor_.a);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-
-    glm::mat4 view = camera_.GetViewMatrix();
-    glm::mat4 projection = camera_.GetProjectionMatrix(windowSize_.x, windowSize_.y);
-
-    // solid
-    glEnable(GL_CULL_FACE);
-    for(auto it = entities_.begin(); it != entities_.end(); ++it) {
-        auto e = *it;
-        if (!e->visible_) continue;
-        if (e->material_->alpha_ < 1.0) {
-            alphaEntities_.push_back(e);
-        } else {
-            e->Draw(view, projection);
-        }
-    }
-    glDisable(GL_CULL_FACE);
-
-    // alpha
-    std::sort(alphaEntities_.begin(), alphaEntities_.end(),
-              [this](std::shared_ptr<Entity> lhs, std::shared_ptr<Entity> rhs) {
-                  return glm::length(lhs->position_ - camera_.position_) <
-                  glm::length(rhs->position_ - camera_.position_); });
-    glEnable(GL_BLEND);
-    for(auto it = alphaEntities_.begin(); it != alphaEntities_.end(); ++it) {
-        (*it)->Draw(view, projection);
-    }
-    glDisable(GL_BLEND);
-    
-    alphaEntities_.clear();
-}
-
-void Application::Draw()
-{
     viewport_->Bind();
-    DrawScene();
+    scene_->Draw();
     viewport_->Render();
     viewport_->Draw();
     
@@ -208,7 +156,7 @@ bool Application::ShouldClose()
 
 void Application::Terminate()
 {
-    entities_.clear();
+    // entities_.clear();
     glfwTerminate();
 };
 

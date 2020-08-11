@@ -31,7 +31,7 @@ int main()
     auto entity = make_shared<Entity>(mesh, material);
     app.AddEntity(entity);
 
-    app.camera_.position_.z = 3.0f;
+    app.camera_->position_.z = 3.0f;
     // app.AddEffect("../Shaders/Effects/Inversion.fs");
     // app.AddEffect("../Shaders/Effects/Remove.fs");
 

@@ -1,10 +1,10 @@
 #include <algorithm>
 #include "Application.h"
+#include "Camera.h"
 #include "Scene.h"
 
-Scene::Scene()
+Scene::Scene(std::shared_ptr<Camera> camera) : camera_(camera)
 {
-    
 }
 
 void Scene::AddEntity(std::shared_ptr<Entity> entity)
@@ -38,8 +38,8 @@ void Scene::Draw()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-    glm::mat4 view = camera_.GetViewMatrix();
-    glm::mat4 projection = camera_.GetProjectionMatrix(Application::Instance().windowSize_.x, Application::Instance().windowSize_.y);
+    glm::mat4 view = camera_->GetViewMatrix();
+    glm::mat4 projection = camera_->GetProjectionMatrix(Application::Instance().windowSize_.x, Application::Instance().windowSize_.y);
 
     // solid
     glEnable(GL_CULL_FACE);
@@ -57,8 +57,8 @@ void Scene::Draw()
     // alpha
     std::sort(alphaEntities_.begin(), alphaEntities_.end(),
               [this](std::shared_ptr<Entity> lhs, std::shared_ptr<Entity> rhs) {
-                  return glm::length(lhs->position_ - camera_.position_) <
-                  glm::length(rhs->position_ - camera_.position_); });
+                  return glm::length(lhs->position_ - camera_->position_) <
+                  glm::length(rhs->position_ - camera_->position_); });
     glEnable(GL_BLEND);
     for(auto it = alphaEntities_.begin(); it != alphaEntities_.end(); ++it) {
         (*it)->Draw(view, projection);

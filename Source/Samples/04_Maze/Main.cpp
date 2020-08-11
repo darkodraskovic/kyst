@@ -18,12 +18,12 @@ int main()
         return -1;
     };
 
-    app.clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
+    app.scene_->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
     // glEnable(GL_LINE_SMOOTH);
     glLineWidth(2.0f);
     
-    app.camera_.position_.z = 9.0f;
-    app.camera_.position_.y = 1.0f;
+    app.camera_->position_.z = 9.0f;
+    app.camera_->position_.y = 1.0f;
 
     // Application CONTENT
     // ---------------------------------------------------------------------------
