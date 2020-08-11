@@ -3,12 +3,13 @@
 
 #include "Mesh.h"
 #include "Framebuffer.h"
+#include "Scene.h"
 
 class Viewport
 {
 public:
     Viewport(unsigned int width, unsigned int height);
-    void Bind();
+    Viewport(std::shared_ptr<Scene> scene_, unsigned int width, unsigned int height);
     void Render();
     void Draw();
     void AddEffect(const char* fragmentPath);
@@ -20,7 +21,11 @@ public:
     static const std::string fragmentPath_;
 
 private:
+    void GenBuffers(float width, float height);
     void GenQuad(float width, float height);
+
+    unsigned int width_;
+    unsigned int height_;
     
     std::shared_ptr<Mesh> quad_;
     std::shared_ptr<Shader> shader_;
@@ -29,6 +34,7 @@ private:
     std::shared_ptr<Framebuffer> backbuffer_;
     std::vector<std::shared_ptr<Shader>> effects_;
 
+    std::shared_ptr<Scene> scene_;
 };
 
 #endif /* VIEWPORT_H */

@@ -75,9 +75,9 @@ int Application::Init()
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
 
-    InitViewport(windowSize_.x, windowSize_.y);
     camera_ = std::make_shared<Camera>();
     scene_ = std::make_shared<Scene>(camera_);
+    viewport_ = std::make_shared<Viewport>(scene_, windowSize_.x, windowSize_.y);
 
     // configure mouse position
     // -----------------------------
@@ -86,12 +86,6 @@ int Application::Init()
 
     return 0;
 };
-
-void Application::InitViewport(unsigned int width, unsigned int height)
-{
-    windowSize_ = glm::vec2(width, height);
-    viewport_ = std::make_shared<Viewport>(width, height);
-}
 
 void Application::ProcessInput(float deltaTime)
 {
@@ -137,9 +131,6 @@ void Application::Update()
     ProcessInput(deltaTime_);
 
     scene_->Update(deltaTime_);
-
-    viewport_->Bind();
-    scene_->Draw();
     viewport_->Render();
     viewport_->Draw();
     
@@ -165,7 +156,6 @@ void Application::Terminate()
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
-    Application::Instance().InitViewport(width, height);
 }
 
 // glfw: whenever the mouse moves, this callback is called

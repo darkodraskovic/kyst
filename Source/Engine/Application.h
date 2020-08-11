@@ -17,7 +17,6 @@ class Application
 {
 public:
     int Init();
-    void InitViewport(unsigned int width, unsigned int height);
     void ProcessInput(float deltaTime);
     void Update();
     bool ShouldClose();

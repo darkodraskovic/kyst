@@ -32,14 +32,14 @@ void Scene::Update(float deltaTime)
     }
 };
 
-void Scene::Draw()
+void Scene::Draw(unsigned int width, unsigned int height)
 {
     glClearColor(clearColor_.r, clearColor_.g, clearColor_.b, clearColor_.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
     glm::mat4 view = camera_->GetViewMatrix();
-    glm::mat4 projection = camera_->GetProjectionMatrix(Application::Instance().windowSize_.x, Application::Instance().windowSize_.y);
+    glm::mat4 projection = camera_->GetProjectionMatrix(width, height);
 
     // solid
     glEnable(GL_CULL_FACE);

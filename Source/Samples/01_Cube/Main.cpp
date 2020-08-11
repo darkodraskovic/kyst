@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "PhongMap.h"
 #include "Framebuffer.h"
+#include "Scene.h"
 #include "VecConsts.h"
 
 #include "Cube.h"
@@ -35,7 +36,7 @@ int main()
 
     auto vp = std::make_shared<Viewport>(640, 640);
     vp->AddEffect("../Shaders/Textures/Tex2D.fs");
-    // vp->AddEffect("../Shaders/Effects/Inversion.fs");
+    vp->AddEffect("../Shaders/Effects/Inversion.fs");
     vp->Render();
     
     auto material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));
@@ -70,7 +71,7 @@ int main()
 
     app.viewport_->AddEffect("../Shaders/Effects/Noop.fs");
     // app.viewport_->AddEffect("../Shaders/Effects/Remove.fs");
-    app.viewport_->AddEffect("../Shaders/Effects/Inversion.fs");
+    // app.viewport_->AddEffect("../Shaders/Effects/Inversion.fs");
     
     // Application loop
     // ---------------------------------------------------------------------------

@@ -5,8 +5,22 @@ const std::string Viewport::vertexPath_ = "../Shaders/Viewport/Viewport.vs";
 const std::string Viewport::fragmentPath_ = "../Shaders/Viewport/Viewport.fs";
 
 Viewport::Viewport(unsigned int width, unsigned int height)
+    : width_(width), height_(height)
+{
+    scene_ = std::make_shared<Scene>(std::make_shared<Camera>());
+    GenQuad(width, height);
+    GenBuffers(width, height);
+}
+
+Viewport::Viewport(std::shared_ptr<Scene> scene, unsigned int width, unsigned int height)
+    : scene_(scene), width_(width), height_(height)
 {
     GenQuad(width, height);
+    GenBuffers(width, height);
+}
+
+void Viewport::GenBuffers(float width, float height)
+{
     shader_ = std::make_shared<Shader>(vertexPath_, fragmentPath_);
     frontbuffer_ = std::make_shared<Framebuffer>(width, height);
     backbuffer_ = std::make_shared<Framebuffer>(width, height);
@@ -39,14 +53,13 @@ void Viewport::AddEffect(const char *fragmentPath)
     effects_.push_back(effect);
 }
 
-void Viewport::Bind()
-{
-    frontbuffer_->Bind();    
-}
 
 void Viewport::Render()
 {
+    frontbuffer_->Bind();
+    scene_->Draw(width_, height_);
     auto bound = frontbuffer_;
+    
     if (!effects_.empty()) {
         glDisable(GL_DEPTH_TEST);
         glActiveTexture(GL_TEXTURE0);
@@ -63,6 +76,7 @@ void Viewport::Render()
             quad_->Render();            
         }
     }
+    
     bound->Unbind();
     texture_ = bound->colorbuffer_;
 }
