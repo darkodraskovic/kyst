@@ -75,10 +75,6 @@ int Application::Init()
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
 
-    camera_ = std::make_shared<Camera>();
-    scene_ = std::make_shared<Scene>(camera_);
-    viewport_ = std::make_shared<Viewport>(scene_, windowSize_.x, windowSize_.y);
-
     // configure mouse position
     // -----------------------------
     lastMouseX = (float)windowSize_.x / 2;
@@ -117,11 +113,6 @@ void Application::ProcessInput(float deltaTime)
     }
 }
 
-void Application::AddEntity(std::shared_ptr<Entity> entity)
-{
-    scene_->AddEntity(entity);
-}
-
 void Application::Update()
 {
     float currentFrame = glfwGetTime();
@@ -130,9 +121,9 @@ void Application::Update()
 
     ProcessInput(deltaTime_);
 
-    scene_->Update(deltaTime_);
-    viewport_->Render();
-    viewport_->Draw();
+    for(auto it = viewports_.begin(); it != viewports_.end(); ++it) {
+        (*it)->Update(deltaTime_);
+    }
     
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
@@ -147,7 +138,7 @@ bool Application::ShouldClose()
 
 void Application::Terminate()
 {
-    // entities_.clear();
+    viewports_.clear();
     glfwTerminate();
 };
 

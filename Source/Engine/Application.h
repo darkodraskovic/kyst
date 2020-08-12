@@ -21,7 +21,6 @@ public:
     void Update();
     bool ShouldClose();
     void Terminate();
-    void AddEntity(std::shared_ptr<Entity> entity);
     static Application& Instance();
 
     ResourceManager resourceManager_;
@@ -30,13 +29,13 @@ public:
     ivec2 windowPosition_ = vec2(0,0);
     uvec2 windowSize_ = vec2(1152,720);
 
-    std::shared_ptr<Scene> scene_;
-    std::shared_ptr<Viewport> viewport_;
     std::shared_ptr<Camera> camera_;
     
     float deltaTime_ = 0.0f;	// Time between current frame and last frame
     float lastFrame_ = 0.0f; // Time of last frame
 
+    std::vector<std::shared_ptr<Viewport>> viewports_;
+    
 private:
     Application();
 };

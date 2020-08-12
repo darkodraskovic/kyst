@@ -20,10 +20,23 @@ int main()
         return -1;
     };
 
-    // Application CONTENT
+    glLineWidth(5);
+    
+    // Viewport
     // ---------------------------------------------------------------------------
 
+    auto viewport = std::make_shared<Viewport>();
+    app.viewports_.push_back(viewport);
+    
+    app.camera_ = viewport->scene_->camera_;
     app.camera_->position_.z = 4.0f;
+
+    viewport->AddEffect("../Shaders/Effects/Noop.fs");
+    viewport->AddEffect("../Shaders/Effects/Inversion.fs");
+    // viewport->AddEffect("../Shaders/Effects/Remove.fs");
+
+    // Application CONTENT
+    // ---------------------------------------------------------------------------
 
     // material
     auto material1 = make_shared<Material2D>();
@@ -45,14 +58,14 @@ int main()
 
     // rect entity 1
     auto entity = make_shared<Entity>(mesh, material1);
-    app.AddEntity(entity);
+    viewport->scene_->AddEntity(entity);
 
     // rect entity 2
     entity = make_shared<Entity>(mesh, material2);
     entity->position_ = (LEFT + DOWN) / 4.f;
     entity->position_.z = 0.25;
     entity->rotation_.y = pi<float>() / 4;
-    app.AddEntity(entity);
+    viewport->scene_->AddEntity(entity);
 
     // line entity 2
     mesh = Shape2DFactory::Line(LEFT, RIGHT);
@@ -61,14 +74,14 @@ int main()
     mesh->Generate(material2->shader_->id_);
     entity = make_shared<Entity>(mesh, material3);
     entity->position_.z = 1;
-    app.AddEntity(entity);
+    viewport->scene_->AddEntity(entity);
 
     // polygons
     vector<vec3> points = {LEFT, DOWN, RIGHT, UP};
     mesh = Shape2DFactory::LinePolygon(ZERO, points);
     mesh->Generate();
     entity = make_shared<Entity>(mesh, material4);
-    app.AddEntity(entity);
+    viewport->scene_->AddEntity(entity);
     
     mesh = Shape2DFactory::SolidPolygon(ZERO, points);
     mesh->colors_ = {GREEN, BLUE, RED, BLUE};
@@ -76,20 +89,17 @@ int main()
     entity = make_shared<Entity>(mesh, material5);
     entity->scale_ *= 0.33f;
     entity->position_.z = 0.5;
-    app.AddEntity(entity);
+    viewport->scene_->AddEntity(entity);
     
-    // reset pointers
+    // Reset POINTERS
+    // ---------------------------------------------------------------------------
+    
     material1.reset();
     material2.reset();
     material3.reset();
     mesh.reset();
     entity.reset();
-    
-    glLineWidth(5);
-
-    app.viewport_->AddEffect("../Shaders/Effects/Noop.fs");
-    // app.viewport_->AddEffect("../Shaders/Effects/Remove.fs");
-    app.viewport_->AddEffect("../Shaders/Effects/Inversion.fs");
+    viewport.reset();
     
     // Application loop
     // ---------------------------------------------------------------------------

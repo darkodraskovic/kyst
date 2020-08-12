@@ -17,6 +17,19 @@ int main()
         return -1;
     };
 
+    // Viewport
+    // ---------------------------------------------------------------------------
+    
+    auto viewport = std::make_shared<Viewport>();
+    app.viewports_.push_back(viewport);
+    
+    app.camera_ = viewport->scene_->camera_;
+    app.camera_->position_.z = 3.0f;
+    
+    // viewport->AddEffect("../Shaders/Effects/Noop.fs");
+    // viewport->AddEffect("../Shaders/Effects/Inversion.fs");
+    // viewport->AddEffect("../Shaders/Effects/Remove.fs");
+    
     // Application CONTENT
     // ---------------------------------------------------------------------------
 
@@ -29,15 +42,16 @@ int main()
 
     // entity
     auto entity = make_shared<Entity>(mesh, material);
-    app.AddEntity(entity);
+    viewport->scene_->AddEntity(entity);
 
-    app.camera_->position_.z = 3.0f;
-    // app.AddEffect("../Shaders/Effects/Inversion.fs");
-    // app.AddEffect("../Shaders/Effects/Remove.fs");
-
+    // Reset POINTERS
+    // ---------------------------------------------------------------------------
+    
     material.reset();
     mesh.reset();
     entity.reset();
+    viewport.reset();
+
     // Application loop
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())
@@ -45,7 +59,6 @@ int main()
         app.Update();
     }
 
-    
     // Application termination
     // ---------------------------------------------------------------------------
     app.Terminate();

@@ -19,7 +19,7 @@ using namespace glm;
 class EntityFactory
 {
 public:
-    EntityFactory();
+    EntityFactory(Scene* scene);
     
     std::shared_ptr<Mover> AddMover(bool vCol);
     std::shared_ptr<Mover> CreateLineGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol);
@@ -36,6 +36,7 @@ public:
     
 private:
     std::shared_ptr<Mesh> snowflakeMesh_;
+    Scene* scene_;
 };
 
 #endif

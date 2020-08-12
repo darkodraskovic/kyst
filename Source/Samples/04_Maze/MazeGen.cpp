@@ -1,7 +1,7 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/random.hpp>
-#include <memory>
 
+#include "Scene.h"
 #include "VecConsts.h"
 #include "Shader.h"
 #include "Material.h"
@@ -15,7 +15,8 @@
 
 using namespace VecConsts;
 
-MazeGen::MazeGen() {}
+MazeGen::MazeGen(Scene* scene) : scene_(scene)
+{}
 
 std::shared_ptr<Mover> MazeGen::CreateMaze(int width, int height, const vec3& color)
 {
@@ -23,7 +24,7 @@ std::shared_ptr<Mover> MazeGen::CreateMaze(int width, int height, const vec3& co
     maze->material_ = std::make_shared<Material>("../Shaders/Col.vs", "../Shaders/Col.fs");
     maze->material_->color_ = color;
     
-    Application::Instance().AddEntity(maze);    
+    scene_->AddEntity(maze);
     auto mazeFactory = new MazeFactory(width, height);
     mazeFactory->RandomWalk();
     auto vertexArray = mazeFactory->GetVertexArray();

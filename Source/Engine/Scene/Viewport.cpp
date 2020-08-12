@@ -4,6 +4,14 @@
 const std::string Viewport::vertexPath_ = "../Shaders/Viewport/Viewport.vs";
 const std::string Viewport::fragmentPath_ = "../Shaders/Viewport/Viewport.fs";
 
+Viewport::Viewport()
+    : width_(Application::Instance().windowSize_.x), height_(Application::Instance().windowSize_.y)
+{
+    scene_ = std::make_shared<Scene>(std::make_shared<Camera>());
+    GenQuad(width_, height_);
+    GenBuffers(width_, height_);
+}
+
 Viewport::Viewport(unsigned int width, unsigned int height)
     : width_(width), height_(height)
 {
@@ -90,4 +98,11 @@ void Viewport::Draw()
     shader_->SetInt("uTexture", 0);
     shader_->SetMat4("uModel", glm::translate(glm::mat4(1.f), position_));    
     quad_->Render();
+}
+
+void Viewport::Update(float deltaTime)
+{
+    scene_->Update(deltaTime);
+    Render();
+    Draw();
 }

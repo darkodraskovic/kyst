@@ -6,10 +6,12 @@
 #include "Mover.h"
 #include "Particle.h"
 #include "KochFactory.h"
+#include "Scene.h"
 #include "SierpinskiFactory.h"
 #include "EntityFactory.h"
 
-EntityFactory::EntityFactory()
+EntityFactory::EntityFactory(Scene* scene)
+    : scene_(scene)
 {
     colShader_ = std::make_shared<Shader>("../Shaders/Col.vs", "../Shaders/Col.fs");
     vColShader_ = std::make_shared<Shader>("../Shaders/VCol.vs", "../Shaders/VCol.fs");
@@ -29,7 +31,7 @@ std::shared_ptr<Mover> EntityFactory::AddMover(bool vCol)
         mover->material_->shader_ = vColShader_;
     }
     
-    Application::Instance().AddEntity(mover);
+    scene_->AddEntity(mover);
     return mover;
 }
 
@@ -120,7 +122,7 @@ std::shared_ptr<ParticleEmitter> EntityFactory::CreateSnowflakeEmitter()
 
     emitter->minLifespan_ = 2.f; emitter->minLifespan_ = 3.f;
 
-    Application::Instance().AddEntity(emitter);
+    scene_->AddEntity(emitter);
 
     return emitter;
 }

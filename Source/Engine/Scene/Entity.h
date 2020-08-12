@@ -3,7 +3,7 @@
 
 #include "Mesh.h"
 #include "Material.h"
-#include <memory>
+#include "Scene.h"
 
 class Entity
 {
@@ -24,6 +24,8 @@ public:
     vec3 scale_ = vec3(1.f);
 
     bool remove_ = false;
+
+    Scene* scene_;
 };
 
 #endif

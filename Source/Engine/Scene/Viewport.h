@@ -8,14 +8,17 @@
 class Viewport
 {
 public:
+    Viewport();    
     Viewport(unsigned int width, unsigned int height);
     Viewport(std::shared_ptr<Scene> scene_, unsigned int width, unsigned int height);
+    void Update(float deltaTime);
     void Render();
     void Draw();
     void AddEffect(const char* fragmentPath);
 
     vec3 position_ = vec3(0.f);
     unsigned int texture_;
+    std::shared_ptr<Scene> scene_;
     
     static const std::string vertexPath_;
     static const std::string fragmentPath_;
@@ -33,8 +36,6 @@ private:
     std::shared_ptr<Framebuffer> frontbuffer_;
     std::shared_ptr<Framebuffer> backbuffer_;
     std::vector<std::shared_ptr<Shader>> effects_;
-
-    std::shared_ptr<Scene> scene_;
 };
 
 #endif /* VIEWPORT_H */

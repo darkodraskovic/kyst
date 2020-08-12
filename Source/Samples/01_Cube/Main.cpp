@@ -21,9 +21,22 @@ int main()
         return -1;
     };
 
-    // Application CONTENT
+    // Viewport
     // ---------------------------------------------------------------------------
     
+    auto viewport = std::make_shared<Viewport>();
+    app.viewports_.push_back(viewport);
+    
+    app.camera_ = viewport->scene_->camera_;
+    app.camera_->position_.z = 12.0f;
+
+    viewport->AddEffect("../Shaders/Effects/Noop.fs");
+    // viewport->AddEffect("../Shaders/Effects/Remove.fs");
+    // viewport->AddEffect("../Shaders/Effects/Inversion.fs");
+    
+    // Application CONTENT
+    // ---------------------------------------------------------------------------
+
     unsigned int diffuseBricks = app.resourceManager_.LoadTexture("../Assets/bricks_diffuse.jpg");
     unsigned int specularBricks = app.resourceManager_.LoadTexture("../Assets/bricks_specular.jpg");
     unsigned int emissiveBricks = app.resourceManager_.LoadTexture("../Assets/bricks_emissive_green.png");
@@ -48,8 +61,8 @@ int main()
     material->lightPosition_ = vec3(0.5f, 0.0f, 5.0f);
     auto cube2 = std::make_shared<Cube>(material);
     cube2->scale_ *= 2;
-    app.AddEntity(cube2);
-    cube2.reset();
+    viewport->scene_->AddEntity(cube2);
+
 
     material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));    
     material->diffuse_ = diffuseBricks;
@@ -61,18 +74,17 @@ int main()
     cube4->position_ = ONE*2.0f;
     cube4->scale_*= 2;
     cube4->material_->alpha_ = 0.5;
-    app.AddEntity(cube4);
-    cube4.reset();
+    viewport->scene_->AddEntity(cube4);
 
+    // Reset POINTERS
+    // ---------------------------------------------------------------------------
+    
     vp.reset();
     material.reset();
-    
-    app.camera_->position_.z = 12.0f;
+    cube2.reset();
+    cube4.reset();        
+    viewport.reset();
 
-    app.viewport_->AddEffect("../Shaders/Effects/Noop.fs");
-    // app.viewport_->AddEffect("../Shaders/Effects/Remove.fs");
-    // app.viewport_->AddEffect("../Shaders/Effects/Inversion.fs");
-    
     // Application loop
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())

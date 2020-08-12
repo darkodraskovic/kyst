@@ -11,8 +11,11 @@ using namespace glm;
 class MazeGen
 {
 public:
-    MazeGen();
+    MazeGen(Scene* scene);
     std::shared_ptr<Mover> CreateMaze(int width, int height, const vec3& color);
+
+private:
+    Scene* scene_;
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <memory>
 #include "Application.h"
 #include "Camera.h"
 #include "Scene.h"
@@ -23,6 +24,7 @@ void Scene::Update(float deltaTime)
     // add entities
     for (auto it = entitiesToCreate_.begin(); it != entitiesToCreate_.end(); ++it) {
         entities_.push_back(*it);
+        (*it)->scene_ = this;
     }
     entitiesToCreate_.clear();
     

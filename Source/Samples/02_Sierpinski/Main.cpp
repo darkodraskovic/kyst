@@ -18,18 +18,29 @@ int main()
         return -1;
     };
 
-    app.scene_->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
-    
     // glEnable(GL_LINE_SMOOTH);
     glLineWidth(2.0f);
     
-    app.camera_->position_.z = 7.0f;
-    app.camera_->position_.y = 1.0f;
-
-    // Application CONTENT
+    // Viewport
     // ---------------------------------------------------------------------------
     
-    auto eFactory = new EntityFactory();
+    auto viewport = std::make_shared<Viewport>();
+    app.viewports_.push_back(viewport);
+    
+    viewport->scene_->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
+    // viewport->AddEffect("../Shaders/Effects/Noop.fs");
+    // viewport->AddEffect("../Shaders/Effects/Inversion.fs");
+    // viewport->AddEffect("../Shaders/Effects/Remove.fs");
+    
+    app.camera_ = viewport->scene_->camera_;
+    app.camera_->position_.z = 7.0f;
+    app.camera_->position_.y = 1.0f;
+    
+    // Application CONTENT
+    // ---------------------------------------------------------------------------
+
+    
+    auto eFactory = new EntityFactory(viewport->scene_.get());
     
     eFactory->color1_ = ShapeUtils::Hex2rgb("E84A5F");
     eFactory->color2_ = ShapeUtils::Hex2rgb("FF847C");
@@ -39,9 +50,10 @@ int main()
     // eFactory->CreateTriGasket(4, vec2(-limit, limit), true, true);
     eFactory->CreateSnowflakeEmitter();
 
-    // app.AddEffect("../Shaders/Effects/Noop.fs");
-    // app.AddEffect("../Shaders/Effects/Inversion.fs");
-    // app.AddEffect("../Shaders/Effects/Remove.fs");
+    // Reset POINTERS
+    // ---------------------------------------------------------------------------
+
+    viewport.reset();
 
     // Application loop
     // ---------------------------------------------------------------------------
