@@ -1,6 +1,5 @@
 #include <algorithm>
-#include <memory>
-#include "Application.h"
+#include "Entity.h"
 #include "Camera.h"
 #include "Scene.h"
 

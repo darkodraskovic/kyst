@@ -1,8 +1,6 @@
 #include <glm/fwd.hpp>
 #include <glm/gtc/random.hpp>
 
-#include "Application.h"
-#include "Particle.h"
 #include "ParticleEmitter.h"
 
 ParticleEmitter::ParticleEmitter()
