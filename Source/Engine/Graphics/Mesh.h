@@ -1,9 +1,11 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include <glm/fwd.hpp>
+#include <glad/glad.h>
+#include <glm/glm.hpp>
 #include <vector>
-#include "Material.h"
+
+using namespace glm;
 
 class Mesh
 {

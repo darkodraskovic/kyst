@@ -17,7 +17,7 @@ Material::Material(const char* vertexPath, const char* fragmentPath)
     shader_ =  std::make_shared<Shader>(vertexPath, fragmentPath);
 };
 
-void Material::Update(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+void Material::Update(const mat4& model, const mat4& view, const mat4& projection)
 {
     shader_->Use();
 

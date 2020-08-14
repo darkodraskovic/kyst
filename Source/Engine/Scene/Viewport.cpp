@@ -1,5 +1,4 @@
 #include "Viewport.h"
-#include "Application.h"
 #include "Scene.h"
 
 const std::string Viewport::vertexPath_ = "../Shaders/Viewport/Viewport.vs";

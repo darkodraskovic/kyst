@@ -1,4 +1,3 @@
-#include <glm/fwd.hpp>
 #include <glm/gtc/random.hpp>
 
 #include "ParticleEmitter.h"

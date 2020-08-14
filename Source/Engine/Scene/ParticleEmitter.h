@@ -3,7 +3,6 @@
 
 #include <glm/glm.hpp>
 
-#include "Entity.h"
 #include "Particle.h"
 #include "VecConsts.h"
 

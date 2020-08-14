@@ -1,6 +1,4 @@
 #include "Entity.h"
-#include "Material.h"
-#include "Mesh.h"
 #include "VecConsts.h"
 
 using namespace VecConsts;

@@ -1,4 +1,3 @@
-#include <math.h>
 #include "VecConsts.h"
 #include "Mover.h"
 

@@ -1,6 +1,6 @@
+#include <iostream>
+#include <glad/glad.h>
 #include "Framebuffer.h"
-
-const string Framebuffer::vertexPath_ = "../Shaders/Framebuffer/Framebuffer.vs";
 
 Framebuffer::Framebuffer(unsigned int width, unsigned int height)
 {

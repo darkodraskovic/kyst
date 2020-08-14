@@ -2,7 +2,6 @@
 #define PHONG_H
 
 #include "Material.h"
-#include <glm/fwd.hpp>
 #include "VecConsts.h"
 
 using namespace glm;

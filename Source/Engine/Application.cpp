@@ -1,11 +1,4 @@
-#include <iostream>
-#include <algorithm>
-#include <memory>
-#include <functional>
-
 #include "Application.h"
-#include "Camera.h"
-#include "Input.h"
 #include "Viewport.h"
 
 using namespace glm;
@@ -61,7 +54,6 @@ int Application::Init()
     glfwSetWindowPos(window_, windowPosition_.x, windowPosition_.y);
     
     glfwMakeContextCurrent(window_);
-    using namespace std::placeholders;
     glfwSetFramebufferSizeCallback(window_, FramebufferSizeCallback);
 
     glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

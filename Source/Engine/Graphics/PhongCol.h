@@ -2,7 +2,6 @@
 #define PHONG_COL_H
 
 #include "Phong.h"
-#include <glm/fwd.hpp>
 
 using namespace glm;
 

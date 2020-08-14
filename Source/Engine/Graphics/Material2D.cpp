@@ -17,7 +17,7 @@ Material2D::Material2D(std::shared_ptr<Shader> shader) : Material(shader)
 {
 }
 
-void Material2D::Update(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+void Material2D::Update(const mat4& model, const mat4& view, const mat4& projection)
 {
     Material::Update(model, view, projection);
 

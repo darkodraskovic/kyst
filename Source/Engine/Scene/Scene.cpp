@@ -1,6 +1,5 @@
 #include <algorithm>
 #include "Entity.h"
-#include "Camera.h"
 #include "Scene.h"
 
 Scene::Scene(std::shared_ptr<Camera> camera) : camera_(camera)

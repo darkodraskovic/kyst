@@ -1,5 +1,5 @@
+#include <iostream>
 #include "Mesh.h"
-#include "Shader.h"
 
 Mesh::Mesh()
 {

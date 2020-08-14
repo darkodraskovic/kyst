@@ -1,9 +1,6 @@
 #ifndef FRAMBUFFER_H
 #define FRAMBUFFER_H
 
-#include "Mesh.h"
-#include "Shader.h"
-
 class Framebuffer
 {
 public:
@@ -16,12 +13,12 @@ public:
     void Bind();
     static void Unbind();
 
+private:
     unsigned int framebuffer_;
     unsigned int colorbuffer_;
     unsigned int renderbuffer_;
 
-private:
-    static const std::string vertexPath_;
+    friend class Viewport;
 };
 
 #endif /* FRAMBUFFER_H */

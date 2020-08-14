@@ -2,6 +2,7 @@
 #define VIEWPORT_H
 
 #include "Application.h"
+#include "Shader.h"
 #include "Mesh.h"
 #include "Framebuffer.h"
 
