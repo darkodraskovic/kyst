@@ -17,6 +17,11 @@ Entity::Entity(std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material)
     material_ = material;
 }
 
+Scene* Entity::GetScene()
+{
+    return scene_;
+}
+
 void Entity::Update(float deltaTime)
 {
 }

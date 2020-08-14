@@ -13,7 +13,8 @@ public:
     
     virtual void Update(float deltaTime);
     virtual void Draw(const glm::mat4& uView, const glm::mat4& uProjection);
-
+    Scene* GetScene();
+    
     std::shared_ptr<Material> material_;
     std::shared_ptr<Mesh> mesh_;
 
@@ -25,7 +26,9 @@ public:
 
     bool remove_ = false;
 
+private:    
     Scene* scene_;
+    friend class Scene;
 };
 
 #endif

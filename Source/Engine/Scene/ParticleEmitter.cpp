@@ -14,7 +14,7 @@ void ParticleEmitter::CreateParticle()
     particle->material_ = material_;
     particle->mesh_ = mesh_;
     InitParticle(particle.get());
-    scene_->AddEntity(particle);
+    GetScene()->AddEntity(particle);
 }
 
 void ParticleEmitter::InitParticle(Particle* particle)

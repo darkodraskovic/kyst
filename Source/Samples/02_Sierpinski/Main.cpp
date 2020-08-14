@@ -2,6 +2,7 @@
 #include "VecConsts.h"
 #include "EntityFactory.h"
 #include "ShapeUtils.h"
+#include "Viewport.h"
 
 using namespace VecConsts;
 
@@ -25,14 +26,14 @@ int main()
     // ---------------------------------------------------------------------------
     
     auto viewport = std::make_shared<Viewport>();
-    app.viewports_.push_back(viewport);
+    app.AddViewport(viewport);
     
-    viewport->scene_->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
+    viewport->GetScene()->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
     // viewport->AddEffect("../Shaders/Effects/Noop.fs");
     // viewport->AddEffect("../Shaders/Effects/Inversion.fs");
     // viewport->AddEffect("../Shaders/Effects/Remove.fs");
     
-    app.camera_ = viewport->scene_->camera_;
+    app.camera_ = viewport->GetScene()->camera_;
     app.camera_->position_.z = 7.0f;
     app.camera_->position_.y = 1.0f;
     
@@ -40,7 +41,7 @@ int main()
     // ---------------------------------------------------------------------------
 
     
-    auto eFactory = new EntityFactory(viewport->scene_.get());
+    auto eFactory = new EntityFactory(viewport->GetScene());
     
     eFactory->color1_ = ShapeUtils::Hex2rgb("E84A5F");
     eFactory->color2_ = ShapeUtils::Hex2rgb("FF847C");

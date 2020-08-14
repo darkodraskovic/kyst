@@ -5,8 +5,6 @@
 
 #include "Application.h"
 #include "Camera.h"
-#include "Entity.h"
-#include "Framebuffer.h"
 #include "Input.h"
 #include "Viewport.h"
 
@@ -116,6 +114,12 @@ void Application::Update()
     // -------------------------------------------------------------------------------
     glfwSwapBuffers(window_);
     glfwPollEvents();
+}
+
+void Application::AddViewport(std::shared_ptr<Viewport> viewport)
+{
+    viewports_.push_back(viewport);
+    viewport->application_ = this;
 }
 
 bool Application::ShouldClose()

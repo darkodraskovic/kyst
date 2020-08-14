@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "MazeGen.h"
 #include "ShapeUtils.h"
+#include "Viewport.h"
 
 using namespace VecConsts;
 
@@ -25,11 +26,11 @@ int main()
     // ---------------------------------------------------------------------------
     
     auto viewport = std::make_shared<Viewport>();
-    app.viewports_.push_back(viewport);
+    app.AddViewport(viewport);
 
-    viewport->scene_->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
+    viewport->GetScene()->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
     
-    app.camera_ = viewport->scene_->camera_;
+    app.camera_ = viewport->GetScene()->camera_;
     app.camera_->position_.z = 9.0f;
     app.camera_->position_.y = 1.0f;
 
@@ -45,7 +46,7 @@ int main()
     auto color2_ = ShapeUtils::Hex2rgb("FF847C");
     auto color3_ = ShapeUtils::Hex2rgb("FECEAB");
     
-    auto mazeGen = new MazeGen(viewport->scene_.get());
+    auto mazeGen = new MazeGen(viewport->GetScene());
     mazeGen->CreateMaze(12, 8, color1_);
     auto maze = mazeGen->CreateMaze(6, 18, color2_);
     maze->position_.x = -2;

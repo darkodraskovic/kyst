@@ -25,9 +25,9 @@ int main()
     // ---------------------------------------------------------------------------
     
     auto viewport = std::make_shared<Viewport>();
-    app.viewports_.push_back(viewport);
+    app.AddViewport(viewport);
     
-    app.camera_ = viewport->scene_->camera_;
+    app.camera_ = viewport->GetScene()->camera_;
     app.camera_->position_.z = 12.0f;
 
     viewport->AddEffect("../Shaders/Effects/Noop.fs");
@@ -61,7 +61,7 @@ int main()
     material->lightPosition_ = vec3(0.5f, 0.0f, 5.0f);
     auto cube2 = std::make_shared<Cube>(material);
     cube2->scale_ *= 2;
-    viewport->scene_->AddEntity(cube2);
+    viewport->GetScene()->AddEntity(cube2);
 
 
     material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));    
@@ -74,7 +74,7 @@ int main()
     cube4->position_ = ONE*2.0f;
     cube4->scale_*= 2;
     cube4->material_->alpha_ = 0.5;
-    viewport->scene_->AddEntity(cube4);
+    viewport->GetScene()->AddEntity(cube4);
 
     // Reset POINTERS
     // ---------------------------------------------------------------------------

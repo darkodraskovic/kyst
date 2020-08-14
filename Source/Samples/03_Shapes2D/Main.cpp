@@ -4,6 +4,7 @@
 #include "Material2D.h"
 #include "Shape2DFactory.h"
 #include "VecConsts.h"
+#include "Viewport.h"
 
 using namespace std;
 using namespace VecConsts;
@@ -26,9 +27,9 @@ int main()
     // ---------------------------------------------------------------------------
 
     auto viewport = std::make_shared<Viewport>();
-    app.viewports_.push_back(viewport);
+    app.AddViewport(viewport);
     
-    app.camera_ = viewport->scene_->camera_;
+    app.camera_ = viewport->GetScene()->camera_;
     app.camera_->position_.z = 4.0f;
 
     viewport->AddEffect("../Shaders/Effects/Noop.fs");
@@ -58,14 +59,14 @@ int main()
 
     // rect entity 1
     auto entity = make_shared<Entity>(mesh, material1);
-    viewport->scene_->AddEntity(entity);
+    viewport->GetScene()->AddEntity(entity);
 
     // rect entity 2
     entity = make_shared<Entity>(mesh, material2);
     entity->position_ = (LEFT + DOWN) / 4.f;
     entity->position_.z = 0.25;
     entity->rotation_.y = pi<float>() / 4;
-    viewport->scene_->AddEntity(entity);
+    viewport->GetScene()->AddEntity(entity);
 
     // line entity 2
     mesh = Shape2DFactory::Line(LEFT, RIGHT);
@@ -74,14 +75,14 @@ int main()
     mesh->Generate(material2->shader_->id_);
     entity = make_shared<Entity>(mesh, material3);
     entity->position_.z = 1;
-    viewport->scene_->AddEntity(entity);
+    viewport->GetScene()->AddEntity(entity);
 
     // polygons
     vector<vec3> points = {LEFT, DOWN, RIGHT, UP};
     mesh = Shape2DFactory::LinePolygon(ZERO, points);
     mesh->Generate();
     entity = make_shared<Entity>(mesh, material4);
-    viewport->scene_->AddEntity(entity);
+    viewport->GetScene()->AddEntity(entity);
     
     mesh = Shape2DFactory::SolidPolygon(ZERO, points);
     mesh->colors_ = {GREEN, BLUE, RED, BLUE};
@@ -89,7 +90,7 @@ int main()
     entity = make_shared<Entity>(mesh, material5);
     entity->scale_ *= 0.33f;
     entity->position_.z = 0.5;
-    viewport->scene_->AddEntity(entity);
+    viewport->GetScene()->AddEntity(entity);
     
     // Reset POINTERS
     // ---------------------------------------------------------------------------

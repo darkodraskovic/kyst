@@ -2,6 +2,7 @@
 #include "Material2D.h"
 #include "Shape2DFactory.h"
 #include "VecConsts.h"
+#include "Viewport.h"
 #include <glm/fwd.hpp>
 
 using namespace VecConsts;
@@ -21,9 +22,9 @@ int main()
     // ---------------------------------------------------------------------------
     
     auto viewport = std::make_shared<Viewport>();
-    app.viewports_.push_back(viewport);
+    app.AddViewport(viewport);
     
-    app.camera_ = viewport->scene_->camera_;
+    app.camera_ = viewport->GetScene()->camera_;
     app.camera_->position_.z = 3.0f;
     
     // viewport->AddEffect("../Shaders/Effects/Noop.fs");
@@ -42,7 +43,7 @@ int main()
 
     // entity
     auto entity = make_shared<Entity>(mesh, material);
-    viewport->scene_->AddEntity(entity);
+    viewport->GetScene()->AddEntity(entity);
 
     // Reset POINTERS
     // ---------------------------------------------------------------------------

@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Camera.h"
+#include "Viewport.h"
 
 class Entity;
 
@@ -23,6 +24,10 @@ private:
     std::vector<std::shared_ptr<Entity>> entities_;    
     std::vector<std::shared_ptr<Entity>> entitiesToCreate_;
     std::vector<std::shared_ptr<Entity>> alphaEntities_;
+
+    Viewport* viewport_;
+    
+    friend class Viewport;
 };
 
 

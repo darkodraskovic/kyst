@@ -1,30 +1,40 @@
 #include "Viewport.h"
 #include "Application.h"
+#include "Scene.h"
 
 const std::string Viewport::vertexPath_ = "../Shaders/Viewport/Viewport.vs";
 const std::string Viewport::fragmentPath_ = "../Shaders/Viewport/Viewport.fs";
 
 Viewport::Viewport()
-    : width_(Application::Instance().windowSize_.x), height_(Application::Instance().windowSize_.y)
 {
     scene_ = std::make_shared<Scene>(std::make_shared<Camera>());
-    GenQuad(width_, height_);
-    GenBuffers(width_, height_);
+    Init(Application::Instance().windowSize_.x, Application::Instance().windowSize_.y);
 }
 
 Viewport::Viewport(unsigned int width, unsigned int height)
-    : width_(width), height_(height)
 {
     scene_ = std::make_shared<Scene>(std::make_shared<Camera>());
+    Init(width, height);
+}
+
+Viewport::Viewport(std::shared_ptr<Scene> scene, unsigned int width, unsigned int height)
+    : scene_(scene)
+{
+    Init(width, height);
+}
+
+void Viewport::Init(unsigned int width, unsigned int height)
+{
+    width_ = width;
+    height_ = height;
+    scene_->viewport_ = this;
     GenQuad(width, height);
     GenBuffers(width, height);
 }
 
-Viewport::Viewport(std::shared_ptr<Scene> scene, unsigned int width, unsigned int height)
-    : scene_(scene), width_(width), height_(height)
+Scene* Viewport::GetScene()
 {
-    GenQuad(width, height);
-    GenBuffers(width, height);
+    return scene_.get();
 }
 
 void Viewport::GenBuffers(float width, float height)
