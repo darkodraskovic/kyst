@@ -1,7 +1,5 @@
 #include "Camera.h"
-
-using namespace glm;
-using namespace CameraDefaults;
+#include <glm/gtc/matrix_transform.hpp>
 
 // Constructor with vectors
 Camera::Camera(vec3 position, vec3 up, float yaw, float pitch) :
@@ -51,7 +49,7 @@ void Camera::ProcessKeyboard(CameraMovement direction, float deltaTime)
 }
 
 // Processes input received from a mouse input system. Expects the offset value in both the x and y direction.
-void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)
+void Camera::ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch)
 {
     xoffset *= mouseSensitivity_;
     yoffset *= mouseSensitivity_;

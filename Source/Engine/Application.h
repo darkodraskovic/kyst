@@ -20,38 +20,43 @@ class Viewport;
 class Application
 {
 public:
+    Application();
+        
     int Init();
     void ProcessInput(float deltaTime);
     void Update();
     bool ShouldClose();
     void Terminate();
     Input* GetInput();
-    
-    static Application& Instance();
+
+    static void SetWindowSize(const uvec2& size);
+    static const uvec2& GetWindowSize();
+    static void SetWindowPosition(const ivec2& size);
+    static const ivec2& GetWindowPosition();
 
     ResourceManager resourceManager_;
   
     GLFWwindow* window_;
-    ivec2 windowPosition_ = vec2(0,0);
-    uvec2 windowSize_ = vec2(1152,720);
 
     float deltaTime_ = 0.0f;
     float lastFrame_ = 0.0f;
 
+    Viewport* AddViewport();
     void AddViewport(std::shared_ptr<Viewport> viewport);
     std::shared_ptr<Camera> camera_;
 
 private:
-    Application();
-    Input* input_;
-    
     friend void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
     friend void MouseCallback(GLFWwindow* window, double posX, double posY);
     friend void ScrollCallback(GLFWwindow* window, double offsetX, double offsetY);
 
-    std::vector<std::shared_ptr<Viewport>> viewports_;    
+    Input* input_;    
+    std::vector<std::shared_ptr<Viewport>> viewports_;
+    
     static bool processMouseMovement_;
     static bool processMouseScroll_;
+    static uvec2 windowSize_;
+    static ivec2 windowPosition_;
 };
 
 #endif

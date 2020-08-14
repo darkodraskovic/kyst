@@ -13,7 +13,7 @@ int main()
 {
     // Application init
     // ---------------------------------------------------------------------------
-    Application& app = Application::Instance();
+    Application app;
 
     if (app.Init() < 0)
     {
@@ -26,7 +26,7 @@ int main()
     // Viewport
     // ---------------------------------------------------------------------------
 
-    auto viewport = std::make_shared<Viewport>();
+    auto viewport = std::make_shared<Viewport>(app.GetWindowSize());
     app.AddViewport(viewport);
     
     app.camera_ = viewport->GetScene()->camera_;

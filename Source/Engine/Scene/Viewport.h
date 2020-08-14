@@ -10,14 +10,13 @@ class Scene;
 class Viewport
 {
 public:
-    Viewport();    
-    Viewport(unsigned int width, unsigned int height);
-    Viewport(std::shared_ptr<Scene> scene_, unsigned int width, unsigned int height);
+    Viewport(const uvec2& size);
+    Viewport(const uvec2& size, std::shared_ptr<Scene> scene_);
     Scene* GetScene();
-    void Init(unsigned int width, unsigned int height);
     void Update(float deltaTime);
     void Render();
     void Draw();
+    unsigned int GetTexture();
     void AddEffect(const char* fragmentPath);
 
     vec3 position_ = vec3(0.f);
@@ -26,6 +25,7 @@ public:
     static const std::string fragmentPath_;
 
 private:
+    void Init(unsigned int width, unsigned int height);    
     void GenBuffers(float width, float height);
     void GenQuad(float width, float height);
 

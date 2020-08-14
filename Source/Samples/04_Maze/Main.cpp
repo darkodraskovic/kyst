@@ -11,7 +11,7 @@ int main()
     // Application init
     // ---------------------------------------------------------------------------    
 
-    Application& app = Application::Instance();
+    Application app;
     
     if (app.Init() < 0)
     {
@@ -25,7 +25,7 @@ int main()
     // Viewport
     // ---------------------------------------------------------------------------
     
-    auto viewport = std::make_shared<Viewport>();
+    auto viewport = std::make_shared<Viewport>(app.GetWindowSize());
     app.AddViewport(viewport);
 
     viewport->GetScene()->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);

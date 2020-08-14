@@ -14,7 +14,7 @@ int main()
 {
     // Application init
     // ---------------------------------------------------------------------------    
-    Application app = Application::Instance();
+    Application app;
     if (app.Init() < 0)
     {
         std::cout << "Failed to create an OpenGL app" << std::endl;
@@ -24,8 +24,7 @@ int main()
     // Viewport
     // ---------------------------------------------------------------------------
     
-    auto viewport = std::make_shared<Viewport>();
-    app.AddViewport(viewport);
+    auto viewport = app.AddViewport();
     
     app.camera_ = viewport->GetScene()->camera_;
     app.camera_->position_.z = 12.0f;
@@ -47,14 +46,13 @@ int main()
     auto litTexShader = std::shared_ptr<Shader>(
         new Shader( "../Shaders/LitTex.vs", "../Shaders/LitTex.fs"));
 
-    auto vp = std::make_shared<Viewport>(640, 640);
+    auto vp = std::make_shared<Viewport>(uvec2(640, 640));
     vp->AddEffect("../Shaders/Textures/Tex2D.fs");
     vp->AddEffect("../Shaders/Effects/Inversion.fs");
-    vp->Render();
     
     auto material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));
     // material->diffuse_ = diffuseMetal;
-    material->diffuse_ = vp->texture_;
+    material->diffuse_ = vp->GetTexture();
     material->emissive_ = emissiveMetal;
     material->specular_ = specularMetal;
     material->shininess_ = 1024.0f;
@@ -83,7 +81,6 @@ int main()
     material.reset();
     cube2.reset();
     cube4.reset();        
-    viewport.reset();
 
     // Application loop
     // ---------------------------------------------------------------------------
@@ -99,3 +96,4 @@ int main()
 
     return 0;
 }
+

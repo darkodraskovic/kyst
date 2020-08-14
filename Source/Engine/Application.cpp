@@ -15,11 +15,29 @@ bool Application::processMouseScroll_ = false;
 
 Application::Application() {};
 
-Application& Application::Instance()
+uvec2 Application::windowSize_ = vec2(1152,720);
+ivec2 Application::windowPosition_ = vec2(0, 0);
+
+void Application::SetWindowSize(const uvec2& size)
 {
-    static Application* instance = new Application();
-    return *instance;
-}    
+    windowSize_ = windowSize_;
+}
+    
+const uvec2& Application::GetWindowSize()
+{
+    return windowSize_;
+}
+
+void Application::SetWindowPosition(const ivec2& position)
+{
+    windowPosition_ = position;
+}
+    
+const ivec2& Application::GetWindowPosition()
+{
+    return windowPosition_;
+}
+
 
 int Application::Init()
 {
@@ -104,16 +122,20 @@ void Application::Update()
     deltaTime_ = currentFrame - lastFrame_;
     lastFrame_ = currentFrame;
 
+    glfwPollEvents();    
     ProcessInput(deltaTime_);
 
     for(auto it = viewports_.begin(); it != viewports_.end(); ++it) {
         (*it)->Update(deltaTime_);
     }
-    
-    // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-    // -------------------------------------------------------------------------------
     glfwSwapBuffers(window_);
-    glfwPollEvents();
+}
+
+Viewport* Application::AddViewport()
+{
+    auto viewport = std::make_shared<Viewport>(GetWindowSize());
+    AddViewport(viewport);
+    return viewport.get();
 }
 
 void Application::AddViewport(std::shared_ptr<Viewport> viewport)

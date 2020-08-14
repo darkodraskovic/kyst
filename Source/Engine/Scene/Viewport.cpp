@@ -5,22 +5,16 @@
 const std::string Viewport::vertexPath_ = "../Shaders/Viewport/Viewport.vs";
 const std::string Viewport::fragmentPath_ = "../Shaders/Viewport/Viewport.fs";
 
-Viewport::Viewport()
+Viewport::Viewport(const uvec2& size)
 {
     scene_ = std::make_shared<Scene>(std::make_shared<Camera>());
-    Init(Application::Instance().windowSize_.x, Application::Instance().windowSize_.y);
+    Init(size.x, size.y);
 }
 
-Viewport::Viewport(unsigned int width, unsigned int height)
-{
-    scene_ = std::make_shared<Scene>(std::make_shared<Camera>());
-    Init(width, height);
-}
-
-Viewport::Viewport(std::shared_ptr<Scene> scene, unsigned int width, unsigned int height)
+Viewport::Viewport(const uvec2& size, std::shared_ptr<Scene> scene)
     : scene_(scene)
 {
-    Init(width, height);
+    Init(size.x, size.y);
 }
 
 void Viewport::Init(unsigned int width, unsigned int height)
@@ -49,8 +43,8 @@ void Viewport::GenQuad(float width, float height)
     quad_ = std::make_shared<Mesh>();
     quad_->mode_ = GL_TRIANGLE_FAN;
 
-    float right = -1 + 2 * (width / Application::Instance().windowSize_.x);
-    float up = -1 + 2 * (height / Application::Instance().windowSize_.y);
+    float right = -1 + 2 * (width / Application::GetWindowSize().x);
+    float up = -1 + 2 * (height / Application::GetWindowSize().y);
 
     quad_->positions_.push_back(vec3(-1, -1, 0));
     quad_->positions_.push_back(vec3(right, -1, 0));
@@ -115,4 +109,10 @@ void Viewport::Update(float deltaTime)
     scene_->Update(deltaTime);
     Render();
     Draw();
+}
+
+unsigned int Viewport::GetTexture()
+{
+    Render();
+    return texture_;
 }
