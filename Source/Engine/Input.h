@@ -16,7 +16,6 @@ public:
 
     float lastMouseX_, lastMouseY_;
     float mouseOffsetX_, mouseOffsetY_;
-    bool firstMouse_ = true;
 
     void ProcessMouseMovement();
     bool GetKey(unsigned int key);

@@ -26,8 +26,7 @@ int main()
     
     auto viewport = app.AddViewport();
     
-    app.camera_ = viewport->GetScene()->camera_;
-    app.camera_->position_.z = 12.0f;
+    viewport->GetScene()->camera_->position_.z = 12.0f;
 
     viewport->AddEffect("../Shaders/Effects/Noop.fs");
     // viewport->AddEffect("../Shaders/Effects/Remove.fs");
@@ -82,10 +81,13 @@ int main()
     cube2.reset();
     cube4.reset();        
 
+
+    viewport->GetScene()->camera_->LookAt(ZERO);
     // Application loop
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())
     {
+        viewport->GetScene()->camera_->ProcessInput(app.GetInput(), app.GetDeltaTime());
         app.Update();
     }
 

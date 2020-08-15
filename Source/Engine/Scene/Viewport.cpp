@@ -25,10 +25,9 @@ void Viewport::Init(unsigned int width, unsigned int height)
     GenBuffers(width, height);
 }
 
-Scene* Viewport::GetScene()
-{
-    return scene_.get();
-}
+Application* Viewport::GetApplication() { return application_;}
+
+Scene* Viewport::GetScene() { return scene_.get(); }
 
 void Viewport::GenBuffers(float width, float height)
 {

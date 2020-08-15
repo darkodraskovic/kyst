@@ -1,11 +1,22 @@
 #include "Application.h"
+#include "Entity.h"
 #include "Material2D.h"
 #include "Shape2DFactory.h"
 #include "VecConsts.h"
 #include "Viewport.h"
-#include <glm/fwd.hpp>
+#include <memory>
 
 using namespace VecConsts;
+
+shared_ptr<Entity> GenEntity(const string& shader, const vec3& position)
+{
+    auto material = make_shared<Material2D>(shader);
+    auto mesh = Shape2DFactory::SolidRect(LEFT + DOWN, glm::vec2(2, 2));
+    mesh->Generate();
+    auto entity = make_shared<Entity>(mesh, material);
+    entity->position_ = position;
+    return entity;
+}
 
 int main()
 {
@@ -24,8 +35,8 @@ int main()
     auto viewport = std::make_shared<Viewport>(app.GetWindowSize());
     app.AddViewport(viewport);
     
-    app.camera_ = viewport->GetScene()->camera_;
-    app.camera_->position_.z = 3.0f;
+    auto cam =  viewport->GetScene()->camera_;
+    cam->position_.z = 6.0f;
     
     // viewport->AddEffect("../Shaders/Effects/Noop.fs");
     // viewport->AddEffect("../Shaders/Effects/Inversion.fs");
@@ -34,29 +45,21 @@ int main()
     // Application CONTENT
     // ---------------------------------------------------------------------------
 
-    // material
-    auto material = make_shared<Material2D>("../Shaders/GenArt/01.fs");
-
-    // mesh
-    auto mesh = Shape2DFactory::SolidRect(LEFT + DOWN, glm::vec2(2, 2));
-    mesh->Generate();
-
-    // entity
-    auto entity = make_shared<Entity>(mesh, material);
-    viewport->GetScene()->AddEntity(entity);
+    viewport->GetScene()->AddEntity(GenEntity("../Shaders/GenArt/01.fs", LEFT + DOWN));
+    viewport->GetScene()->AddEntity(GenEntity("../Shaders/GenArt/02.fs", RIGHT + DOWN));
+    viewport->GetScene()->AddEntity(GenEntity("../Shaders/GenArt/03.fs", RIGHT + UP));
 
     // Reset POINTERS
     // ---------------------------------------------------------------------------
     
-    material.reset();
-    mesh.reset();
-    entity.reset();
     viewport.reset();
 
+    cam->LookAt(ZERO);
     // Application loop
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())
     {
+        cam->ProcessInput(app.GetInput(), app.GetDeltaTime());
         app.Update();
     }
 

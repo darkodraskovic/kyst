@@ -25,14 +25,13 @@ int main()
     // Viewport
     // ---------------------------------------------------------------------------
     
-    auto viewport = std::make_shared<Viewport>(app.GetWindowSize());
-    app.AddViewport(viewport);
+    auto viewport = app.AddViewport();
 
     viewport->GetScene()->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
     
-    app.camera_ = viewport->GetScene()->camera_;
-    app.camera_->position_.z = 9.0f;
-    app.camera_->position_.y = 1.0f;
+    auto cam = viewport->GetScene()->camera_;
+    cam->position_.z = 9.0f;
+    cam->position_.y = 1.0f;
 
     viewport->AddEffect("../Shaders/Effects/Noop.fs");
     viewport->AddEffect("../Shaders/Effects/Inversion.fs");
@@ -53,18 +52,15 @@ int main()
     maze = mazeGen->CreateMaze(20, 6, color3_);
     maze->position_.y = -1.75;
     maze->position_.x = -2;
-
-    // Reset POINTERS
-    // ---------------------------------------------------------------------------
-    
     maze.reset();    
-    viewport.reset();
 
+    cam->LookAt(ZERO + UP);
     // Application loop
     // ---------------------------------------------------------------------------
     int i = 0;
     while (!app.ShouldClose())
     {
+        cam->ProcessInput(app.GetInput(), app.GetDeltaTime());
         app.Update();
     }
 

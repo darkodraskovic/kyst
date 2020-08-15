@@ -14,6 +14,7 @@ public:
     Viewport(const uvec2& size);
     Viewport(const uvec2& size, std::shared_ptr<Scene> scene_);
     Scene* GetScene();
+    Application* GetApplication();
     void Update(float deltaTime);
     void Render();
     void Draw();

@@ -1,6 +1,7 @@
 #include <glm/gtc/random.hpp>
 
 #include "ParticleEmitter.h"
+#include "Scene.h"
 
 ParticleEmitter::ParticleEmitter()
 {

@@ -25,17 +25,15 @@ int main()
     // Viewport
     // ---------------------------------------------------------------------------
     
-    auto viewport = std::make_shared<Viewport>(app.GetWindowSize());
-    app.AddViewport(viewport);
+    auto viewport = app.AddViewport();
     
     viewport->GetScene()->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
     // viewport->AddEffect("../Shaders/Effects/Noop.fs");
     // viewport->AddEffect("../Shaders/Effects/Inversion.fs");
     // viewport->AddEffect("../Shaders/Effects/Remove.fs");
-    
-    app.camera_ = viewport->GetScene()->camera_;
-    app.camera_->position_.z = 7.0f;
-    app.camera_->position_.y = 1.0f;
+
+    viewport->GetScene()->camera_->position_.z = 7.0f;
+    viewport->GetScene()->camera_->position_.y = 5.0f;
     
     // Application CONTENT
     // ---------------------------------------------------------------------------
@@ -51,16 +49,13 @@ int main()
     // eFactory->CreateTriGasket(4, vec2(-limit, limit), true, true);
     eFactory->CreateSnowflakeEmitter();
 
-    // Reset POINTERS
-    // ---------------------------------------------------------------------------
-
-    viewport.reset();
-
+    viewport->GetScene()->camera_->LookAt(ZERO);  
     // Application loop
     // ---------------------------------------------------------------------------
     int i = 0;
     while (!app.ShouldClose())
     {
+        viewport->GetScene()->camera_->ProcessInput(app.GetInput(), app.GetDeltaTime());
         app.Update();
     }
 

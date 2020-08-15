@@ -13,11 +13,6 @@ Input::Input(GLFWwindow *window)
 void Input::ProcessMouseMovement()
 {
     using namespace MouseData;
-    if (firstMouse_) {
-        lastMouseX_ = positionX;
-        lastMouseY_ = positionY;
-        firstMouse_ = false;
-    }
 
     mouseOffsetX_ = positionX - lastMouseX_;
     mouseOffsetY_ = positionY - lastMouseY_;

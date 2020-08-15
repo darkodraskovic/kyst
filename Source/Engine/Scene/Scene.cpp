@@ -12,6 +12,11 @@ void Scene::AddEntity(std::shared_ptr<Entity> entity)
     entitiesToCreate_.push_back(entity);
 }
 
+Viewport *Scene::GetViewport()
+{
+    return viewport_;
+}    
+
 void Scene::Update(float deltaTime)
 {
     // remove entities

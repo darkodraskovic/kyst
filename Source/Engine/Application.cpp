@@ -1,10 +1,10 @@
 #include "Application.h"
+#include "Input.h"
 #include "Viewport.h"
+#include <GLFW/glfw3.h>
+#include <iostream>
 
 using namespace glm;
-
-bool Application::processMouseMovement_ = false;
-bool Application::processMouseScroll_ = false;
 
 Application::Application() {};
 
@@ -50,13 +50,12 @@ int Application::Init()
         glfwTerminate();
         return -1;
     }
-
-    glfwSetWindowPos(window_, windowPosition_.x, windowPosition_.y);
-    
     glfwMakeContextCurrent(window_);
-    glfwSetFramebufferSizeCallback(window_, FramebufferSizeCallback);
-
+    
+    glfwSetWindowPos(window_, windowPosition_.x, windowPosition_.y);
     glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    glfwSetFramebufferSizeCallback(window_, FramebufferSizeCallback);
     glfwSetCursorPosCallback(window_, MouseCallback);
     glfwSetScrollCallback(window_, ScrollCallback);
     
@@ -76,10 +75,12 @@ int Application::Init()
 
     // configure input and mouse position
     // -----------------------------
+    double x, y;
+    glfwGetCursorPos(window_, &x, &y);
     input_ = new Input(window_);
-    input_->lastMouseX_ = (float)windowSize_.x / 2;
-    input_->lastMouseY_ = (float)windowSize_.y / 2;
-
+    input_->lastMouseX_ = MouseData::positionX = x;
+    input_->lastMouseY_ = MouseData::positionY = y;
+    
     return 0;
 };
 
@@ -88,24 +89,8 @@ void Application::ProcessInput(float deltaTime)
     if(glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window_, true);
     }
-    
-    if (input_->GetKey(GLFW_KEY_W)) camera_->ProcessKeyboard(CAM_FORWARD, deltaTime);
-    if (input_->GetKey(GLFW_KEY_S)) camera_->ProcessKeyboard(CAM_BACKWARD, deltaTime);
-    if (input_->GetKey(GLFW_KEY_A)) camera_->ProcessKeyboard(CAM_LEFT, deltaTime);
-    if (input_->GetKey(GLFW_KEY_D)) camera_->ProcessKeyboard(CAM_RIGHT, deltaTime);
-    if (input_->GetKey(GLFW_KEY_E)) camera_->ProcessKeyboard(CAM_UP, deltaTime);
-    if (input_->GetKey(GLFW_KEY_Q)) camera_->ProcessKeyboard(CAM_DOWN, deltaTime);
 
-    if (Application::processMouseMovement_) {
-        input_->ProcessMouseMovement();
-        camera_->ProcessMouseMovement(input_->mouseOffsetX_, input_->mouseOffsetY_);
-        Application::processMouseMovement_ = false;
-    }
-
-    if (Application::processMouseScroll_) {
-        camera_->ProcessMouseScroll(MouseData::scrollY);
-        Application::processMouseScroll_ = false;
-    }
+    input_->ProcessMouseMovement();
 }
 
 void Application::Update()
@@ -114,7 +99,7 @@ void Application::Update()
     deltaTime_ = currentFrame - lastFrame_;
     lastFrame_ = currentFrame;
 
-    glfwPollEvents();    
+    glfwPollEvents();
     ProcessInput(deltaTime_);
 
     for(auto it = viewports_.begin(); it != viewports_.end(); ++it) {
@@ -122,6 +107,10 @@ void Application::Update()
     }
     glfwSwapBuffers(window_);
 }
+
+float Application::GetDeltaTime() { return deltaTime_; }
+
+Input* Application::GetInput() { return input_; }
 
 Viewport* Application::AddViewport()
 {
@@ -161,12 +150,10 @@ void MouseCallback(GLFWwindow* window, double posX, double posY)
 {
     MouseData::positionX = posX;
     MouseData::positionY = posY;
-    Application::processMouseMovement_ = true;
-};
+}
 
-void ScrollCallback(GLFWwindow* window, double offsetX, double offsetY)
+void ScrollCallback(GLFWwindow* window, double scrollX, double scrollY)
 {
-    MouseData::scrollX = offsetX;
-    MouseData::scrollY = offsetY;
-    Application::processMouseScroll_ = true;
+    MouseData::scrollX = scrollX;
+    MouseData::scrollY = scrollY;
 }

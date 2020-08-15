@@ -1,10 +1,11 @@
+#include <iostream>
 #include "Application.h"
 
 int main()
 {
     // Application init
     // ---------------------------------------------------------------------------    
-    Application app = Application::Instance();
+    Application app;
     if (app.Init() < 0)
     {
         std::cout << "Failed to create an OpenGL app" << std::endl;
@@ -13,14 +14,13 @@ int main()
 
     // Application CONTENT
     // ---------------------------------------------------------------------------
-    
+
     // Application loop
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())
     {
         app.Update();
     }
-
     
     // Application termination
     // ---------------------------------------------------------------------------

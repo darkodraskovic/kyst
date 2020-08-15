@@ -29,8 +29,8 @@ int main()
     auto viewport = std::make_shared<Viewport>(app.GetWindowSize());
     app.AddViewport(viewport);
     
-    app.camera_ = viewport->GetScene()->camera_;
-    app.camera_->position_.z = 4.0f;
+    auto cam = viewport->GetScene()->camera_;
+    cam->position_.z = 4.0f;
 
     viewport->AddEffect("../Shaders/Effects/Noop.fs");
     viewport->AddEffect("../Shaders/Effects/Inversion.fs");
@@ -79,12 +79,12 @@ int main()
 
     // polygons
     vector<vec3> points = {LEFT, DOWN, RIGHT, UP};
-    mesh = Shape2DFactory::LinePolygon(ZERO, points);
+    mesh = Shape2DFactory::LinePolygon(points);
     mesh->Generate();
     entity = make_shared<Entity>(mesh, material4);
     viewport->GetScene()->AddEntity(entity);
     
-    mesh = Shape2DFactory::SolidPolygon(ZERO, points);
+    mesh = Shape2DFactory::SolidPolygon(points);
     mesh->colors_ = {GREEN, BLUE, RED, BLUE};
     mesh->Generate(material5->shader_->id_);
     entity = make_shared<Entity>(mesh, material5);
@@ -101,13 +101,13 @@ int main()
     mesh.reset();
     entity.reset();
     viewport.reset();
-    
+
+    cam->LookAt(ZERO);
     // Application loop
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())
     {
-        float time = glfwGetTime();
-
+        cam->ProcessInput(app.GetInput(), app.GetDeltaTime());
         app.Update();
     }
 

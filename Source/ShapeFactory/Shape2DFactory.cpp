@@ -24,7 +24,7 @@ std::shared_ptr<Mesh> Shape2DFactory::Line(const vec3 &point1,
     return mesh;
 }
 
-std::shared_ptr<Mesh> Shape2DFactory::Lines(const vec3& offset, const std::vector<vec3>& points)
+std::shared_ptr<Mesh> Shape2DFactory::Lines(const std::vector<vec3>& points)
 {
     auto mesh = std::make_shared<Mesh>();
     mesh->positions_ = points;
@@ -68,7 +68,7 @@ std::shared_ptr<Mesh> Shape2DFactory::SolidRect(const vec3& offset, const vec2& 
     return mesh;
 }
 
-std::shared_ptr<Mesh> Shape2DFactory::LinePolygon(const vec3& offset, const std::vector<vec3>& points)
+std::shared_ptr<Mesh> Shape2DFactory::LinePolygon(const std::vector<vec3>& points)
 {
     auto mesh = std::make_shared<Mesh>();
     mesh->positions_ = points;
@@ -76,7 +76,7 @@ std::shared_ptr<Mesh> Shape2DFactory::LinePolygon(const vec3& offset, const std:
     return mesh;
 }
 
-std::shared_ptr<Mesh> Shape2DFactory::SolidPolygon(const vec3& offset, const std::vector<vec3>& points)
+std::shared_ptr<Mesh> Shape2DFactory::SolidPolygon(const std::vector<vec3>& points)
 {
     auto mesh = std::make_shared<Mesh>();
     mesh->positions_ = points;

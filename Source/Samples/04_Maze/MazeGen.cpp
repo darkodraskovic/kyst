@@ -1,7 +1,6 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/random.hpp>
 
-#include "Scene.h"
 #include "VecConsts.h"
 #include "Shader.h"
 #include "Material.h"

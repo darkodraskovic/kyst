@@ -27,8 +27,9 @@ public:
     void Update();
     bool ShouldClose();
     void Terminate();
+    float GetDeltaTime();
     Input* GetInput();
-
+    
     static void SetWindowSize(const uvec2& size);
     static const uvec2& GetWindowSize();
     static void SetWindowPosition(const ivec2& size);
@@ -38,23 +39,20 @@ public:
   
     GLFWwindow* window_;
 
-    float deltaTime_ = 0.0f;
-    float lastFrame_ = 0.0f;
-
     Viewport* AddViewport();
     void AddViewport(std::shared_ptr<Viewport> viewport);
-    std::shared_ptr<Camera> camera_;
 
 private:
     friend void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
     friend void MouseCallback(GLFWwindow* window, double posX, double posY);
-    friend void ScrollCallback(GLFWwindow* window, double offsetX, double offsetY);
+    friend void ScrollCallback(GLFWwindow* window, double scrollX, double scrollY);
 
-    Input* input_;    
     std::vector<std::shared_ptr<Viewport>> viewports_;
+    float deltaTime_ = 0.0f;
+    float lastFrame_ = 0.0f;
+
+    Input* input_;
     
-    static bool processMouseMovement_;
-    static bool processMouseScroll_;
     static uvec2 windowSize_;
     static ivec2 windowPosition_;
 };
