@@ -8,12 +8,12 @@
 
 using namespace VecConsts;
 
-shared_ptr<Entity> GenEntity(const string& shader, const vec3& position)
+Entity* GenEntity(const string& shader, const vec3& position)
 {
-    auto material = make_shared<Material2D>(shader);
+    auto material = new Material2D(shader);
     auto mesh = Shape2DFactory::SolidRect(LEFT + DOWN, glm::vec2(2, 2));
     mesh->Generate();
-    auto entity = make_shared<Entity>(mesh, material);
+    auto entity = new Entity(mesh, material);
     entity->position_ = position;
     return entity;
 }

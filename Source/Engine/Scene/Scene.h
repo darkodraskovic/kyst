@@ -15,6 +15,7 @@ public:
     Scene(std::shared_ptr<Camera> camera);
     void Update(float deltaTime);
     void Draw(unsigned int width, unsigned int height);
+    void AddEntity(Entity* entity);
     void AddEntity(std::shared_ptr<Entity> entity);
     Viewport* GetViewport();
     

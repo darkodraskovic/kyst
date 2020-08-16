@@ -4,7 +4,6 @@
 #include "Mesh.h"
 #include <glm/fwd.hpp>
 #include <memory>
-#pragma once
 
 #include "Entity.h"
 
@@ -18,16 +17,16 @@ class Shape2DFactory
 public:
     Shape2DFactory();
 
-    static std::shared_ptr<Mesh> Line(const vec3& point1, const vec3& point2);
-    static std::shared_ptr<Mesh> Lines(const std::vector<vec3>& points);
+    static Mesh* Line(const vec3& point1, const vec3& point2);
+    static Mesh* Lines(const std::vector<vec3>& points);
     static const std::vector<vec3>& RectPoints(const vec3& offset, const vec2& size);
-    static std::shared_ptr<Mesh> LineRect(const vec3& offset, const vec2& size);
-    static std::shared_ptr<Mesh> SolidRect(const vec3& offset, const vec2& size);
-    static std::shared_ptr<Mesh> LinePolygon(const std::vector<vec3>& points);
-    static std::shared_ptr<Mesh> SolidPolygon(const std::vector<vec3>& points);
+    static Mesh* LineRect(const vec3& offset, const vec2& size);
+    static Mesh* SolidRect(const vec3& offset, const vec2& size);
+    static Mesh* LinePolygon(const std::vector<vec3>& points);
+    static Mesh* SolidPolygon(const std::vector<vec3>& points);
 
 private:
-    static std::shared_ptr<Mesh> RectMesh(const vec3& offset, const vec2& size);
+    static Mesh* RectMesh(const vec3& offset, const vec2& size);
     static std::vector<vec3> points_;
 };
 

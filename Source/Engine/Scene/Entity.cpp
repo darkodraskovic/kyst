@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "VecConsts.h"
+#include <memory>
 
 using namespace VecConsts;
 
@@ -7,6 +8,12 @@ using namespace VecConsts;
 
 Entity::Entity()
 {
+}
+
+Entity::Entity(Mesh* mesh, Material* material)
+{
+    mesh_ = std::shared_ptr<Mesh>(mesh);
+    material_ = std::shared_ptr<Material>(material);
 }
 
 Entity::Entity(std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material)

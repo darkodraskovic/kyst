@@ -9,6 +9,7 @@ class Entity
 {
 public:
     Entity();
+    Entity(Mesh* mesh, Material* material);
     Entity(std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material);
     
     virtual void Update(float deltaTime);

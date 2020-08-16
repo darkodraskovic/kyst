@@ -40,17 +40,17 @@ int main()
     // ---------------------------------------------------------------------------
 
     // material
-    auto material1 = make_shared<Material2D>();
+    auto material1 = new Material2D();
     material1->color_ = RED;
-    auto material2 = make_shared<Material2D>(material1->shader_);
+    auto material2 = new Material2D(material1->shader_);
     material2->color_ = GREEN;
     material2->alpha_ = 0.5;
-    auto material3 = make_shared<Material2D>(material1->shader_);
+    auto material3 = new Material2D(material1->shader_);
     material3->color_ = BLUE;
     material3->pctColor_ = 1.0;
-    auto material4 = make_shared<Material2D>(material1->shader_);
+    auto material4 = new Material2D(material1->shader_);
     material4->color_ = BLUE;
-    auto material5 = make_shared<Material2D>(material1->shader_);
+    auto material5 = new Material2D(material1->shader_);
     material5->pctColor_ = 1.0;
 
     // rect mesh
@@ -58,11 +58,11 @@ int main()
     mesh->Generate();
 
     // rect entity 1
-    auto entity = make_shared<Entity>(mesh, material1);
+    auto entity = new Entity(mesh, material1);
     viewport->GetScene()->AddEntity(entity);
 
     // rect entity 2
-    entity = make_shared<Entity>(mesh, material2);
+    entity = new Entity(mesh, material2);
     entity->position_ = (LEFT + DOWN) / 4.f;
     entity->position_.z = 0.25;
     entity->rotation_.y = pi<float>() / 4;
@@ -73,7 +73,7 @@ int main()
     mesh->colors_.push_back(GREEN);
     mesh->colors_.push_back(RED);
     mesh->Generate(material2->shader_->id_);
-    entity = make_shared<Entity>(mesh, material3);
+    entity = new Entity(mesh, material3);
     entity->position_.z = 1;
     viewport->GetScene()->AddEntity(entity);
 
@@ -81,27 +81,18 @@ int main()
     vector<vec3> points = {LEFT, DOWN, RIGHT, UP};
     mesh = Shape2DFactory::LinePolygon(points);
     mesh->Generate();
-    entity = make_shared<Entity>(mesh, material4);
+    entity = new Entity(mesh, material4);
     viewport->GetScene()->AddEntity(entity);
-    
+
+
     mesh = Shape2DFactory::SolidPolygon(points);
     mesh->colors_ = {GREEN, BLUE, RED, BLUE};
     mesh->Generate(material5->shader_->id_);
-    entity = make_shared<Entity>(mesh, material5);
+    entity = new Entity(mesh, material5);
     entity->scale_ *= 0.33f;
     entity->position_.z = 0.5;
     viewport->GetScene()->AddEntity(entity);
     
-    // Reset POINTERS
-    // ---------------------------------------------------------------------------
-    
-    material1.reset();
-    material2.reset();
-    material3.reset();
-    mesh.reset();
-    entity.reset();
-    viewport.reset();
-
     cam->LookAt(ZERO);
     // Application loop
     // ---------------------------------------------------------------------------

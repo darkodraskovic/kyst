@@ -29,3 +29,6 @@ add_target(04_Maze)
 
 # make 05_GenArt && ./05_GenArt
 add_target(05_GenArt)
+
+# make 06_Maxwell && ./06_Maxwell
+add_target(06_Maxwell)
