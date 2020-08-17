@@ -30,3 +30,6 @@ add_target(05_GenArt)
 
 # make 06_Maxwell && ./06_Maxwell
 add_target(06_Maxwell)
+
+# make 07_Bounce && ./07_Bounce
+add_target(07_Bounce)

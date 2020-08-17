@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Mesh.h"
 #include "VecConsts.h"
 #include <memory>
 

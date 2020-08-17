@@ -1,10 +1,10 @@
 #include <iostream>
 #include "Application.h"
+#include "Entity.h"
 #include "Material2D.h"
 #include "Shape2DFactory.h"
 #include "VecConsts.h"
 
-using namespace std;
 using namespace VecConsts;
 
 int main()
@@ -21,25 +21,18 @@ int main()
     // Application CONTENT
     // ---------------------------------------------------------------------------
 
-    Viewport* viewport = app.AddViewport();
+    auto viewport = app.AddViewport();
     auto cam = viewport->GetScene()->camera_;
     cam->position_.z = 5;
     cam->LookAt(ZERO);
 
-    // Material
-    Material2D* material = new Material2D;
-    material->pctColor_ = 1;
-
-    // Mesh
-    vector<vec3> points = vector<vec3>{LEFT+DOWN, RIGHT+DOWN, UP};
-    Mesh* mesh = Shape2DFactory::SolidPolygon(points);
-    mesh->colors_ = std::vector<vec3>{RED, GREEN, BLUE};
-    mesh->Generate(material->shader_->id_);
-
-    // Entity
-    Entity* entity = new Entity(mesh, material);
+    auto material = new Material2D();
+    material->color_ = GREEN;
+    auto mesh = Shape2DFactory::SolidEllipse(ZERO, ONE*2.f);
+    mesh->Generate();
+    auto entity = new Entity(mesh, material);
     viewport->GetScene()->AddEntity(entity);
-
+    
     // Application loop
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())

@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 #include "Entity.h"
 #include "Scene.h"
 
@@ -8,9 +9,10 @@ Scene::Scene(std::shared_ptr<Camera> camera) : camera_(camera)
 
 void Scene::AddEntity(Entity* entity)
 {
-    auto e = std::shared_ptr<Entity>(entity);
-    if (std::find(entities_.begin(), entities_.end(), e) != entities_.end()) return;
-    entitiesToCreate_.push_back(std::shared_ptr<Entity>(e));
+    for (auto it = entities_.begin(); it != entities_.end(); it++) {
+        if ((*it).get() == entity) return;
+    }
+    entitiesToCreate_.push_back(std::shared_ptr<Entity>(entity));
 }
 
 void Scene::AddEntity(std::shared_ptr<Entity> entity)
@@ -19,7 +21,7 @@ void Scene::AddEntity(std::shared_ptr<Entity> entity)
     entitiesToCreate_.push_back(entity);
 }
 
-Viewport *Scene::GetViewport()
+Viewport* Scene::GetViewport()
 {
     return viewport_;
 }    

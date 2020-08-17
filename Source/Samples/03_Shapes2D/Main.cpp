@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 #include "Application.h"
 #include "Material2D.h"
@@ -26,8 +27,7 @@ int main()
     // Viewport
     // ---------------------------------------------------------------------------
 
-    auto viewport = std::make_shared<Viewport>(app.GetWindowSize());
-    app.AddViewport(viewport);
+    auto viewport = app.AddViewport();
     
     auto cam = viewport->GetScene()->camera_;
     cam->position_.z = 4.0f;
@@ -62,13 +62,13 @@ int main()
     viewport->GetScene()->AddEntity(entity);
 
     // rect entity 2
-    entity = new Entity(mesh, material2);
+    entity = new Entity(entity->mesh_, shared_ptr<Material2D>(material2));
     entity->position_ = (LEFT + DOWN) / 4.f;
     entity->position_.z = 0.25;
     entity->rotation_.y = pi<float>() / 4;
     viewport->GetScene()->AddEntity(entity);
 
-    // line entity 2
+    // line entity 3
     mesh = Shape2DFactory::Line(LEFT, RIGHT);
     mesh->colors_.push_back(GREEN);
     mesh->colors_.push_back(RED);
@@ -77,13 +77,12 @@ int main()
     entity->position_.z = 1;
     viewport->GetScene()->AddEntity(entity);
 
-    // polygons
+    // polygons 4, 5
     vector<vec3> points = {LEFT, DOWN, RIGHT, UP};
     mesh = Shape2DFactory::LinePolygon(points);
     mesh->Generate();
     entity = new Entity(mesh, material4);
     viewport->GetScene()->AddEntity(entity);
-
 
     mesh = Shape2DFactory::SolidPolygon(points);
     mesh->colors_ = {GREEN, BLUE, RED, BLUE};

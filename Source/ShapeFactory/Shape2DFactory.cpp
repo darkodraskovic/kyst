@@ -1,5 +1,7 @@
+#include <glm/detail/type_vec.hpp>
 #include <glm/fwd.hpp>
 #include <glm/gtc/constants.hpp>
+#include <glm/trigonometric.hpp>
 #include <memory>
 
 #include "Mesh.h"
@@ -46,9 +48,8 @@ const std::vector<vec3>& Shape2DFactory::RectPoints(const vec3& offset, const ve
 
 Mesh* Shape2DFactory::RectMesh(const vec3& offset, const vec2& size)
 {
-    RectPoints(offset, size);
-    auto mesh = new Mesh();;
-    mesh->positions_ = points_;
+    auto mesh = new Mesh();
+    mesh->positions_ = RectPoints(offset, size);
     mesh->texCoords_.push_back(vec2(0,0)); mesh->texCoords_.push_back(vec2(1,0));
     mesh->texCoords_.push_back(vec2(1,1)); mesh->texCoords_.push_back(vec2(0,1));
     return mesh;
@@ -68,9 +69,41 @@ Mesh* Shape2DFactory::SolidRect(const vec3& offset, const vec2& size)
     return mesh;
 }
 
+const std::vector<vec3>& Shape2DFactory::EllipsePoints(const vec3& offset, const vec2& size, unsigned int precision)
+{
+    points_.clear();
+    
+    float step = glm::pi<float>() * 2 / precision;
+    for (int i = 0; i < precision; ++i) {
+        float x = cos(i * step) * size.x + offset.x;
+        float y = sin(i * step) * size.y + offset.y;
+        points_.push_back(vec3(x, y, 0.0));
+    }
+    
+    return points_;
+}
+
+Mesh* Shape2DFactory::LineEllipse(const vec3& offset, const vec2& size, unsigned int precision)
+{
+    auto mesh = new Mesh();
+    mesh->positions_ = EllipsePoints(offset, size, precision);
+    mesh->mode_ = GL_LINE_LOOP;
+    return mesh;
+}
+
+Mesh* Shape2DFactory::SolidEllipse(const vec3& offset, const vec2& size, unsigned int precision)
+{
+    auto mesh = new Mesh();
+    mesh->positions_ = EllipsePoints(offset, size, precision);
+    mesh->positions_.insert(mesh->positions_.end(), *mesh->positions_.begin());
+    mesh->positions_.insert(mesh->positions_.begin(), offset);
+    mesh->mode_ = GL_TRIANGLE_FAN;
+    return mesh;
+}
+
 Mesh* Shape2DFactory::LinePolygon(const std::vector<vec3>& points)
 {
-    auto mesh = new Mesh();;
+    auto mesh = new Mesh();
     mesh->positions_ = points;
     mesh->mode_ = GL_LINE_LOOP;
     return mesh;
@@ -78,7 +111,7 @@ Mesh* Shape2DFactory::LinePolygon(const std::vector<vec3>& points)
 
 Mesh* Shape2DFactory::SolidPolygon(const std::vector<vec3>& points)
 {
-    auto mesh = new Mesh();;
+    auto mesh = new Mesh();
     mesh->positions_ = points;
     mesh->mode_ = GL_TRIANGLE_FAN;
     return mesh;
