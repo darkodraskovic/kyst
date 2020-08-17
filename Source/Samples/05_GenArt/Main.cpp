@@ -32,11 +32,10 @@ int main()
     // Viewport
     // ---------------------------------------------------------------------------
     
-    auto viewport = std::make_shared<Viewport>(app.GetWindowSize());
-    app.AddViewport(viewport);
-    
+    auto viewport = app.AddViewport();
     auto cam =  viewport->GetScene()->camera_;
     cam->position_.z = 6.0f;
+    cam->LookAt(ZERO);
     
     // viewport->AddEffect("../Shaders/Effects/Noop.fs");
     // viewport->AddEffect("../Shaders/Effects/Inversion.fs");
@@ -49,12 +48,6 @@ int main()
     viewport->GetScene()->AddEntity(GenEntity("../Shaders/GenArt/02.fs", RIGHT + DOWN));
     viewport->GetScene()->AddEntity(GenEntity("../Shaders/GenArt/03.fs", RIGHT + UP));
 
-    // Reset POINTERS
-    // ---------------------------------------------------------------------------
-    
-    viewport.reset();
-
-    cam->LookAt(ZERO);
     // Application loop
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())

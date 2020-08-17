@@ -81,7 +81,6 @@ int main()
     cube2.reset();
     cube4.reset();        
 
-
     viewport->GetScene()->camera_->LookAt(ZERO);
     // Application loop
     // ---------------------------------------------------------------------------
@@ -90,7 +89,6 @@ int main()
         viewport->GetScene()->camera_->ProcessInput(app.GetInput(), app.GetDeltaTime());
         app.Update();
     }
-
     
     // Application termination
     // ---------------------------------------------------------------------------

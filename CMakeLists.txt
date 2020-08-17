@@ -3,8 +3,6 @@ project(opengl-cg)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(SAMPLES "Source/Samples")
-
 # utils
 include("CMake/Functions.cmake")
 

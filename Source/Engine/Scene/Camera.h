@@ -2,7 +2,7 @@
 #define CAMERA_H
 
 #include "Input.h"
-#include <glm/ext/scalar_constants.hpp>
+#include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 // An abstraction to stay away from window-system specific input methods
@@ -10,7 +10,7 @@ enum CameraMovement { CAM_FORWARD, CAM_BACKWARD, CAM_LEFT, CAM_RIGHT, CAM_UP, CA
 
 namespace CameraDefaults
 {
-    const float YAW         = glm::pi<float>()/2;
+    const float YAW         = glm::pi<float>();
     const float PITCH       = 0.0f;
     const float SPEED       = 5.0f;
     const float SENSITIVITY = 0.001f;

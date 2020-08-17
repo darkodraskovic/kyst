@@ -1,7 +1,8 @@
-#include "Camera.h"
-#include <glm/ext/scalar_constants.hpp>
+#include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
+
+#include "Camera.h"
 
 // Constructor with vectors
 Camera::Camera(vec3 position, vec3 up, float yaw, float pitch) :
@@ -26,12 +27,9 @@ mat4 Camera::GetViewMatrix()
 // Returns the view matrix calculated using Euler Angles and the LookAt Matrix
 mat4 Camera::GetProjectionMatrix(int scrWidth, int scrHeight)
 {
-    return perspective(
-        zoom_,
-        (float)scrWidth/(float)scrHeight, 0.1f, 100.0f);
+    return perspective(zoom_, (float)scrWidth/(float)scrHeight, 0.1f, 100.0f);
 }
     
-// Processes input received from any keyboard-like input system.
 // Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
 void Camera::ProcessKeyboard(CameraMovement direction, float deltaTime)
 {
@@ -50,23 +48,19 @@ void Camera::ProcessKeyboard(CameraMovement direction, float deltaTime)
         position_ -= up_ * velocity;
 }
 
-// Processes input received from a mouse input system. Expects the offset value in both the x and y direction.
 void Camera::ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch)
 {
     yaw_   += xoffset * mouseSensitivity_;
     pitch_ -= yoffset * mouseSensitivity_;
 
-    // Make sure that when pitch is out of bounds, screen doesn't get flipped
     if (constrainPitch)
     {
         pitch_ = clamp(pitch_, -89.0f, 89.0f);
     }
 
-    // Update front_, right_ and up_ Vectors using the updated Euler angles
     UpdateCameraVectors();
 }
 
-// Processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
 void Camera::ProcessMouseScroll(float yoffset)
 {
     zoom_ -= yoffset * mouseSensitivity_;
@@ -86,18 +80,16 @@ void Camera::ProcessInput(Input* input, float deltaTime)
     ProcessMouseScroll(MouseData::scrollY);
 }
 
-// Calculates the front vector from the Camera's (updated) Euler Angles
+// Update front_, right_ and up_ Vectors using the updated Euler angles (yaw_ and pitch_)
 void Camera::UpdateCameraVectors()
 {
-    // Calculate the new front_ vector
     vec3 front;
     front.x = cos(yaw_) * cos(pitch_);
     front.y = sin(pitch_);
     front.z = sin(yaw_) * cos(pitch_);
     front_ = normalize(front);
-    // Also re-calculate the right_ and up_ vector
-    right_ = normalize(cross(front_, worldUp_));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-    up_    = normalize(cross(right_, front_));
+    right_ = normalize(cross(front_, worldUp_));
+    up_ = normalize(cross(right_, front_));
 }
 
 void Camera::LookAt(const vec3& center)

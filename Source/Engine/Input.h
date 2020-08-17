@@ -14,8 +14,8 @@ class Input
 public:
     Input(GLFWwindow* window);
 
-    float lastMouseX_, lastMouseY_;
-    float mouseOffsetX_, mouseOffsetY_;
+    float lastMouseX_{0}, lastMouseY_{0};
+    float mouseOffsetX_{0}, mouseOffsetY_{0};
 
     void ProcessMouseMovement();
     bool GetKey(unsigned int key);

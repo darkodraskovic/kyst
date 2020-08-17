@@ -156,4 +156,5 @@ void ScrollCallback(GLFWwindow* window, double scrollX, double scrollY)
 {
     MouseData::scrollX = scrollX;
     MouseData::scrollY = scrollY;
+
 }
