@@ -1,4 +1,3 @@
-#include <glm/detail/type_vec.hpp>
 #include <glm/fwd.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/trigonometric.hpp>

@@ -4,6 +4,7 @@
 #include "Material2D.h"
 #include "Shape2DFactory.h"
 #include "VecConsts.h"
+#include "Shape.h"
 
 using namespace VecConsts;
 
@@ -32,6 +33,8 @@ int main()
     mesh->Generate();
     auto entity = new Entity(mesh, material);
     viewport->GetScene()->AddEntity(entity);
+
+    Shape::Line line {LEFT, RIGHT};
     
     // Application loop
     // ---------------------------------------------------------------------------
