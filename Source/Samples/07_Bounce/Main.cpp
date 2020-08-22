@@ -37,19 +37,19 @@ int main()
 
     using namespace Shape;
     
-    // Rectangle a{{1,1}, {4,4}};
-    // Rectangle b{{2,2}, {5,5}};
-    // Rectangle c{{6,4}, {4,2}};
-    // assert(collide(a,b));
-    // assert(collide(b,c));
-    // assert(!collide(a,c));
+    Rectangle aR{{1,1}, {4,4}};
+    Rectangle bR{{2,2}, {5,5}};
+    Rectangle cR{{6,4}, {4,2}};
+    assert(collide(aR,bR));
+    assert(collide(bR,cR));
+    assert(!collide(aR,cR));
 
-    // Circle a = {{4, 4}, 2};
-    // Circle b = {{7, 4}, 2};
-    // Circle c = {{10, 4}, 2};
-    // assert(collide(a, b));
-    // assert(collide(b, c));
-    // assert(!collide(a, c));
+    Circle aC{{4, 4}, 2};
+    Circle bC{{7, 4}, 2};
+    Circle cC{{10, 4}, 2};
+    assert(collide(aC, bC));
+    assert(collide(bC, cC));
+    assert(!collide(aC, cC));
     
     // Application loop
     // ---------------------------------------------------------------------------
