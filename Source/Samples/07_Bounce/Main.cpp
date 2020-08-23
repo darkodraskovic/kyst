@@ -9,8 +9,12 @@
 
 using namespace VecConsts;
 
+void assertColllide();
+
 int main()
 {
+    assertColllide();
+    
     // Application init
     // ---------------------------------------------------------------------------    
     Application app;
@@ -35,22 +39,6 @@ int main()
     auto entity = new Entity(mesh, material);
     viewport->GetScene()->AddEntity(entity);
 
-    using namespace Shape;
-    
-    Rectangle aR{{1,1}, {4,4}};
-    Rectangle bR{{2,2}, {5,5}};
-    Rectangle cR{{6,4}, {4,2}};
-    assert(collide(aR,bR));
-    assert(collide(bR,cR));
-    assert(!collide(aR,cR));
-
-    Circle aC{{4, 4}, 2};
-    Circle bC{{7, 4}, 2};
-    Circle cC{{10, 4}, 2};
-    assert(collide(aC, bC));
-    assert(collide(bC, cC));
-    assert(!collide(aC, cC));
-    
     // Application loop
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())
@@ -64,4 +52,37 @@ int main()
     app.Terminate();
 
     return 0;
+}
+
+void assertColllide()
+{
+    using namespace Shape;
+    
+    Rectangle aRect{{1, 1}, {4, 4}};
+    Rectangle bRect{{2, 2}, {5, 5}};
+    Rectangle cRect{{6, 4}, {4, 2}};
+    assert(collide(aRect, bRect));
+    assert(collide(bRect, cRect));
+    assert(!collide(aRect, cRect));
+
+    Circle aCircle{{4, 4}, 2};
+    Circle bCircle{{7, 4}, 2};
+    Circle cCircle{{10, 4}, 2};
+    assert(collide(aCircle, bCircle));
+    assert(collide(bCircle, cCircle));
+    assert(!collide(aCircle, cCircle));
+
+    vec2 aPoint{3, 5};
+    vec2 bPoint{3, 2};
+    vec2 cPoint{8, 4};
+    vec2 down{5, -1};
+    vec2 up{5, 2};
+    Line l1{aPoint, down};
+    Line l2{aPoint, up};
+    Line l3{bPoint, up};
+    Line l4{cPoint, down};
+    assert(collide(l1, l2));
+    assert(collide(l1, l3));
+    assert(!collide(l2, l3));
+    assert(collide(l1, l4));    
 }

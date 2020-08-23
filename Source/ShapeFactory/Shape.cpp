@@ -1,11 +1,44 @@
-#include <iostream>
 #include "Shape.h"
-#include <glm/geometric.hpp>
+
+// helpers
+
+bool Shape::equal(float a, float b)
+{
+    float threshold = 1.0f / 8192.0f;
+    return fabsf(a - b) < threshold;
+}
+
+bool Shape::equal(const vec2& a, const vec2& b)
+{
+    return equal(a.x, b.x) && equal(a.y, b.y);
+}
+
+bool Shape::equivalent(const Line& a, const Line& b)
+{
+    if (!parallel(a.Direction(), b.Direction())) return false;
+    return parallel(a.position_ - b.position_, a.Direction());
+}
+
+const vec2& Shape::rotate90(const vec2& v)
+{
+    vec2* r = new vec2();
+    r->x = -v.y;
+    r->y = v.x;
+    return *r;
+}
+
+bool Shape::parallel(const vec2& a, const vec2& b)
+{
+    vec2 na = rotate90(a);
+    return equal(0, glm::dot(na, b));
+}
 
 bool Shape::overlapping(float minA, float maxA, float minB, float maxB)
 {
     return minB <= maxA && minA <= maxB;
 }
+
+// collides
 
 bool Shape::collide(const Rectangle &a, const Rectangle &b)
 {
@@ -30,9 +63,37 @@ bool Shape::collide(const Circle& a, const Circle& b)
     return glm::length(distance) <= radiusSum;
 }
 
-Shape::Shape::Shape(const vec2 &position) : position_(position)
+bool Shape::collide(const Line& a, const Line& b)
 {
-    
+    if (parallel(a.Direction(), b.Direction())) return equivalent(a, b);
+    return true;
+}
+
+// Classes
+
+Shape::Shape::Shape(const vec2 &position) : position_(position) {}
+
+Shape::Line::Line(const vec2 &position, float rotation)
+    : Shape(position), rotation_(rotation) {}
+
+Shape::Line::Line(const vec2 &position, const vec2 &direction)
+    : Shape(position)
+{
+    rotation_ = std::atan2(direction.y, direction.x);
+}
+
+void Shape::Line::Update(const vec2 &position, float rotation)
+{
+    position_ = position;
+    rotation_ = rotation;
+}    
+
+const vec2& Shape::Line::Direction() const
+{
+    vec2* dir = new vec2();
+    dir->x = cos(rotation_);
+    dir->y = sin(rotation_);
+    return *dir;
 }
 
 Shape::Rectangle::Rectangle(const vec2 &position, const vec2 &size)
@@ -50,4 +111,3 @@ void Shape::Circle::Update(const vec2 &position, float rotation)
 {
     position_ = position;
 }    
-
