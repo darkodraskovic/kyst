@@ -1,6 +1,56 @@
 #include "Shape.h"
+#include <glm/gtc/constants.hpp>
 
-// helpers
+// Shapes
+// ------------------------------
+
+// Shape
+
+Shape::Shape::Shape(const vec2& position, float rotation)
+    : position_(position), rotation_(rotation) {}
+
+void Shape::Shape::Update(const vec2& position, float rotation)
+{
+    position_ = position;
+    rotation_ = rotation;
+}
+
+// Line
+
+Shape::Line::Line(const vec2& position, float rotation)
+    : Shape(position, rotation) {}
+
+Shape::Line::Line(const vec2& position, const vec2& direction)
+    : Shape(position)
+{
+    rotation_ = std::atan2(direction.y, direction.x);
+}
+
+const vec2& Shape::Line::Direction() const
+{
+    vec2* dir = new vec2();
+    dir->x = cos(rotation_);
+    dir->y = sin(rotation_);
+    return *dir;
+}
+
+// Segment
+
+Shape::Segment::Segment(const vec2& position, const vec2& endpoint)
+    : Shape(position), endpoint_(endpoint) {}
+    
+// Rectangle
+
+Shape::Rectangle::Rectangle(const vec2& position, const vec2& size)
+    : Shape(position), size_(size) {}
+
+// Circle
+
+Shape::Circle::Circle(const vec2& position, float radius)
+    : Shape(position), radius_(radius) {}
+
+// Helpers
+// ------------------------------
 
 bool Shape::equal(float a, float b)
 {
@@ -11,12 +61,6 @@ bool Shape::equal(float a, float b)
 bool Shape::equal(const vec2& a, const vec2& b)
 {
     return equal(a.x, b.x) && equal(a.y, b.y);
-}
-
-bool Shape::equivalent(const Line& a, const Line& b)
-{
-    if (!parallel(a.Direction(), b.Direction())) return false;
-    return parallel(a.position_ - b.position_, a.Direction());
 }
 
 const vec2& Shape::rotate90(const vec2& v)
@@ -33,12 +77,19 @@ bool Shape::parallel(const vec2& a, const vec2& b)
     return equal(0, glm::dot(na, b));
 }
 
+bool Shape::equivalent(const Line& a, const Line& b)
+{
+    if (!parallel(a.Direction(), b.Direction())) return false;
+    return parallel(a.position_ - b.position_, a.Direction());
+}
+
 bool Shape::overlapping(float minA, float maxA, float minB, float maxB)
 {
     return minB <= maxA && minA <= maxB;
 }
 
-// collides
+// Collides
+// ------------------------------
 
 bool Shape::collide(const Rectangle &a, const Rectangle &b)
 {
@@ -68,46 +119,3 @@ bool Shape::collide(const Line& a, const Line& b)
     if (parallel(a.Direction(), b.Direction())) return equivalent(a, b);
     return true;
 }
-
-// Classes
-
-Shape::Shape::Shape(const vec2 &position) : position_(position) {}
-
-Shape::Line::Line(const vec2 &position, float rotation)
-    : Shape(position), rotation_(rotation) {}
-
-Shape::Line::Line(const vec2 &position, const vec2 &direction)
-    : Shape(position)
-{
-    rotation_ = std::atan2(direction.y, direction.x);
-}
-
-void Shape::Line::Update(const vec2 &position, float rotation)
-{
-    position_ = position;
-    rotation_ = rotation;
-}    
-
-const vec2& Shape::Line::Direction() const
-{
-    vec2* dir = new vec2();
-    dir->x = cos(rotation_);
-    dir->y = sin(rotation_);
-    return *dir;
-}
-
-Shape::Rectangle::Rectangle(const vec2 &position, const vec2 &size)
-    : Shape(position), size_(size) {}
-
-void Shape::Rectangle::Update(const vec2 &position, float rotation)
-{
-    position_ = position;
-}    
-    
-Shape::Circle::Circle(const vec2& position, float radius)
-    : Shape(position), radius_(radius) {}
-
-void Shape::Circle::Update(const vec2 &position, float rotation)
-{
-    position_ = position;
-}    
