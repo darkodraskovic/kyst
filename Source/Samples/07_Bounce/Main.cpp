@@ -84,5 +84,21 @@ void assertColllide()
     assert(collide(l1, l2));
     assert(collide(l1, l3));
     assert(!collide(l2, l3));
-    assert(collide(l1, l4));    
+    assert(collide(l1, l4));
+
+    vec2 dPoint{3, 4};
+    vec2 ePoint{11, 1};
+    vec2 fPoint{8, 4};
+    vec2 gPoint{11, 7};
+    Segment de{dPoint, ePoint};
+    Segment fg{fPoint, gPoint};
+    Segment df{dPoint, fPoint};
+    Segment eg{ePoint, gPoint};
+    Segment ae{aPoint, ePoint};
+    assert(collide(de, de)); // congruent
+    assert(collide(de, df)); // copunctual
+    assert(!collide(de, fg));
+    assert(!collide(df, eg));
+    assert(collide(ae, df));
+    assert(collide(df, ae)); // reverse order
 }
