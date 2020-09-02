@@ -1,7 +1,5 @@
 Source/Engine/glad.c
 build/
-GPATH
-GRTAGS
-GTAGS
 .clangd
 compile_commands.json
+Shaders/GenArt/Lib
