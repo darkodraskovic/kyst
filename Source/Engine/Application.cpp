@@ -50,12 +50,11 @@ int Application::Init()
         glfwTerminate();
         return -1;
     }
+    glfwSetWindowPos(window_, windowPosition_.x, windowPosition_.y);    
     glfwMakeContextCurrent(window_);
-    
-    glfwSetWindowPos(window_, windowPosition_.x, windowPosition_.y);
-    glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
     glfwSetFramebufferSizeCallback(window_, FramebufferSizeCallback);
+    
+    glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window_, MouseCallback);
     glfwSetScrollCallback(window_, ScrollCallback);
     
@@ -75,11 +74,9 @@ int Application::Init()
 
     // configure input and mouse position
     // -----------------------------
-    double x, y;
-    glfwGetCursorPos(window_, &x, &y);
     input_ = new Input(window_);
-    input_->lastMouseX_ = MouseData::positionX = x;
-    input_->lastMouseY_ = MouseData::positionY = y;
+    input_->lastMouseX_ = MouseData::positionX = windowSize_.x / 2;
+    input_->lastMouseY_ = MouseData::positionY = windowSize_.y / 2;
     
     return 0;
 };
