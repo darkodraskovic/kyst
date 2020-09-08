@@ -22,14 +22,10 @@ namespace Shape
         Rotor(float rotation = 0);
         Rotor(const vec2& direction);
         virtual void Update(float rotation);
-        virtual void SetDirection(const vec2& direction);
-        const vec2& GetDirection() const;
         virtual void SetRotation(float rotation);
         float GetRotation();
 
-    protected:
         vec2 direction_;
-        float rotation_;
     };
         
     class Shape

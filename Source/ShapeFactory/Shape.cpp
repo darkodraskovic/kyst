@@ -1,4 +1,5 @@
 #include "Shape.h"
+#include <cmath>
 #include <glm/fwd.hpp>
 #include <glm/geometric.hpp>
 #include <glm/gtc/constants.hpp>
@@ -26,27 +27,20 @@ void Shape::Range::Sort()
 
 Shape::Rotor::Rotor(float rotation) { SetRotation(rotation); }
 
-Shape::Rotor::Rotor(const vec2& direction) { SetDirection(direction); }
-
-void Shape::Rotor::SetDirection(const vec2 &direction)
-{
-  direction_ = direction;
-  rotation_ = atan2(direction_.y, direction_.x);
-}
-
-const vec2& Shape::Rotor::GetDirection() const { return direction_; }
+Shape::Rotor::Rotor(const vec2& direction) : direction_(direction) {}
 
 void Shape::Rotor::SetRotation(float rotation)
 {
-    rotation_ = rotation;
     direction_.x = cos(rotation); direction_.y = sin(rotation);
 }
 
-float Shape::Rotor::GetRotation() { return rotation_; }
+float Shape::Rotor::GetRotation()
+{
+  return atan2(direction_.y, direction_.x);
+}
 
 void Shape::Rotor::Update(float rotation)
 {
-    rotation_ = rotation;
     direction_.x = cos(rotation); direction_.y = sin(rotation);
 }
 
@@ -114,8 +108,8 @@ bool Shape::parallel(const vec2& a, const vec2& b)
 
 bool Shape::equivalent(const Line& a, const Line& b)
 {
-    if (!parallel(a.GetDirection(), b.GetDirection())) return false;
-    return parallel(a.position_ - b.position_, a.GetDirection());
+    if (!parallel(a.direction_, b.direction_)) return false;
+    return parallel(a.position_ - b.position_, a.direction_);
 }
 
 bool Shape::overlapping(float minA, float maxA, float minB, float maxB)
@@ -127,8 +121,8 @@ bool Shape::onSameSide(const Line& axis, const Segment& s)
 {
     vec2 d1 = s.position_ - axis.position_;
     vec2 d2 = s.endpoint_ - axis.position_;
-    vec2 norm = rotate90(axis.GetDirection());
-    return glm::dot(norm, d1) * glm::dot(norm, d2) > 0;
+    vec2 norm = rotate90(axis.direction_);
+    return glm::dot(norm, d1) * glm::dot(norm, d2) > 0; // colinear is not on the same side
 }
 
 const Shape::Range& Shape::project(const Segment& s, const vec2& onto)
@@ -168,7 +162,7 @@ bool Shape::collide(const Circle& a, const Circle& b)
 
 bool Shape::collide(const Line& a, const Line& b)
 {
-    if (parallel(a.GetDirection(), b.GetDirection())) return equivalent(a, b);
+    if (parallel(a.direction_, b.direction_)) return equivalent(a, b);
     return true;
 }
 
