@@ -1,4 +1,5 @@
 #include "Shape.h"
+#include <glm/fwd.hpp>
 #include <glm/geometric.hpp>
 #include <glm/gtc/constants.hpp>
 #include <math.h>
@@ -6,24 +7,12 @@
 // Shape helpers
 // ------------------------------
 
-const vec2& Shape::direction(float rotation)
-{
-    vec2* dir = new vec2();
-    dir->x = cos(rotation);
-    dir->y = sin(rotation);
-    return *dir;
-}
-
-float Shape::rotation(const vec2& direction)
-{
-    return atan2(direction.y, direction.x);
-}
-
 Shape::Range::Range(float min, float max) : min_(min), max_(max) {}
 
 void Shape::Range::Sort()
 {
-    if(min_ > max_) {
+    if(min_ > max_)
+    {
         float tmp = max_;
         max_ = min_;
         min_ = tmp;
@@ -33,112 +22,62 @@ void Shape::Range::Sort()
 // Shapes
 // ------------------------------
 
+// Rotor
+
+Shape::Rotor::Rotor(float rotation) { SetRotation(rotation); }
+
+Shape::Rotor::Rotor(const vec2& direction) { SetDirection(direction); }
+
+void Shape::Rotor::SetDirection(const vec2 &direction)
+{
+  direction_ = direction;
+  rotation_ = atan2(direction_.y, direction_.x);
+}
+
+const vec2& Shape::Rotor::GetDirection() const { return direction_; }
+
+void Shape::Rotor::SetRotation(float rotation)
+{
+    rotation_ = rotation;
+    direction_.x = cos(rotation); direction_.y = sin(rotation);
+}
+
+float Shape::Rotor::GetRotation() { return rotation_; }
+
+void Shape::Rotor::Update(float rotation)
+{
+    rotation_ = rotation;
+    direction_.x = cos(rotation); direction_.y = sin(rotation);
+}
+
 // Shape
 
-Shape::Shape::Shape(const vec2 &position, float rotation)
-    : position_(position), rotation_(rotation)
-{
-    direction_ = direction(rotation);
-}
+Shape::Shape::Shape(const vec2 &position) : position_(position) {}
 
-Shape::Shape::Shape(const vec2 &position, const vec2& direction)
-    : position_(position), direction_(direction)
-{
-    rotation_ = rotation(direction);
-}
-
-void Shape::Shape::SetPosition(const vec2 &position) { position_ = position; }
-
-const vec2 &Shape::Shape::GetPosition() const
-{
-    return position_;
-}
-
-void Shape::Shape::SetDirection(const vec2 &direction) {
-  direction_ = direction;
-  rotation_ = rotation(direction);
-}
-
-const vec2& Shape::Shape::GetDirection() const
-{
-    return direction_;
-}
-
-void Shape::Shape::SetRotation(float rotation) {
-  rotation_ = rotation;
-  direction_ = direction(rotation);
-}
-
-float Shape::Shape::GetRotation()
-{
-    return rotation_;
-}
-
-void Shape::Shape::Update(const vec2& position, float rotation)
-{
-    position_ = position;
-    rotation_ = rotation;
-    direction_ = direction(rotation);
-}
+void Shape::Shape::Update(const vec2& position) { position_ = position; }
 
 // Line
 
 Shape::Line::Line(const vec2& position, float rotation)
-    : Shape(position, rotation) {}
+    : Shape(position), Rotor(rotation) {}
 
 Shape::Line::Line(const vec2& position, const vec2& direction)
-    : Shape(position, direction) {}
+    : Shape(position), Rotor(direction) {}
 
 // Segment
 
 Shape::Segment::Segment(const vec2 &startpoint, const vec2 &endpoint)
-    : Shape(startpoint, rotation(endpoint - startpoint)), endpoint_(endpoint) {}
-
-void Shape::Segment::SetPosition(const vec2 &position) {
-    position_ = position;
-    rotation_ = rotation(endpoint_ - position_);
-    direction_ = direction(rotation_);
-}
-
-void Shape::Segment::SetEndpoint(const vec2& endpoint)
-{
-    endpoint_ = endpoint;
-    rotation_ = rotation(endpoint_ - position_);
-    direction_ = direction(rotation_);
-}
-
-const vec2& Shape::Segment::GetEndpoint() const
-{
-    return endpoint_;
-}
-
+    : Shape(startpoint), endpoint_(endpoint) {}
 
 // Rectangle
 
 Shape::Rectangle::Rectangle(const vec2& position, const vec2& size)
     : Shape(position), size_(size) {}
 
-void Shape::Rectangle::SetSize(const vec2 &size) { size_ = size; }
-
-const vec2& Shape::Rectangle::GetSize() const
-{
-    return size_;
-}
-
 // OrientedRectangle
 
 Shape::OrientedRectangle::OrientedRectangle(const vec2 &position, const vec2 &size, float rotation)
-    : Rectangle(position, size)
-{
-    SetRotation(rotation);
-    halfSize_ = size / 2.0f;
-}
-
-void Shape::OrientedRectangle::SetSize(const vec2& size)
-{
-    Rectangle::SetSize(size);
-    halfSize_ = size / 2.0f;    
-}
+    : Rectangle(position, size), Rotor(rotation) {}
 
 // Circle
 
@@ -176,7 +115,7 @@ bool Shape::parallel(const vec2& a, const vec2& b)
 bool Shape::equivalent(const Line& a, const Line& b)
 {
     if (!parallel(a.GetDirection(), b.GetDirection())) return false;
-    return parallel(a.GetPosition() - b.GetPosition(), a.GetDirection());
+    return parallel(a.position_ - b.position_, a.GetDirection());
 }
 
 bool Shape::overlapping(float minA, float maxA, float minB, float maxB)
@@ -186,8 +125,8 @@ bool Shape::overlapping(float minA, float maxA, float minB, float maxB)
 
 bool Shape::onSameSide(const Line& axis, const Segment& s)
 {
-    vec2 d1 = s.GetPosition() - axis.GetPosition();
-    vec2 d2 = s.GetEndpoint() - axis.GetPosition();
+    vec2 d1 = s.position_ - axis.position_;
+    vec2 d2 = s.endpoint_ - axis.position_;
     vec2 norm = rotate90(axis.GetDirection());
     return glm::dot(norm, d1) * glm::dot(norm, d2) > 0;
 }
@@ -195,7 +134,7 @@ bool Shape::onSameSide(const Line& axis, const Segment& s)
 const Shape::Range& Shape::project(const Segment& s, const vec2& onto)
 {
     vec2 ontoN = glm::normalize(onto);
-    Range* range = new Range(dot(ontoN, s.GetPosition()), dot(ontoN, s.GetEndpoint()));
+    Range* range = new Range(dot(ontoN, s.position_), dot(ontoN, s.endpoint_));
     range->Sort();
     return *range;
 }
@@ -229,18 +168,20 @@ bool Shape::collide(const Circle& a, const Circle& b)
 
 bool Shape::collide(const Line& a, const Line& b)
 {
-    if (parallel(a.direction_, b.direction_)) return equivalent(a, b);
+    if (parallel(a.GetDirection(), b.GetDirection())) return equivalent(a, b);
     return true;
 }
 
 bool Shape::collide(const Segment& a, const Segment& b)
 {
-    if (onSameSide(Line(a.GetPosition(), a.GetDirection()), b)) return false;
-    if (onSameSide(Line(b.GetPosition(), b.GetDirection()), a)) return false;
+    vec2 aDir = (a.endpoint_ - a.position_);
+    vec2 bDir = (b.endpoint_ - b.position_);
+    if (onSameSide(Line(a.position_, aDir), b)) return false;
+    if (onSameSide(Line(b.position_, bDir), a)) return false;
 
-    if (parallel(a.GetDirection(), b.GetDirection())) {
-        Range r1 = project(a, a.GetDirection());
-        Range r2 = project(b, a.GetDirection());
+    if (parallel(aDir, bDir)) {
+        Range r1 = project(a, aDir);
+        Range r2 = project(b, aDir);
         return overlapping(r1.min_, r1.max_, r2.min_, r2.max_);
     }
 

@@ -7,9 +7,6 @@ using namespace glm;
 
 namespace Shape
 {
-    const vec2& direction(float rotation);
-    float rotation(const vec2& direction);
-
     class Range
     {
         public:
@@ -18,46 +15,44 @@ namespace Shape
         float min_;
         float max_;
     };
-    
-    class Shape
+
+    class Rotor
     {
     public:
-        Shape(const vec2& position, float rotation = 0);
-        Shape(const vec2& position,  const vec2& direction);
-        virtual void Update(const vec2& position, float rotation);
-        
-        virtual void SetPosition(const vec2& position);        
-        const vec2& GetPosition() const;
-        virtual void SetDirection(const vec2& direction);        
+        Rotor(float rotation = 0);
+        Rotor(const vec2& direction);
+        virtual void Update(float rotation);
+        virtual void SetDirection(const vec2& direction);
         const vec2& GetDirection() const;
         virtual void SetRotation(float rotation);
         float GetRotation();
-        
+
     protected:
-        vec2 position_;
         vec2 direction_;
         float rotation_;
     };
+        
+    class Shape
+    {
+    public:
+        Shape(const vec2& position);
+        virtual void Update(const vec2& position);
+        
+        vec2 position_;
+    };
     
-    class Line : public Shape
+    class Line : public Shape, public Rotor
     {
     public:
         Line(const vec2& position, float rotation);
         Line(const vec2& position, const vec2& direction);
-        
-    private:
-        friend bool collide(const Line& a, const Line& b);
     };
 
     class Segment : public Shape
     {
     public:
         Segment(const vec2& startpoint, const vec2& endpoint);
-        virtual void SetPosition(const vec2& position);
-        void SetEndpoint(const vec2& endpoint);
-        const vec2& GetEndpoint() const;
         
-    private:
         vec2 endpoint_;
     };
 
@@ -66,31 +61,21 @@ namespace Shape
     public:
         Circle(const vec2& position, float radius);
         
-    private:
         float radius_;
-        friend bool collide(const Circle& a, const Circle& b);
     };
 
     class Rectangle : public Shape
     {
     public:
         Rectangle(const vec2& position, const vec2& size);
-        virtual void SetSize(const vec2& dir);
-        const vec2& GetSize() const;
         
-    private:
         vec2 size_;
-        friend bool collide(const Rectangle& a, const Rectangle& b);
     };
 
-    class OrientedRectangle : public Rectangle
+    class OrientedRectangle : public Rectangle, Rotor
     {
     public:
         OrientedRectangle(const vec2& position, const vec2& size, float rotation = 0);
-        virtual void SetSize(const vec2& size) override;
-        
-    private:
-        vec2 halfSize_;
     };
 
     bool equal(float a, float b);
