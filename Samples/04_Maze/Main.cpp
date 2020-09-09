@@ -5,6 +5,7 @@
 #include "MazeGen.h"
 
 using namespace VecConsts;
+using namespace ShapeFactory;
 
 int main()
 {

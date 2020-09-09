@@ -4,7 +4,7 @@ project(opengl-cg)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# engine
+# Engine
 file(GLOB_RECURSE ENGINE_C "Engine/*.c" "Engine/*.cpp")
 set(ENGINE_H "." "Graphics" "Scene" "Collision")
 
@@ -19,7 +19,7 @@ add_library(shapeFactory SHARED ${SHAPE_FACTORY_C})
 target_include_directories(shapeFactory PUBLIC ".")
 target_link_libraries(shapeFactory PRIVATE engine)
 
-# samples
+# Samples
 function(add_target TARGET)
   file(GLOB APP_C "Samples/${TARGET}/*.cpp")
   add_executable(${TARGET} ${APP_C})

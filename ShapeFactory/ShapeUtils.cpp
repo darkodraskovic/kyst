@@ -4,6 +4,8 @@
 
 #include "ShapeUtils.h"
 
+using namespace ShapeFactory;
+
 ShapeUtils::ShapeUtils()
 {
 }

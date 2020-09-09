@@ -7,6 +7,7 @@
 #include "ShapeFactory/Shape2DFactory.h"
 
 using namespace VecConsts;
+using namespace ShapeFactory;
 
 Entity* GenEntity(const string& shader, const vec3& position)
 {

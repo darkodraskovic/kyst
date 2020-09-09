@@ -5,6 +5,8 @@
 #include "ShapeFactory/CubeFactory.h"
 #include <glm/gtc/constants.hpp>
 
+using namespace ShapeFactory;
+
 class Cube : public Entity
 {
 public:

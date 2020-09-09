@@ -5,6 +5,7 @@
 #include "MazeFactory.h"
 
 using namespace VecConsts;
+using namespace ShapeFactory;
 
 int MazeFactory::seed_ = 0;
 

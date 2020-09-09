@@ -8,13 +8,16 @@
 
 using namespace glm;
 
-class ShapeUtils
-{
-public:
-    ShapeUtils();
+namespace ShapeFactory {
 
-    static void ProdPoint(vec3& point, float min, float max);
-    static vec3 Hex2rgb(std::string hex);
-};
+    class ShapeUtils
+    {
+    public:
+        ShapeUtils();
 
+        static void ProdPoint(vec3& point, float min, float max);
+        static vec3 Hex2rgb(std::string hex);
+    };
+
+}
 #endif

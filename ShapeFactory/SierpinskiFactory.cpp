@@ -1,6 +1,8 @@
 #include "ShapeUtils.h"
 #include "SierpinskiFactory.h"
 
+using namespace ShapeFactory;
+
 SierpinskiFactory::SierpinskiFactory()
 {
 }

@@ -5,7 +5,6 @@
 #include "Engine/VecConsts.h"
 
 #include "Cube.h"
-#include "Engine/Scene/Viewport.h"
 
 using namespace VecConsts;
 using namespace glm;
@@ -59,7 +58,6 @@ int main()
     auto cube2 = std::make_shared<Cube>(material);
     cube2->scale_ *= 2;
     viewport->GetScene()->AddEntity(cube2);
-
 
     material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));    
     material->diffuse_ = diffuseBricks;

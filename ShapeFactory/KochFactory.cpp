@@ -4,6 +4,7 @@
 #include "KochFactory.h"
 
 using namespace VecConsts;
+using namespace ShapeFactory;
 
 std::vector<vec3> KochFactory::points_;
 glm::mat4 KochFactory::id_ = glm::mat4(1.0f);

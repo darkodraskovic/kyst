@@ -13,6 +13,7 @@
 #include "MazeGen.h"
 
 using namespace VecConsts;
+using namespace ShapeFactory;
 
 MazeGen::MazeGen(Scene* scene) : scene_(scene)
 {}

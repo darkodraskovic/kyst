@@ -10,6 +10,8 @@
 #include "ShapeFactory/SierpinskiFactory.h"
 #include "EntityFactory.h"
 
+using namespace ShapeFactory;
+
 EntityFactory::EntityFactory(Scene* scene)
     : scene_(scene)
 {

@@ -8,22 +8,24 @@
 using namespace std;
 using namespace glm;
 
-typedef pair<vec3, vec3> wall;
+namespace ShapeFactory {
 
-class MazeFactory
-{
-public:
-    MazeFactory(int width, int height);
-    const vector<vec3>& GetVertexArray();
-    void RandomWalk();
+    typedef pair<vec3, vec3> wall;
+
+    class MazeFactory
+    {
+    public:
+        MazeFactory(int width, int height);
+        const vector<vec3>& GetVertexArray();
+        void RandomWalk();
     
-    vector<vector<wall>> wallsHor_;
-    vector<vector<wall>> wallsVer_;
+        vector<vector<wall>> wallsHor_;
+        vector<vector<wall>> wallsVer_;
 
-private:
-    static int seed_;
-    vector<vec3> points_;
-};
+    private:
+        static int seed_;
+        vector<vec3> points_;
+    };
 
-
+}
 #endif /* MAZE_FACTORY_H */

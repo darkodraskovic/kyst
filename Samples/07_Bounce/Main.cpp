@@ -8,6 +8,7 @@
 #include "ShapeFactory/Shape2DFactory.h"
 
 using namespace VecConsts;
+using namespace ShapeFactory;
 
 void assertColllide();
 

@@ -1,5 +1,5 @@
 build/
 .clangd
-Source/compile_commands.json
+compile_commands.json
 Engine/glad.c
 Shaders/GenArt/Lib

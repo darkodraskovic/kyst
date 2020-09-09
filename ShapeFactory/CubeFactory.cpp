@@ -3,6 +3,8 @@
 
 #include "CubeFactory.h"
 
+using namespace ShapeFactory;
+
 CubeFactory::CubeFactory() {}
 
 std::vector<vec3> CubeFactory::GetPositions()

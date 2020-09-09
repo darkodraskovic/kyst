@@ -11,30 +11,33 @@
 using namespace glm;
 using namespace VecConsts;
 
-namespace CubeVecs {
-    const vec3 frontBL(-0.5f, -0.5f, 0.5f);
-    const vec3 frontTL(-0.5f, 0.5f, 0.5f);
-    const vec3 frontTR(0.5f, 0.5f, 0.5f);
-    const vec3 frontBR(0.5f, -0.5f, 0.5f);
-    const vec3 backBL(frontBL + BACK);
-    const vec3 backTL(frontTL + BACK);
-    const vec3 backTR(frontTR + BACK);
-    const vec3 backBR(frontBR + BACK);
-}  // CubeVecs
+namespace ShapeFactory {
 
-using namespace CubeVecs;
+    namespace CubeVecs {
+        const vec3 frontBL(-0.5f, -0.5f, 0.5f);
+        const vec3 frontTL(-0.5f, 0.5f, 0.5f);
+        const vec3 frontTR(0.5f, 0.5f, 0.5f);
+        const vec3 frontBR(0.5f, -0.5f, 0.5f);
+        const vec3 backBL(frontBL + BACK);
+        const vec3 backTL(frontTL + BACK);
+        const vec3 backTR(frontTR + BACK);
+        const vec3 backBR(frontBR + BACK);
+    }  // CubeVecs
 
-class CubeFactory
-{
-public:
-    CubeFactory();
+    using namespace CubeVecs;
 
-    static std::vector<vec3>  GetPositions();
-    static std::vector<vec3> GetNormals();
-    static std::vector<vec3> GetTexCoords();
-    static std::vector<unsigned int> GetIndices();
+    class CubeFactory
+    {
+    public:
+        CubeFactory();
 
-    static std::shared_ptr<Mesh> GetMesh();
-};
+        static std::vector<vec3>  GetPositions();
+        static std::vector<vec3> GetNormals();
+        static std::vector<vec3> GetTexCoords();
+        static std::vector<unsigned int> GetIndices();
 
+        static std::shared_ptr<Mesh> GetMesh();
+    };
+
+}
 #endif

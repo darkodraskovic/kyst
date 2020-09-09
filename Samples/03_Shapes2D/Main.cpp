@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace VecConsts;
+using namespace ShapeFactory;
 
 int main()
 {

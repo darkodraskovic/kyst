@@ -8,6 +8,7 @@
 #include "Shape2DFactory.h"
 
 using namespace VecConsts;
+using namespace ShapeFactory;
 
 std::vector<vec3> Shape2DFactory::points_;
 
