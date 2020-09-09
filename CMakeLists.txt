@@ -1,14 +1,31 @@
+# cmake ..
 cmake_minimum_required(VERSION 3.8)
 project(opengl-cg)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# utils
-include("CMake/Functions.cmake")
+# engine
+file(GLOB_RECURSE ENGINE_C "Engine/*.c" "Engine/*.cpp")
+set(ENGINE_H "." "Graphics" "Scene" "Collision")
 
-# libraries
-add_subdirectory("Source/Engine")
-add_subdirectory("Source/ShapeFactory")
+add_library(engine SHARED ${ENGINE_C})
+target_include_directories(engine PUBLIC ${ENGINE_H})
+target_link_libraries(engine GL GLU glfw dl)
+
+# ShapeFactory
+file(GLOB SHAPE_FACTORY_C "ShapeFactory/*.cpp")
+
+add_library(shapeFactory SHARED ${SHAPE_FACTORY_C})
+target_include_directories(shapeFactory PUBLIC ".")
+target_link_libraries(shapeFactory PRIVATE engine)
+
+# samples
+function(add_target TARGET)
+  file(GLOB APP_C "Samples/${TARGET}/*.cpp")
+  add_executable(${TARGET} ${APP_C})
+  target_include_directories(${TARGET} PUBLIC "${TARGET}/")
+  target_link_libraries(${TARGET} GL GLU glfw dl engine shapeFactory)
+endfunction()
 
 # make 00_BasicApp && ./00_BasicApp
 add_target(00_BasicApp)
