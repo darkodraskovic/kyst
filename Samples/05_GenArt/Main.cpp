@@ -9,11 +9,11 @@
 using namespace VecConsts;
 using namespace ShapeFactory;
 
-Entity* GenEntity(const string& shader, const vec3& position)
+Entity* GenEntity(const string& fragmentPath, const vec3& position)
 {
-    auto material = new Material2D(shader);
+    auto material = new Material2D(fragmentPath);
     auto mesh = Shape2DFactory::SolidRect(LEFT + DOWN, glm::vec2(2, 2));
-    mesh->Generate();
+    mesh->Generate(material->shader_->id_);
     auto entity = new Entity(mesh, material);
     entity->position_ = position;
     return entity;

@@ -1,7 +1,7 @@
 #version 330 core
 
-uniform vec3 uColor = vec3(0.0);
-uniform float uAlpha = 1.0;
+#include Lib/uniform.glsl
+
 uniform float uPctCol = 0.0;
 uniform float uPctTex = 0.0;
 uniform sampler2D uTexture;

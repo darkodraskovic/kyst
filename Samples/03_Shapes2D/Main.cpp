@@ -56,7 +56,7 @@ int main()
 
     // rect mesh
     auto mesh = Shape2DFactory::SolidRect((LEFT + DOWN)/2.f, vec2(1));
-    mesh->Generate();
+    mesh->Generate(material1->shader_->id_);
 
     // rect entity 1
     auto entity = new Entity(mesh, material1);
@@ -81,7 +81,7 @@ int main()
     // polygons 4, 5
     vector<vec3> points = {LEFT, DOWN, RIGHT, UP};
     mesh = Shape2DFactory::LinePolygon(points);
-    mesh->Generate();
+    mesh->Generate(material1->shader_->id_);
     entity = new Entity(mesh, material4);
     viewport->GetScene()->AddEntity(entity);
 

@@ -3,9 +3,14 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <string>
 #include <vector>
+#include <map>
 
 using namespace glm;
+
+enum MeshAttribute { POSITIONS, NORMALS, TANGENTS, TEX_COORDS, COLORS };
+extern const std::map<MeshAttribute, std::string> ATTRIBUTE_MAP;
 
 class Mesh
 {
@@ -19,17 +24,17 @@ public:
     // separate VBOs
     void GenArrayBuffer(const float* data, int elemPerAttr, int numVerts, unsigned int idx);
     void GenArrayBuffer(const float* data, int elemPerAttr, int numVerts);
-    void GenArrayBuffer(const float* data, int elemPerAttr, int numVerts, unsigned int program, const char* name);
+    void GenArrayBuffer(const float* data, int elemPerAttr, int numVerts, unsigned int program, const std::string& name);
     void GenArrayBuffer(const std::vector<vec2>&);
     void GenArrayBuffer(const std::vector<vec3>&);
-    void GenArrayBuffer(const std::vector<vec2>&, unsigned int program, const char* name);
-    void GenArrayBuffer(const std::vector<vec3>&, unsigned int program, const char* name);
+    void GenArrayBuffer(const std::vector<vec2>&, unsigned int program, MeshAttribute attrib);
+    void GenArrayBuffer(const std::vector<vec3>&, unsigned int program, MeshAttribute attrib);
 
     // indices - EBO
     void GenElementBuffer(const unsigned int* data, int numIdx);
     void GenElementBuffer(const std::vector<unsigned int>&);
 
-    void Generate();
+    void Generate(const std::vector<MeshAttribute>& attribOrder);
     void Generate(unsigned int program);
     void Render();
 
@@ -46,6 +51,8 @@ public:
     std::vector<unsigned int> indices_;
     
 private:
+    void DeleteBuffers();
+    
     int numVerts_ = 0;
     int numIdx_ = 0;
 };

@@ -37,7 +37,7 @@ int main()
     auto material = new Material2D();
     material->color_ = GREEN;
     auto mesh = Shape2DFactory::SolidEllipse(ZERO, ONE*2.f);
-    mesh->Generate();
+    mesh->Generate(material->shader_->id_);
     auto entity = new Entity(mesh, material);
     viewport->GetScene()->AddEntity(entity);
 

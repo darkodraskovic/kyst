@@ -6,10 +6,18 @@ Mesh::Mesh()
     glGenVertexArrays(1, &VAO_);
 }
 
+const std::map<MeshAttribute, std::string> ATTRIBUTE_MAP
+{
+    {POSITIONS, "aPos"},
+    {NORMALS, "aNorm"},
+    {TANGENTS, "aTang"},
+    {TEX_COORDS, "aTexCoord"},
+    {COLORS, "aCol"},
+};
+
 // VBO interleaved
 
-void Mesh::GenArrayBuffer(const float* data, int elemPerAttr, int numAttrs,
-                          int numVerts)
+void Mesh::GenArrayBuffer(const float* data, int elemPerAttr, int numAttrs, int numVerts)
 {
     numVerts_ = numVerts;
 
@@ -63,9 +71,9 @@ void Mesh::GenArrayBuffer(const float *data, int elemPerAttr, int numVerts)
     GenArrayBuffer(data, elemPerAttr, numVerts, (unsigned int)VBOs_.size());
 }
 
-void Mesh::GenArrayBuffer(const float* data, int elemPerAttr, int numVerts, unsigned int program, const char* name)
+void Mesh::GenArrayBuffer(const float* data, int elemPerAttr, int numVerts, unsigned int program, const std::string& name)
 {
-    GenArrayBuffer(data, elemPerAttr, numVerts, (unsigned int)glGetAttribLocation(program, name));
+    GenArrayBuffer(data, elemPerAttr, numVerts, (unsigned int)glGetAttribLocation(program, name.c_str()));
 }
 
 void Mesh::GenArrayBuffer(const std::vector<vec2>& attribs)
@@ -78,14 +86,14 @@ void Mesh::GenArrayBuffer(const std::vector<vec3>& attribs)
     GenArrayBuffer(&attribs[0].x, 3, attribs.size());
 }
 
-void Mesh::GenArrayBuffer(const std::vector<vec2>& attribs, unsigned int program, const char* name)
+void Mesh::GenArrayBuffer(const std::vector<vec2>& attribs, unsigned int program, MeshAttribute attrib)
 {
-    GenArrayBuffer(&attribs[0].x, 2, attribs.size(), program, name);
+    GenArrayBuffer(&attribs[0].x, 2, attribs.size(), program, ATTRIBUTE_MAP.at(attrib));
 }
 
-void Mesh::GenArrayBuffer(const std::vector<vec3>& attribs, unsigned int program, const char* name)
+void Mesh::GenArrayBuffer(const std::vector<vec3>& attribs, unsigned int program, MeshAttribute attrib)
 {
-    GenArrayBuffer(&attribs[0].x, 3, attribs.size(), program, name);
+    GenArrayBuffer(&attribs[0].x, 3, attribs.size(), program, ATTRIBUTE_MAP.at(attrib));
 }
 
 // EBO
@@ -110,50 +118,47 @@ void Mesh::GenElementBuffer(const std::vector<unsigned int>& indices)
 
 // GENERATE
 
-/*
-  layout (location = 0) in vec3 aPos;
-  layout (location = 1) in vec3 aNorm;
-  layout (location = 2) in vec3 aTang;
-  layout (location = 3) in vec2 aTexCoord;
-  layout (location = 4) in vec3 aCol;
-*/
-
-void Mesh::Generate()
+// Attribute order in attributes argument must match (location = n) in shader
+void Mesh::Generate(const std::vector<MeshAttribute>& attribOrder)
 {
-    glDeleteBuffers(1, &EBO_);
-    glDeleteBuffers(VBOs_.size(), &VBOs_.front());
+    DeleteBuffers();
     
-    if (positions_.empty()) {
-        std::cout << "ERROR::MESH:: Position array empty!" << std::endl;
-        return;
+    for (int i = 0; i < attribOrder.size(); ++i)
+    {
+        switch (attribOrder[i]) {
+        case POSITIONS:
+            GenArrayBuffer(positions_);
+            break;
+        case NORMALS:
+            GenArrayBuffer(normals_);
+            break;
+        case TANGENTS:
+            GenArrayBuffer(tangents_);
+            break;
+        case TEX_COORDS:
+            GenArrayBuffer(texCoords_);
+            break;
+        case COLORS:
+            GenArrayBuffer(colors_);
+            break;
+        default:
+            std::cout << "ERROR::MESH:: Unknown mesh attribute!" << std::endl;
+            break;
+        }
     }
-    GenArrayBuffer(positions_);
-    
-    if (!normals_.empty()) GenArrayBuffer(normals_);
-    if (!normals_.empty()) GenArrayBuffer(tangents_);
-    
-    if (!texCoords_.empty()) GenArrayBuffer(texCoords_);
-    if (!colors_.empty()) GenArrayBuffer(colors_);
-    
-    if (!indices_.empty()) GenElementBuffer(indices_);
 }
 
 void Mesh::Generate(unsigned int program)
 {
-    glDeleteBuffers(1, &EBO_);
-    glDeleteBuffers(VBOs_.size(), &VBOs_.front());
+    DeleteBuffers();
     
-    if (positions_.empty()) {
-        std::cout << "ERROR::MESH:: Position array empty!" << std::endl;
-        return;
-    }
-    GenArrayBuffer(positions_, program, "aPos");
+    GenArrayBuffer(positions_, program, POSITIONS);
     
-    if (!normals_.empty()) GenArrayBuffer(normals_, program, "aNorm");
-    if (!normals_.empty()) GenArrayBuffer(tangents_, program, "aTang");
+    if (!normals_.empty()) GenArrayBuffer(normals_, program, NORMALS);
+    if (!normals_.empty()) GenArrayBuffer(tangents_, program, TANGENTS);
     
-    if (!texCoords_.empty()) GenArrayBuffer(texCoords_, program, "aTexCoord");
-    if (!colors_.empty()) GenArrayBuffer(colors_, program, "aCol");
+    if (!texCoords_.empty()) GenArrayBuffer(texCoords_, program, TEX_COORDS);
+    if (!colors_.empty()) GenArrayBuffer(colors_, program, COLORS);
     
     if (!indices_.empty()) GenElementBuffer(indices_);
 }
@@ -173,11 +178,16 @@ void Mesh::Render()
     glBindVertexArray(0);
 }
 
+void Mesh::DeleteBuffers()
+{
+    glDeleteBuffers(1, &EBO_);
+    glDeleteBuffers(VBOs_.size(), &VBOs_.front()); 
+}
+
 // DESTRUCTOR
 
 Mesh::~Mesh()
 {
-    glDeleteBuffers(1, &EBO_);
-    glDeleteBuffers(VBOs_.size(), &VBOs_.front());
+    DeleteBuffers();
     glDeleteVertexArrays(1, &VAO_);
 };

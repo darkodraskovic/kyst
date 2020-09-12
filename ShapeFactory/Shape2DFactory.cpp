@@ -27,7 +27,7 @@ Mesh* Shape2DFactory::Line(const vec3 &point1,
 
 Mesh* Shape2DFactory::Lines(const std::vector<vec3>& points)
 {
-    auto mesh = new Mesh();;
+    auto mesh = new Mesh();
     mesh->positions_ = points;
     mesh->mode_ = GL_LINE_STRIP;
     return mesh;

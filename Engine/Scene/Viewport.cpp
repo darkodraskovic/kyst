@@ -1,5 +1,7 @@
 #include "Viewport.h"
+#include "Engine/Graphics/Mesh.h"
 #include "Scene.h"
+#include <vector>
 
 const std::string Viewport::vertexPath_ = "../Shaders/Viewport/Viewport.vs";
 const std::string Viewport::fragmentPath_ = "../Shaders/Viewport/Viewport.fs";
@@ -21,8 +23,8 @@ void Viewport::Init(unsigned int width, unsigned int height)
     width_ = width;
     height_ = height;
     scene_->viewport_ = this;
-    GenQuad(width, height);
     GenBuffers(width, height);
+    GenQuad(width, height);
 }
 
 Application* Viewport::GetApplication() { return application_;}
@@ -54,7 +56,7 @@ void Viewport::GenQuad(float width, float height)
     quad_->texCoords_.push_back(vec2(1, 1));
     quad_->texCoords_.push_back(vec2(0, 1));
 
-    quad_->Generate();
+    quad_->Generate(shader_->id_);
 }
 
 void Viewport::AddEffect(const char *fragmentPath)

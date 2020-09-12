@@ -1,12 +1,10 @@
 #version 330 core
 
-uniform mat4 uModel;
-uniform mat4 uView;
-uniform mat4 uProjection;
+#include Lib/transform.glsl
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNorm;
-layout (location = 2) in vec3 aTexCoords;
+layout (location = 2) in vec3 aTexCoord;
 
 out vec3 vFragPos;
 out vec3 vFragNorm;
@@ -16,7 +14,7 @@ void main()
 {
     vFragPos = mat3(uModel) * aPos;
     vFragNorm = mat3(transpose(inverse(uModel))) * aNorm;
-    vTexCoords = aTexCoords.xy;
+    vTexCoords = aTexCoord.xy;
 
     gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0);
 }
