@@ -42,20 +42,20 @@ std::vector<vec3> CubeFactory::GetNormals()
     };
 }
 
-std::vector<vec3> CubeFactory::GetTexCoords() {
-    return std::vector<vec3>{
+std::vector<vec2> CubeFactory::GetTexCoords() {
+    return std::vector<vec2>{
         // top
-        ZERO, RIGHT, ONE, UP,
+        ZERO_2D, RIGHT_2D, ONE_2D, UP_2D,
         // back
-        ZERO, RIGHT, ONE, UP,
+        ZERO_2D, RIGHT_2D, ONE_2D, UP_2D,
         // left
-        ZERO, RIGHT, ONE, UP,
+        ZERO_2D, RIGHT_2D, ONE_2D, UP_2D,
         // right
-        ZERO, RIGHT, ONE, UP,
+        ZERO_2D, RIGHT_2D, ONE_2D, UP_2D,
         // top
-        ZERO, RIGHT, ONE, UP,
+        ZERO_2D, RIGHT_2D, ONE_2D, UP_2D,
         // bottom
-        ZERO, RIGHT, ONE, UP,
+        ZERO_2D, RIGHT_2D, ONE_2D, UP_2D,
     };
 }
 
@@ -79,11 +79,10 @@ std::vector<unsigned int> CubeFactory::GetIndices() {
 std::shared_ptr<Mesh> CubeFactory::GetMesh()
 {
     auto mesh = std::make_shared<Mesh>();
+    mesh->positions_ = CubeFactory::GetPositions();
+    mesh->normals_ = CubeFactory::GetNormals();
+    mesh->texCoords_ = CubeFactory::GetTexCoords();
+    mesh->indices_ = CubeFactory::GetIndices();
     
-    mesh->GenArrayBuffer(CubeFactory::GetPositions());
-    mesh->GenArrayBuffer(CubeFactory::GetNormals());
-    mesh->GenArrayBuffer(CubeFactory::GetTexCoords());
-    mesh->GenElementBuffer(CubeFactory::GetIndices());
-
     return mesh;
 }

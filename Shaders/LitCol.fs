@@ -1,5 +1,8 @@
 #version 330 core
 
+#include Lib/uniform.glsl
+#include Lib/light.glsl
+
 struct Material
 {
     vec3 ambient;
@@ -8,24 +11,10 @@ struct Material
     
     float shininess;
 };
-
-struct Light
-{
-    vec3 position;
-
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;    
-};
-
 uniform Material uMaterial;
-uniform Light uLight;
-uniform vec3 uViewPos;
-uniform float uAlpha;
 
 in vec3 vFragPos;
 in vec3 vFragNorm;
-
 out vec4 FragCol;
 
 void main()

@@ -1,7 +1,6 @@
 #version 330 core
 
-uniform vec3 uColor;
-uniform float uAlpha;
+#include Lib/uniform.glsl
 
 out vec4 FragColor;
 

@@ -16,6 +16,13 @@ namespace VecConsts
     const vec3 BACK(0.0f, 0.0f, -1.0f);
     const vec3 ZERO(0.0f, 0.0f, 0.0f);
     const vec3 ONE(1.0f, 1.0f, 1.0f);
+    const vec2 UP_2D(0.0f, 1.0f);
+    const vec2 DOWN_2D(0.0f, -1.0f);
+    const vec2 RIGHT_2D(1.0f, 0.0f);
+    const vec2 LEFT_2D(-1.0f, 0.0f);
+    const vec2 FORWARD_2D(0.0f, 0.0f);
+    const vec2 ZERO_2D(0.0f, 0.0f);
+    const vec2 ONE_2D(1.0f, 1.0f);
 
     // Colors
     const vec3 RED(1.0f, 0.0f, 0.0f);

@@ -33,7 +33,7 @@ namespace ShapeFactory {
 
         static std::vector<vec3>  GetPositions();
         static std::vector<vec3> GetNormals();
-        static std::vector<vec3> GetTexCoords();
+        static std::vector<vec2> GetTexCoords();
         static std::vector<unsigned int> GetIndices();
 
         static std::shared_ptr<Mesh> GetMesh();

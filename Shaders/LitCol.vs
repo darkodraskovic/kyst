@@ -1,9 +1,7 @@
 #version 330 core
 
 #include Lib/transform.glsl
-
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aNorm;
+#include Lib/attribute.glsl
 
 out vec3 vFragPos;
 out vec3 vFragNorm;

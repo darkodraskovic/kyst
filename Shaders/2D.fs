@@ -8,7 +8,6 @@ uniform sampler2D uTexture;
 
 in vec3 vCol;
 in vec2 vTexCoord;
-
 out vec4 FragCol;
 
 void main()

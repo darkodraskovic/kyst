@@ -13,6 +13,7 @@ public:
     Cube(const std::shared_ptr<Material>& material) {
         material_ = material;
         mesh_ = CubeFactory::GetMesh();
+        mesh_->Generate(material->shader_->id_);
     };
     
     virtual void Update(float deltaTime) override {

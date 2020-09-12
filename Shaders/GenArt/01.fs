@@ -1,9 +1,9 @@
 #version 330 core
 
-#include Lib/uniform.glsl
-#include Lib/define.glsl
-#include Lib/matrix.glsl
-#include Lib/shape.glsl
+#include ../Lib/uniform.glsl
+#include ../Lib/define.glsl
+#include ../Lib/matrix.glsl
+#include ../Lib/shape.glsl
 
 in vec2 vTexCoord;
 in vec3 vPos;

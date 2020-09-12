@@ -20,7 +20,8 @@ EntityFactory::EntityFactory(Scene* scene)
 
     snowflakeMesh_ = std::shared_ptr<Mesh>(new Mesh());
     snowflakeMesh_->mode_ = GL_LINE_LOOP;
-    snowflakeMesh_->GenArrayBuffer(KochFactory::Snowflake(3));
+    snowflakeMesh_->positions_ = KochFactory::Snowflake(3);
+    snowflakeMesh_->Generate(colShader_->id_);
 }
 
 std::shared_ptr<Mover> EntityFactory::AddMover(bool vCol)
@@ -46,8 +47,8 @@ std::shared_ptr<Mover> EntityFactory::CreateLineGasket(int numDivisions, const v
     SierpinskiFactory::varRange_ = varRange;
     auto points = threeD ? SierpinskiFactory::Sierpinski3DDet(numDivisions) :
         SierpinskiFactory::Sierpinski2DDet(numDivisions);
-    std::vector<vec3> lines;
     gasket->mesh_->mode_ = GL_LINES;
+    std::vector<vec3>& lines = gasket->mesh_->positions_;
     for (int i = 0; i < points.size(); i += 3)
     {
         lines.push_back(points.at(i));
@@ -57,11 +58,14 @@ std::shared_ptr<Mover> EntityFactory::CreateLineGasket(int numDivisions, const v
         lines.push_back(points.at(i + 2));
         lines.push_back(points.at(i));
     }
-    gasket->mesh_->GenArrayBuffer(lines);
 
-    if (!vCol) return gasket;
+    if (!vCol)
+    {
+        gasket->mesh_->Generate(colShader_->id_);
+        return gasket;
+    };
 
-    std::vector<vec3> colors;
+    std::vector<vec3>& colors = gasket->mesh_->colors_;
     for (int i = 0; i < lines.size(); i += 6) {
         colors.push_back(color1_);
         colors.push_back(color1_);
@@ -70,8 +74,8 @@ std::shared_ptr<Mover> EntityFactory::CreateLineGasket(int numDivisions, const v
         colors.push_back(color3_);
         colors.push_back(color3_);
     }
-    gasket->mesh_->GenArrayBuffer(colors);
 
+    gasket->mesh_->Generate(vColShader_->id_);
     return gasket;
 }
 
@@ -82,15 +86,18 @@ std::shared_ptr<Mover> EntityFactory::CreateTriGasket(int numDivisions, const ve
     
     gasket->mesh_ = std::make_shared<Mesh>();
     SierpinskiFactory::varRange_ = varRange;
-    auto points = threeD ? SierpinskiFactory::Sierpinski3DDet(numDivisions) :
+    gasket->mesh_->positions_ = threeD ? SierpinskiFactory::Sierpinski3DDet(numDivisions) :
         SierpinskiFactory::Sierpinski2DDet(numDivisions);
-    gasket->mesh_->GenArrayBuffer(points);
     gasket->mesh_->mode_ = GL_TRIANGLES;
 
-    if (!vCol) return gasket;
+    if (!vCol)
+    {
+        gasket->mesh_->Generate(colShader_->id_);
+        return gasket;
+    };
 
-    std::vector<vec3> colors;
-    for (int i = 0; i < points.size(); i += 3)
+    std::vector<vec3>& colors = gasket->mesh_->colors_;
+    for (int i = 0; i < gasket->mesh_->positions_.size(); i += 3)
     {
         int idx = (i / 3) % 3;
         vec3 color = color1_;
@@ -102,8 +109,7 @@ std::shared_ptr<Mover> EntityFactory::CreateTriGasket(int numDivisions, const ve
         for (int j = 0; j < 3; ++j) colors.push_back(color);
     }
 
-    gasket->mesh_->GenArrayBuffer(colors);
-
+    gasket->mesh_->Generate(vColShader_->id_);
     return gasket;
 }
 

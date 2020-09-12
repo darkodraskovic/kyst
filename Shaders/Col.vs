@@ -1,8 +1,7 @@
 #version 330 core
 
 #include Lib/transform.glsl
-
-layout (location = 0) in vec3 aPos;
+#include Lib/attribute.glsl
 
 void main()
 {
