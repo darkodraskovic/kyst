@@ -7,11 +7,15 @@ using namespace glm;
 
 namespace Collision2D
 {
+    // Shapes    
     class Range
     {
         public:
+        Range() {};
         Range(float min, float max);
         void Sort();
+        bool Overlapping(const Range& other);
+        const Range& Hull(const Range& other) const;
         float min_;
         float max_;
     };
@@ -23,7 +27,7 @@ namespace Collision2D
         Rotor(const vec2& direction);
         virtual void Update(float rotation);
         virtual void SetRotation(float rotation);
-        float GetRotation();
+        float GetRotation() const;
 
         vec2 direction_;
     };
@@ -68,25 +72,34 @@ namespace Collision2D
         vec2 size_;
     };
 
-    class OrientedRectangle : public Rectangle, Rotor
+    class OrientedRectangle : public Shape, public Rotor
     {
     public:
-        OrientedRectangle(const vec2& position, const vec2& size, float rotation = 0);
+        OrientedRectangle(const vec2& center, const vec2& halfSize, float rotation = 0);
+        const Segment& Edge(int n) const; // cw side count: 0 = up, 1, = right, etc.
+        bool SAT(const Segment& axis) const;
+        const Range& Project(const vec2& dir) const;
+        
+        vec2 halfSize_;
     };
 
+    // Collides helpers    
     bool equal(float a, float b);
     bool equal(const vec2& a, const vec2& b);
+    const vec2& rotate(const vec2& v, float rotation);
     const vec2& rotate90(const vec2& v);
     bool parallel(const vec2& a, const vec2& b);
     bool equivalent(const Line& a, const Line& b);
     bool overlapping(float minA, float maxA, float minB, float maxB);    
     bool onSameSide(const Line& axis, const Segment& s);
     const Range& project(const Segment& s, const vec2& onto);
-    
+
+    // Collides
     bool collide(const Rectangle& a, const Rectangle& b);
     bool collide(const Circle& a, const Circle& b);
     bool collide(const Line& a, const Line& b);
     bool collide(const Segment& a, const Segment& b);
+    bool collide(const OrientedRectangle& a, const OrientedRectangle& b);
     
 }  // Shape
 

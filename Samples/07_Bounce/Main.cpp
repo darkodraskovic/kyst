@@ -1,4 +1,5 @@
 #include <cassert>
+#include <glm/ext/scalar_constants.hpp>
 #include <iostream>
 #include "Engine/VecConsts.h"
 #include "Engine/Application.h"
@@ -102,4 +103,19 @@ void assertColllide()
     assert(!collide(df, eg));
     assert(collide(ae, df));
     assert(collide(df, ae)); // reverse order
+
+    OrientedRectangle aORect = {{3, 5}, {1, 3}, pi<float>() / 12};
+    OrientedRectangle bORect = {{10, 5}, {2, 2}, -pi<float>() / 12};
+    assert(!collide(aORect, bORect));
+    OrientedRectangle cORect = {{-6, 5}, {2, 1}, 0};
+    OrientedRectangle dORect = {{-4, 2}, {3, 1}, 0}; // colinear
+    assert(!collide(cORect, dORect));
+    assert(!collide(aORect, cORect));
+    dORect.SetRotation(-pi<float>()/4);
+    assert(collide(cORect, dORect));
+    assert(collide(dORect, cORect));
+    OrientedRectangle eORect = {{5, 2}, {3, 1}, -pi<float>()/4};
+    OrientedRectangle fORect = {{9, -1}, {3, 1}, -pi<float>()/4};
+    assert(collide(eORect, fORect));
+    assert(!collide(eORect, cORect));
 }

@@ -1,14 +1,40 @@
 #include <cmath>
+#include <glm/ext/matrix_transform.hpp>
 #include <glm/fwd.hpp>
-#include <glm/geometric.hpp>
-#include <glm/gtc/constants.hpp>
 
+#include "Engine/VecConsts.h"
 #include "Collision2D.h"
+
 
 using namespace Collision2D;
 
 // Shapes
 // ------------------------------
+
+Range::Range(float min, float max) : min_(min), max_(max) {}
+
+void Range::Sort()
+{
+    if(min_ > max_)
+    {
+        float tmp = max_;
+        max_ = min_;
+        min_ = tmp;
+    }
+}
+
+bool Range::Overlapping(const Range &other)
+{
+    return overlapping(min_, max_, other.min_, other.max_);
+}
+
+const Range& Range::Hull(const Range& other) const
+{
+    Range* hull = new Range();
+    hull->min_ = min_ < other.min_ ? min_ : other.min_;
+    hull->max_ = max_ > other.max_ ? max_ : other.max_;
+    return *hull;    
+}
 
 // Rotor
 
@@ -22,7 +48,7 @@ void Rotor::SetRotation(float rotation)
     direction_.y = sin(rotation);
 }
 
-float Rotor::GetRotation()
+float Rotor::GetRotation() const
 {
   return atan2(direction_.y, direction_.x);
 }
@@ -58,8 +84,50 @@ Rectangle::Rectangle(const vec2& position, const vec2& size)
 
 // OrientedRectangle
 
-OrientedRectangle::OrientedRectangle(const vec2 &position, const vec2 &size, float rotation)
-    : Rectangle(position, size), Rotor(rotation) {}
+OrientedRectangle::OrientedRectangle(const vec2 &center, const vec2 &halfSize, float rotation)
+    : Shape(center), halfSize_(halfSize), Rotor(rotation) {}
+
+const Segment& OrientedRectangle::Edge(int n) const
+{
+    vec2 a = halfSize_;
+    vec2 b = halfSize_;
+
+    switch (n % 4)
+    {
+    case 0:
+        a.x = -a.x;
+        break;
+    case 1:
+        b.y = -b.y;
+        break;
+    case 2:
+        a.y = -a.y;
+        b = -b;
+        break;
+    default:
+        a = -a;
+        b.x = -b.x;
+        break;
+    }
+
+    float rot = GetRotation();
+    vec2 startpoint = rotate(a, rot) + position_;
+    vec2 endpoint = rotate(b, rot) + position_;
+    
+    return *new Segment(startpoint, endpoint);
+}
+
+bool OrientedRectangle::SAT(const Segment &axis) const
+{
+    vec2 dir = axis.endpoint_ - axis.position_;
+    Range axisRange = project(axis, dir);
+    return !axisRange.Overlapping(Project(dir));
+}
+
+const Range& OrientedRectangle::Project(const vec2& dir) const
+{
+    return project(Edge(0), dir).Hull(project(Edge(2), dir));
+}
 
 // Circle
 
@@ -78,6 +146,13 @@ bool Collision2D::equal(float a, float b)
 bool Collision2D::equal(const vec2& a, const vec2& b)
 {
     return equal(a.x, b.x) && equal(a.y, b.y);
+}
+
+const vec2& Collision2D::rotate(const vec2& vec, float rotation)
+{
+  float s = sinf(rotation);
+  float c = cosf(rotation);
+  return *new vec2(vec.x * c - vec.y * s, vec.x * s + vec.y * c);
 }
 
 const vec2& Collision2D::rotate90(const vec2& v)
@@ -111,18 +186,6 @@ bool Collision2D::onSameSide(const Line& axis, const Segment& s)
     vec2 d2 = s.endpoint_ - axis.position_;
     vec2 norm = rotate90(axis.direction_);
     return glm::dot(norm, d1) * glm::dot(norm, d2) > 0; // colinear is not on the same side
-}
-
-Range::Range(float min, float max) : min_(min), max_(max) {}
-
-void Range::Sort()
-{
-    if(min_ > max_)
-    {
-        float tmp = max_;
-        max_ = min_;
-        min_ = tmp;
-    }
 }
 
 const Range& Collision2D::project(const Segment& s, const vec2& onto)
@@ -176,8 +239,17 @@ bool Collision2D::collide(const Segment& a, const Segment& b)
     if (parallel(aDir, bDir)) {
         Range r1 = project(a, aDir);
         Range r2 = project(b, aDir);
-        return overlapping(r1.min_, r1.max_, r2.min_, r2.max_);
+        return r1.Overlapping(r2);
     }
 
+    return true;
+}
+
+bool Collision2D::collide(const OrientedRectangle& a, const OrientedRectangle& b)
+{
+    if (a.SAT(b.Edge(0))) return false;
+    if (a.SAT(b.Edge(1))) return false;
+    if (b.SAT(a.Edge(0))) return false;
+    if (b.SAT(a.Edge(1))) return false;
     return true;
 }
