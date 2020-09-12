@@ -14,7 +14,7 @@ namespace Collision2D
         Range() {};
         Range(float min, float max);
         void Sort();
-        bool Overlapping(const Range& other);
+        bool Overlapping(const Range& other) const;
         const Range& Hull(const Range& other) const;
         float min_;
         float max_;
@@ -46,12 +46,15 @@ namespace Collision2D
     public:
         Line(const vec2& position, float rotation);
         Line(const vec2& position, const vec2& direction);
+        bool Equivalent(const Line& other) const;
     };
 
     class Segment : public Shape
     {
     public:
         Segment(const vec2& startpoint, const vec2& endpoint);
+        const Range& Project(const vec2& dir) const;
+        bool OnOneSide(const Line& line) const;
         
         vec2 endpoint_;
     };
@@ -89,10 +92,7 @@ namespace Collision2D
     const vec2& rotate(const vec2& v, float rotation);
     const vec2& rotate90(const vec2& v);
     bool parallel(const vec2& a, const vec2& b);
-    bool equivalent(const Line& a, const Line& b);
-    bool overlapping(float minA, float maxA, float minB, float maxB);    
-    bool onSameSide(const Line& axis, const Segment& s);
-    const Range& project(const Segment& s, const vec2& onto);
+    bool overlapping(float minA, float maxA, float minB, float maxB);
 
     // Collides
     bool collide(const Rectangle& a, const Rectangle& b);

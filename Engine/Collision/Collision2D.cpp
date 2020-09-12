@@ -23,7 +23,7 @@ void Range::Sort()
     }
 }
 
-bool Range::Overlapping(const Range &other)
+bool Range::Overlapping(const Range &other) const
 {
     return overlapping(min_, max_, other.min_, other.max_);
 }
@@ -72,10 +72,32 @@ Line::Line(const vec2& position, float rotation)
 Line::Line(const vec2& position, const vec2& direction)
     : Shape(position), Rotor(direction) {}
 
+bool Line::Equivalent(const Line& other) const
+{
+    if (!parallel(direction_, other.direction_)) return false;
+    return parallel(position_ - other.position_, direction_);
+}
+
 // Segment
 
 Segment::Segment(const vec2 &startpoint, const vec2 &endpoint)
     : Shape(startpoint), endpoint_(endpoint) {}
+
+const Range& Segment::Project(const vec2& onto) const
+{
+    vec2 ontoN = glm::normalize(onto);
+    Range* range = new Range(dot(ontoN, position_), dot(ontoN, endpoint_));
+    range->Sort();
+    return *range;
+}
+
+bool Segment::OnOneSide(const Line& line) const
+{
+    vec2 d1 = position_ - line.position_;
+    vec2 d2 = endpoint_ - line.position_;
+    vec2 norm = rotate90(line.direction_);
+    return glm::dot(norm, d1) * glm::dot(norm, d2) > 0; // colinear is not on the same side
+}
 
 // Rectangle
 
@@ -91,7 +113,6 @@ const Segment& OrientedRectangle::Edge(int n) const
 {
     vec2 a = halfSize_;
     vec2 b = halfSize_;
-
     switch (n % 4)
     {
     case 0:
@@ -111,22 +132,19 @@ const Segment& OrientedRectangle::Edge(int n) const
     }
 
     float rot = GetRotation();
-    vec2 startpoint = rotate(a, rot) + position_;
-    vec2 endpoint = rotate(b, rot) + position_;
-    
-    return *new Segment(startpoint, endpoint);
+    return *new Segment(rotate(a, rot) + position_, rotate(b, rot) + position_);
 }
 
 bool OrientedRectangle::SAT(const Segment &axis) const
 {
     vec2 dir = axis.endpoint_ - axis.position_;
-    Range axisRange = project(axis, dir);
+    Range axisRange = axis.Project(dir);
     return !axisRange.Overlapping(Project(dir));
 }
 
 const Range& OrientedRectangle::Project(const vec2& dir) const
 {
-    return project(Edge(0), dir).Hull(project(Edge(2), dir));
+    return Edge(0).Project(dir).Hull(Edge(2).Project(dir));
 }
 
 // Circle
@@ -169,31 +187,9 @@ bool Collision2D::parallel(const vec2& a, const vec2& b)
     return equal(0, glm::dot(aNorm, b));
 }
 
-bool Collision2D::equivalent(const Line& a, const Line& b)
-{
-    if (!parallel(a.direction_, b.direction_)) return false;
-    return parallel(a.position_ - b.position_, a.direction_);
-}
-
 bool Collision2D::overlapping(float minA, float maxA, float minB, float maxB)
 {
     return minB <= maxA && minA <= maxB;
-}
-
-bool Collision2D::onSameSide(const Line& axis, const Segment& s)
-{
-    vec2 d1 = s.position_ - axis.position_;
-    vec2 d2 = s.endpoint_ - axis.position_;
-    vec2 norm = rotate90(axis.direction_);
-    return glm::dot(norm, d1) * glm::dot(norm, d2) > 0; // colinear is not on the same side
-}
-
-const Range& Collision2D::project(const Segment& s, const vec2& onto)
-{
-    vec2 ontoN = glm::normalize(onto);
-    Range* range = new Range(dot(ontoN, s.position_), dot(ontoN, s.endpoint_));
-    range->Sort();
-    return *range;
 }
 
 // Collides
@@ -225,7 +221,7 @@ bool Collision2D::collide(const Circle& a, const Circle& b)
 
 bool Collision2D::collide(const Line& a, const Line& b)
 {
-    if (parallel(a.direction_, b.direction_)) return equivalent(a, b);
+    if (parallel(a.direction_, b.direction_)) return a.Equivalent(b);
     return true;
 }
 
@@ -233,14 +229,11 @@ bool Collision2D::collide(const Segment& a, const Segment& b)
 {
     vec2 aDir = (a.endpoint_ - a.position_);
     vec2 bDir = (b.endpoint_ - b.position_);
-    if (onSameSide(Line(a.position_, aDir), b)) return false;
-    if (onSameSide(Line(b.position_, bDir), a)) return false;
+    
+    if (b.OnOneSide(Line(a.position_, aDir))) return false;
+    if (a.OnOneSide(Line(b.position_, bDir))) return false;
 
-    if (parallel(aDir, bDir)) {
-        Range r1 = project(a, aDir);
-        Range r2 = project(b, aDir);
-        return r1.Overlapping(r2);
-    }
+    if (parallel(aDir, bDir)) return a.Project(aDir).Overlapping(b.Project(aDir));
 
     return true;
 }
