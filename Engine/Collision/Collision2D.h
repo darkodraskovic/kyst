@@ -1,6 +1,7 @@
 #ifndef COLLISION2D_H
 #define COLLISION2D_H
 
+#include <glm/fwd.hpp>
 #include <glm/glm.hpp>
 
 using namespace glm;
@@ -63,6 +64,7 @@ namespace Collision2D
     {
     public:
         Circle(const vec2& position, float radius);
+        bool Contains(const vec2& point) const;
         
         float radius_;
     };
@@ -92,6 +94,7 @@ namespace Collision2D
     const vec2& rotate(const vec2& v, float rotation);
     const vec2& rotate90(const vec2& v);
     bool parallel(const vec2& a, const vec2& b);
+    const vec2& project(const vec2& a, const vec2& b);
     bool overlapping(float minA, float maxA, float minB, float maxB);
 
     // Collides
@@ -100,6 +103,8 @@ namespace Collision2D
     bool collide(const Line& a, const Line& b);
     bool collide(const Segment& a, const Segment& b);
     bool collide(const OrientedRectangle& a, const OrientedRectangle& b);
+    bool collide(const Circle& circle, const Line& line);
+    bool collide(const Circle& circle, const Segment& segment);
     
 }  // Shape
 

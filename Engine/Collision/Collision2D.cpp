@@ -1,10 +1,10 @@
 #include <cmath>
+#include <iostream>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/fwd.hpp>
 
 #include "Engine/VecConsts.h"
 #include "Collision2D.h"
-
 
 using namespace Collision2D;
 
@@ -149,8 +149,13 @@ const Range& OrientedRectangle::Project(const vec2& dir) const
 
 // Circle
 
-Circle::Circle(const vec2& position, float radius)
+Circle::Circle(const vec2 &position, float radius)
     : Shape(position), radius_(radius) {}
+
+bool Circle::Contains(const vec2 &point) const
+{
+    return  glm::length(point - position_) <= radius_;
+}
 
 // Collides helpers
 // ------------------------------
@@ -185,6 +190,18 @@ bool Collision2D::parallel(const vec2& a, const vec2& b)
 {
     vec2 aNorm = rotate90(a);
     return equal(0, glm::dot(aNorm, b));
+}
+
+const vec2& Collision2D::project(const vec2& project, const vec2& onto)
+{
+    float d = glm::dot(onto, onto);
+    if(0 < d)
+    {
+        float dp = glm::dot(project, onto);
+        vec2* res = new vec2((onto * dp) / d);
+        return *res;
+    }
+    return onto;    
 }
 
 bool Collision2D::overlapping(float minA, float maxA, float minB, float maxB)
@@ -245,4 +262,23 @@ bool Collision2D::collide(const OrientedRectangle& a, const OrientedRectangle& b
     if (b.SAT(a.Edge(0))) return false;
     if (b.SAT(a.Edge(1))) return false;
     return true;
+}
+
+bool Collision2D::collide(const Circle& circle, const Line& line)
+{
+    vec2 nearestPt = project(circle.position_ - line.position_, line.direction_) + line.position_;
+    return circle.Contains(nearestPt);
+}
+
+bool Collision2D::collide(const Circle& circle, const Segment& segment)
+{
+    if(circle.Contains(segment.position_)) return true;
+    if(circle.Contains(segment.endpoint_)) return true;
+
+    vec2 dir = segment.endpoint_ - segment.position_;
+    vec2 proj = project(circle.position_ - segment.position_, dir);
+    vec2 nearestPt = proj + segment.position_;
+    return circle.Contains(nearestPt) &&
+        glm::length(proj) <= length(dir) &&
+        glm::dot(proj, dir) >= 0;
 }

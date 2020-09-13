@@ -1,5 +1,6 @@
 #include <cassert>
 #include <glm/ext/scalar_constants.hpp>
+#include <glm/fwd.hpp>
 #include <iostream>
 #include "Engine/VecConsts.h"
 #include "Engine/Application.h"
@@ -74,35 +75,35 @@ void assertColllide()
     assert(collide(bCircle, cCircle));
     assert(!collide(aCircle, cCircle));
 
-    vec2 aPoint{3, 5};
-    vec2 bPoint{3, 2};
-    vec2 cPoint{8, 4};
+    vec2 aPt{3, 5};
+    vec2 bPt{3, 2};
+    vec2 cPt{8, 4};
     vec2 down{5, -1};
     vec2 up{5, 2};
-    Line l1{aPoint, down};
-    Line l2{aPoint, up};
-    Line l3{bPoint, up};
-    Line l4{cPoint, down};
-    assert(collide(l1, l2));
-    assert(collide(l1, l3));
-    assert(!collide(l2, l3));
-    assert(collide(l1, l4));
+    Line aLine{aPt, down};
+    Line bLine{aPt, up};
+    Line cLine{bPt, up};
+    Line dLine{cPt, down};
+    assert(collide(aLine, bLine));
+    assert(collide(aLine, cLine));
+    assert(!collide(bLine, cLine));
+    assert(collide(aLine, dLine));
 
-    vec2 dPoint{3, 4};
-    vec2 ePoint{11, 1};
-    vec2 fPoint{8, 4};
-    vec2 gPoint{11, 7};
-    Segment de{dPoint, ePoint};
-    Segment fg{fPoint, gPoint};
-    Segment df{dPoint, fPoint};
-    Segment eg{ePoint, gPoint};
-    Segment ae{aPoint, ePoint};
-    assert(collide(de, de)); // congruent
-    assert(collide(de, df)); // copunctual
-    assert(!collide(de, fg));
-    assert(!collide(df, eg));
-    assert(collide(ae, df));
-    assert(collide(df, ae)); // reverse order
+    vec2 dPt{3, 4};
+    vec2 ePt{11, 1};
+    vec2 fPt{8, 4};
+    vec2 gPt{11, 7};
+    Segment aSeg{dPt, ePt};
+    Segment bSeg{fPt, gPt};
+    Segment cSeg{dPt, fPt};
+    Segment dSeg{ePt, gPt};
+    Segment eSeg{aPt, ePt};
+    assert(collide(aSeg, aSeg)); // congruent
+    assert(collide(aSeg, cSeg)); // copunctual
+    assert(!collide(aSeg, bSeg));
+    assert(!collide(cSeg, dSeg));
+    assert(collide(eSeg, cSeg));
+    assert(collide(cSeg, eSeg)); // reverse order
 
     OrientedRectangle aORect = {{3, 5}, {1, 3}, pi<float>() / 12};
     OrientedRectangle bORect = {{10, 5}, {2, 2}, -pi<float>() / 12};
@@ -118,4 +119,23 @@ void assertColllide()
     OrientedRectangle fORect = {{9, -1}, {3, 1}, -pi<float>()/4};
     assert(collide(eORect, fORect));
     assert(!collide(eORect, cORect));
+
+    Circle dCircle{{6, 4}, 3};
+    vec2 hPt{8, 3}; 
+    vec2 iPt{11, 7};
+    assert(dCircle.Contains(hPt));
+    assert(!dCircle.Contains(iPt));
+
+    Circle eCircle{{3, -2}, 2};
+    Line eLine{ZERO_2D, ONE_2D};
+    Line fLine{ZERO_2D, vec2(1,-1)};
+    assert(!collide(eCircle, eLine));
+    assert(collide(eCircle, fLine));
+
+    Segment fSeg{{3,-2}, {-1,-1}};
+    Segment gSeg{{3,1}, {3,5}};
+    Segment hSeg{{4,4}, {2,2}};
+    assert(!collide(dCircle, fSeg));
+    assert(collide(dCircle, gSeg));
+    assert(collide(dCircle, hSeg));
 }

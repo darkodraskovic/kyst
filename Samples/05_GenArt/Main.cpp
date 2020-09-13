@@ -9,7 +9,7 @@
 using namespace VecConsts;
 using namespace ShapeFactory;
 
-Entity* GenEntity(const string& fragmentPath, const vec3& position)
+Entity* GenEntity(const string& fragmentPath, const vec3& position = ZERO)
 {
     auto material = new Material2D(fragmentPath);
     auto mesh = Shape2DFactory::SolidRect(LEFT + DOWN, glm::vec2(2, 2));
@@ -35,7 +35,7 @@ int main()
     
     auto viewport = app.AddViewport();
     auto cam =  viewport->GetScene()->camera_;
-    cam->position_.z = 6.0f;
+    cam->position_.z = 2.0f;
     cam->LookAt(ZERO);
     
     // viewport->AddEffect("../Shaders/Effects/Noop.fs");
@@ -45,9 +45,10 @@ int main()
     // Application CONTENT
     // ---------------------------------------------------------------------------
 
-    viewport->GetScene()->AddEntity(GenEntity("../Shaders/GenArt/01.fs", LEFT + DOWN));
-    viewport->GetScene()->AddEntity(GenEntity("../Shaders/GenArt/02.fs", RIGHT + DOWN));
-    viewport->GetScene()->AddEntity(GenEntity("../Shaders/GenArt/03.fs", RIGHT + UP));
+    // viewport->GetScene()->AddEntity(GenEntity("../Shaders/GenArt/01.fs", LEFT + DOWN));
+    // viewport->GetScene()->AddEntity(GenEntity("../Shaders/GenArt/02.fs", RIGHT + DOWN));
+    // viewport->GetScene()->AddEntity(GenEntity("../Shaders/GenArt/03.fs", RIGHT + UP));
+    viewport->GetScene()->AddEntity(GenEntity("../Shaders/GenArt/04_tiling.fs"));
 
     // Application loop
     // ---------------------------------------------------------------------------

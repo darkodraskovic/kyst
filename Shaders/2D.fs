@@ -6,8 +6,9 @@ uniform float uPctCol = 0.0;
 uniform float uPctTex = 0.0;
 uniform sampler2D uTexture;
 
-in vec3 vCol;
+in vec3 vPos;
 in vec2 vTexCoord;
+in vec3 vCol;
 out vec4 FragCol;
 
 void main()
