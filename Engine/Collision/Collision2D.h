@@ -105,7 +105,9 @@ namespace Collision2D
     bool collide(const OrientedRectangle& a, const OrientedRectangle& b);
     bool collide(const Circle& circle, const Line& line);
     bool collide(const Circle& circle, const Segment& segment);
-    
+    bool collide(const Circle& circle, const Rectangle& rect);
+    bool collide(const Rectangle& rect, const Line& line); // TODO
+    bool collide(const Rectangle& rect, const Segment& segment); // TODO
 }  // Shape
 
 #endif /* COLLISION2D_H */

@@ -138,4 +138,14 @@ void assertColllide()
     assert(!collide(dCircle, fSeg));
     assert(collide(dCircle, gSeg));
     assert(collide(dCircle, hSeg));
+
+    Circle fCircle{{-3, 0}, 1};
+    Circle gCircle{{-3, 0}, 2};
+    Circle hCircle{{-3, 0}, 3};
+    Circle iCircle{{0, 0}, 2};
+    Rectangle dRect{{-5, 2}, {3, 2}};
+    assert(!collide(fCircle, dRect));
+    assert(collide(gCircle, dRect));
+    assert(collide(hCircle, dRect));
+    assert(!collide(iCircle, dRect));
 }

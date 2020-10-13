@@ -1,4 +1,5 @@
 #include <cmath>
+#include <glm/common.hpp>
 #include <iostream>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/fwd.hpp>
@@ -274,11 +275,17 @@ bool Collision2D::collide(const Circle& circle, const Segment& segment)
 {
     if(circle.Contains(segment.position_)) return true;
     if(circle.Contains(segment.endpoint_)) return true;
-
+    
     vec2 dir = segment.endpoint_ - segment.position_;
     vec2 proj = project(circle.position_ - segment.position_, dir);
     vec2 nearestPt = proj + segment.position_;
     return circle.Contains(nearestPt) &&
         glm::length(proj) <= length(dir) &&
         glm::dot(proj, dir) >= 0;
+}
+
+bool Collision2D::collide(const Circle& circle, const Rectangle& rect)
+{
+    vec2 clamped = glm::clamp(circle.position_, rect.position_, rect.position_ + rect.size_);
+    return circle.Contains(clamped);
 }
