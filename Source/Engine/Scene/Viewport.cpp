@@ -2,8 +2,8 @@
 #include "Scene.h"
 #include <vector>
 
-const std::string Viewport::vertexPath_ = "../Shaders/Viewport/Viewport.vs";
-const std::string Viewport::fragmentPath_ = "../Shaders/Viewport/Viewport.fs";
+const std::string Viewport::vertexPath_ = "Shaders/Viewport/Viewport.vs";
+const std::string Viewport::fragmentPath_ = "Shaders/Viewport/Viewport.fs";
 
 Viewport::Viewport(const uvec2& size)
 {

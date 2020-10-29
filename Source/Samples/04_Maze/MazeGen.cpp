@@ -21,7 +21,7 @@ MazeGen::MazeGen(Scene* scene) : scene_(scene)
 std::shared_ptr<Mover> MazeGen::CreateMaze(int width, int height, const vec3& color)
 {
     std::shared_ptr<Mover> maze = std::make_shared<Mover>();
-    maze->material_ = std::make_shared<Material>("../Shaders/Col.vs", "../Shaders/Col.fs");
+    maze->material_ = std::make_shared<Material>("Shaders/Col.vs", "Shaders/Col.fs");
     maze->material_->color_ = color;
     
     scene_->AddEntity(maze);

@@ -29,9 +29,9 @@ int main()
     auto viewport = app.AddViewport();
     
     viewport->GetScene()->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
-    // viewport->AddEffect("../Shaders/Effects/Noop.fs");
-    // viewport->AddEffect("../Shaders/Effects/Inversion.fs");
-    // viewport->AddEffect("../Shaders/Effects/Remove.fs");
+    // viewport->AddEffect("Shaders/Effects/Noop.fs");
+    // viewport->AddEffect("Shaders/Effects/Inversion.fs");
+    // viewport->AddEffect("Shaders/Effects/Remove.fs");
 
     viewport->GetScene()->camera_->position_.z = 7.0f;
     viewport->GetScene()->camera_->position_.y = 5.0f;

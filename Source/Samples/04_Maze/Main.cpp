@@ -34,9 +34,9 @@ int main()
     cam->position_.z = 9.0f;
     cam->position_.y = 1.0f;
 
-    viewport->AddEffect("../Shaders/Effects/Noop.fs");
-    viewport->AddEffect("../Shaders/Effects/Inversion.fs");
-    // viewport->AddEffect("../Shaders/Effects/Remove.fs");
+    viewport->AddEffect("Shaders/Effects/Noop.fs");
+    viewport->AddEffect("Shaders/Effects/Inversion.fs");
+    // viewport->AddEffect("Shaders/Effects/Remove.fs");
     
     // Application CONTENT
     // ---------------------------------------------------------------------------

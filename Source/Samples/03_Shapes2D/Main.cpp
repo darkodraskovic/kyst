@@ -33,9 +33,9 @@ int main()
     auto cam = viewport->GetScene()->camera_;
     cam->position_.z = 4.0f;
 
-    viewport->AddEffect("../Shaders/Effects/Noop.fs");
-    viewport->AddEffect("../Shaders/Effects/Inversion.fs");
-    // viewport->AddEffect("../Shaders/Effects/Remove.fs");
+    viewport->AddEffect("Shaders/Effects/Noop.fs");
+    viewport->AddEffect("Shaders/Effects/Inversion.fs");
+    // viewport->AddEffect("Shaders/Effects/Remove.fs");
 
     // Application CONTENT
     // ---------------------------------------------------------------------------

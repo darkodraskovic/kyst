@@ -1,7 +1,8 @@
 # cmake ..
 cmake_minimum_required(VERSION 3.8)
-project(opengl-cg)
+project(kyst)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Engine
@@ -27,26 +28,26 @@ function(add_target TARGET)
   target_link_libraries(${TARGET} GL GLU glfw dl engine shapeFactory)
 endfunction()
 
-# make 00_BasicApp && ./00_BasicApp
+# make 00_BasicApp && cd ../bin && ./00_BasicApp
 add_target(00_BasicApp)
 
-# make 01_Cube && ./01_Cube
+# make 01_Cube && cd ../bin && ./01_Cube
 add_target(01_Cube)
 
-# make 02_Sierpinski && ./02_Sierpinski
+# make 02_Sierpinski && cd ../bin && ./02_Sierpinski
 add_target(02_Sierpinski)
 
-# make 03_Shapes2D && ./03_Shapes2D
+# make 03_Shapes2D && cd ../bin && ./03_Shapes2D
 add_target(03_Shapes2D)
 
-# make 04_Maze && ./04_Maze
+# make 04_Maze && cd ../bin && ./04_Maze
 add_target(04_Maze)
 
-# make 05_GenArt && ./05_GenArt
+# make 05_GenArt && cd ../bin && ./05_GenArt
 add_target(05_GenArt)
 
-# make 06_Maxwell && ./06_Maxwell
+# make 06_Maxwell && cd ../bin && ./06_Maxwell
 add_target(06_Maxwell)
 
-# make 07_Bounce && ./07_Bounce
+# make 07_Bounce && cd ../bin && ./07_Bounce
 add_target(07_Bounce)

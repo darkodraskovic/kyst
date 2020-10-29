@@ -15,8 +15,8 @@ using namespace ShapeFactory;
 EntityFactory::EntityFactory(Scene* scene)
     : scene_(scene)
 {
-    colShader_ = std::make_shared<Shader>("../Shaders/Col.vs", "../Shaders/Col.fs");
-    vColShader_ = std::make_shared<Shader>("../Shaders/VCol.vs", "../Shaders/VCol.fs");
+    colShader_ = std::make_shared<Shader>("Shaders/Col.vs", "Shaders/Col.fs");
+    vColShader_ = std::make_shared<Shader>("Shaders/VCol.vs", "Shaders/VCol.fs");
 
     snowflakeMesh_ = std::shared_ptr<Mesh>(new Mesh());
     snowflakeMesh_->mode_ = GL_LINE_LOOP;

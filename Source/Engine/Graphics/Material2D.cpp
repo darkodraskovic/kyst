@@ -1,7 +1,7 @@
 #include "Material2D.h"
 
-const std::string Material2D::vertexPath_ = "../Shaders/2D.vs";
-const std::string Material2D::fragmentPath_ = "../Shaders/2D.fs";
+const std::string Material2D::vertexPath_ = "Shaders/2D.vs";
+const std::string Material2D::fragmentPath_ = "Shaders/2D.fs";
 
 Material2D::Material2D()
 {
