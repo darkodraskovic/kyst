@@ -5,7 +5,7 @@ project(opengl-cg)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Engine
-file(GLOB_RECURSE ENGINE_C "Engine/*.c" "Engine/*.cpp")
+file(GLOB_RECURSE ENGINE_C "Source/Engine/*.c" "Source/Engine/*.cpp")
 set(ENGINE_H "." "Graphics" "Scene" "Collision")
 
 add_library(engine SHARED ${ENGINE_C})
@@ -13,15 +13,15 @@ target_include_directories(engine PUBLIC ${ENGINE_H})
 target_link_libraries(engine GL GLU glfw dl)
 
 # ShapeFactory
-file(GLOB SHAPE_FACTORY_C "ShapeFactory/*.cpp")
+file(GLOB SHAPE_FACTORY_C "Source/ShapeFactory/*.cpp")
 
 add_library(shapeFactory SHARED ${SHAPE_FACTORY_C})
-target_include_directories(shapeFactory PUBLIC ".")
-target_link_libraries(shapeFactory PRIVATE engine)
+target_include_directories(shapeFactory PUBLIC "Source")
+target_link_libraries(shapeFactory PUBLIC engine)
 
 # Samples
 function(add_target TARGET)
-  file(GLOB APP_C "Samples/${TARGET}/*.cpp")
+  file(GLOB APP_C "Source/Samples/${TARGET}/*.cpp")
   add_executable(${TARGET} ${APP_C})
   target_include_directories(${TARGET} PUBLIC "${TARGET}/")
   target_link_libraries(${TARGET} GL GLU glfw dl engine shapeFactory)

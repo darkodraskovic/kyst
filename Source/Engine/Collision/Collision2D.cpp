@@ -4,7 +4,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/fwd.hpp>
 
-#include "Engine/VecConsts.h"
+#include "../VecConsts.h"
 #include "Collision2D.h"
 
 using namespace Collision2D;
