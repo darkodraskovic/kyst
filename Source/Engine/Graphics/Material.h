@@ -3,10 +3,14 @@
 
 #include <glm/fwd.hpp>
 #include <memory>
+#include <map>
 
 #include "Shader.h"
 
 using namespace glm;
+
+enum Uniform { TIME, COLOR, ALPHA, MODEL, VIEW, PROJECTION };
+extern const std::map<Uniform, std::string> UNIFORM_MAP;
 
 class Material
 {

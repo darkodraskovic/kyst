@@ -3,6 +3,11 @@
 
 using namespace glm;
 
+const std::map<Uniform, std::string> UNIFORM_MAP{
+    {TIME, "uTime"},       {COLOR, "uColor"}, {ALPHA, "uAlpha"},
+    {MODEL, "uModel"}, {VIEW, "uView"}, {PROJECTION, "uProjection"},
+};
+
 Material::Material()
 {
 };
@@ -21,11 +26,11 @@ void Material::Update(const mat4& model, const mat4& view, const mat4& projectio
 {
     shader_->Use();
 
-    shader_->SetFloat("uTime", glfwGetTime());
-    shader_->SetVec3("uColor", color_);
-    shader_->SetFloat("uAlpha", alpha_);
+    shader_->SetFloat(UNIFORM_MAP.at(TIME), glfwGetTime());
+    shader_->SetVec3(UNIFORM_MAP.at(COLOR), color_);
+    shader_->SetFloat(UNIFORM_MAP.at(ALPHA), alpha_);
     
-    shader_->SetMat4("uModel", model);
-    shader_->SetMat4("uView", view);
-    shader_->SetMat4("uProjection", projection);
+    shader_->SetMat4(UNIFORM_MAP.at(MODEL), model);
+    shader_->SetMat4(UNIFORM_MAP.at(VIEW), view);
+    shader_->SetMat4(UNIFORM_MAP.at(PROJECTION), projection);
 }

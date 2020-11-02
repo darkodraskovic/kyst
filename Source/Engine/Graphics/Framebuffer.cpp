@@ -12,7 +12,8 @@ Framebuffer::Framebuffer(unsigned int width, unsigned int height)
 void Framebuffer::GenFramebuffer(unsigned int width, unsigned int height)
 {
     
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
+    Bind();
+    
     glGenTextures(1, &colorbuffer_);
     glBindTexture(GL_TEXTURE_2D, colorbuffer_);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
@@ -22,12 +23,14 @@ void Framebuffer::GenFramebuffer(unsigned int width, unsigned int height)
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);    
+
+    Unbind();
 }
 
 void Framebuffer::GenRenderbuffer(unsigned int width, unsigned int height)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
+    Bind();
+
     glGenRenderbuffers(1, &renderbuffer_);
     glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer_);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
@@ -35,7 +38,8 @@ void Framebuffer::GenRenderbuffer(unsigned int width, unsigned int height)
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);    
+
+    Unbind();
 }
 
 void Framebuffer::Bind() { glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_); }

@@ -2,7 +2,6 @@
 
 uniform sampler2D uTexture;
 
-in vec3 vPos;
 in vec2 vTexCoord;
 out vec4 FragColor;
 

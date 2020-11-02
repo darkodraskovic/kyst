@@ -70,7 +70,7 @@ void Viewport::Render()
     frontbuffer_->Bind();
     scene_->Draw(width_, height_);
     auto bound = frontbuffer_;
-    
+
     if (!effects_.empty()) {
         glDisable(GL_DEPTH_TEST);
         glActiveTexture(GL_TEXTURE0);
@@ -84,10 +84,10 @@ void Viewport::Render()
             glBindTexture(GL_TEXTURE_2D, unbound->colorbuffer_);
             effects_[i]->Use();
             effects_[i]->SetInt("uTexture", 0);
-            quad_->Render();            
+            quad_->Render();
         }
     }
-    
+
     bound->Unbind();
     texture_ = bound->colorbuffer_;
 }
@@ -95,11 +95,13 @@ void Viewport::Render()
 void Viewport::Draw()
 {
     glDisable(GL_DEPTH_TEST);
-    glActiveTexture(GL_TEXTURE0);
+
     shader_->Use();
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture_);
     shader_->SetInt("uTexture", 0);
-    shader_->SetMat4("uModel", glm::translate(glm::mat4(1.f), position_));    
+    shader_->SetMat4("uModel", glm::translate(glm::mat4(1.f), position_));
+
     quad_->Render();
 }
 
@@ -112,6 +114,5 @@ void Viewport::Update(float deltaTime)
 
 unsigned int Viewport::GetTexture()
 {
-    Render();
     return texture_;
 }

@@ -44,9 +44,11 @@ int main()
     auto litTexShader = std::shared_ptr<Shader>(
         new Shader( "Shaders/LitTex.vs", "Shaders/LitTex.fs"));
 
+    // procedural shader texture generation
     auto vp = std::make_shared<Viewport>(uvec2(640, 640));
     vp->AddEffect("Shaders/Textures/Tex2D.fs");
     vp->AddEffect("Shaders/Effects/Inversion.fs");
+    vp->Render();
     
     auto material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));
     // material->diffuse_ = diffuseMetal;
