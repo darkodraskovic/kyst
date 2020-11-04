@@ -48,7 +48,8 @@ int main()
     viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/01.fs", LEFT + DOWN));
     viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/02.fs", RIGHT + DOWN));
     viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/03.fs", RIGHT + UP));
-    // viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/04_tiling.fs"));
+    viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/04_tiling.fs", LEFT + UP));
+
 
     // Application loop
     // ---------------------------------------------------------------------------

@@ -7,6 +7,15 @@
 using namespace glm;
 using namespace VecConsts;
 
+enum Phong_Uniform {
+    LIGHT_DIFFUSE, LIGHT_SPECULAR,
+    LIGHT_AMBIENT, LIGHT_POSITION,
+    MATERIAL_DIFFUSE, MATERIAL_SPECULAR,
+    MATERIAL_AMBIENT, MATERIAL_SHININESS,
+    MATERIAL_EMISSIVE, VIEW_POS,
+};
+extern const std::map<Phong_Uniform, std::string> PHONG_MAP;
+
 class Phong : public Material
 {
 public:

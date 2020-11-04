@@ -17,7 +17,7 @@ public:
     };
     
     virtual void Update(float deltaTime) override {
-        rotation_.y += deltaTime * glm::quarter_pi<float>();
+        // rotation_.y += deltaTime * glm::quarter_pi<float>();
     };
 };
 

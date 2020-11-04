@@ -15,7 +15,7 @@ void PhongMap::Update(const glm::mat4& model, const glm::mat4& view, const glm::
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, emissive_);
 
-    shader_->SetInt("uMaterial.diffuse", 0);
-    shader_->SetInt("uMaterial.specular", 1);
-    shader_->SetInt("uMaterial.emissive", 2);
+    shader_->SetInt(PHONG_MAP.at(MATERIAL_DIFFUSE), 0);
+    shader_->SetInt(PHONG_MAP.at(MATERIAL_SPECULAR), 1);
+    shader_->SetInt(PHONG_MAP.at(MATERIAL_EMISSIVE), 2);
 }

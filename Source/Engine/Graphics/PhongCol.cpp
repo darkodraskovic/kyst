@@ -8,7 +8,7 @@ void PhongCol::Update(const glm::mat4& model, const glm::mat4& view, const glm::
 {
     Phong::Update(model, view, projection);
     
-    shader_->SetVec3("uMaterial.ambient",  ambient_);
-    shader_->SetVec3("uMaterial.diffuse",  diffuse_);
-    shader_->SetVec3("uMaterial.specular", specular_);
+    shader_->SetVec3(PHONG_MAP.at(MATERIAL_DIFFUSE),  diffuse_);
+    shader_->SetVec3(PHONG_MAP.at(MATERIAL_SPECULAR), specular_);
+    shader_->SetVec3(PHONG_MAP.at(MATERIAL_AMBIENT),  ambient_);
 }
