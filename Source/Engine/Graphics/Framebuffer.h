@@ -9,6 +9,8 @@ public:
     
     void GenFramebuffer(unsigned int width, unsigned int height);
     void GenRenderbuffer(unsigned int width, unsigned int height);
+
+    unsigned int GetColorBuffer();
     
     void Bind();
     static void Unbind();

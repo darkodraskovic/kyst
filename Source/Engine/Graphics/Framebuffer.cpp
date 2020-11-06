@@ -42,6 +42,10 @@ void Framebuffer::GenRenderbuffer(unsigned int width, unsigned int height)
     Unbind();
 }
 
+unsigned int Framebuffer::GetColorBuffer() {
+    return colorbuffer_;
+}
+
 void Framebuffer::Bind() { glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_); }
 void Framebuffer::Unbind() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
 

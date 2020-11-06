@@ -51,3 +51,6 @@ add_target(06_Maxwell)
 
 # make 07_Bounce && cd ../bin && ./07_Bounce
 add_target(07_Bounce)
+
+# make 08_Pixels && cd ../bin && ./08_Pixels
+add_target(08_Pixels)

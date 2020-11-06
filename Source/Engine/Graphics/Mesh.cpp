@@ -155,7 +155,7 @@ void Mesh::Generate(unsigned int program)
     GenArrayBuffer(positions_, program, POSITIONS);
     
     if (!normals_.empty()) GenArrayBuffer(normals_, program, NORMALS);
-    if (!normals_.empty()) GenArrayBuffer(tangents_, program, TANGENTS);
+    if (!tangents_.empty()) GenArrayBuffer(tangents_, program, TANGENTS);
     
     if (!texCoords_.empty()) GenArrayBuffer(texCoords_, program, TEX_COORDS);
     if (!colors_.empty()) GenArrayBuffer(colors_, program, COLORS);
