@@ -1,20 +1,13 @@
 #include "Material2D.h"
 
-const std::string Material2D::vertexPath_ = "Shaders/2D.vs";
-const std::string Material2D::fragmentPath_ = "Shaders/2D.fs";
+const std::string Material2D::sprite2DVSPath_ = "Shaders/Sprite2D.vs";
+const std::string Material2D::sprite3DVSPath_ = "Shaders/Sprite3D.vs";
+const std::string Material2D::fragmentPath_ = "Shaders/Sprite.fs";
 
-Material2D::Material2D()
+Material2D::Material2D(bool sprite2D, const std::string& fragmentPath)
 {
-    shader_ = std::make_shared<Shader>(vertexPath_, fragmentPath_);
-}
-
-Material2D::Material2D(const std::string& fragmentPath)
-{
-    shader_ = std::make_shared<Shader>(vertexPath_, fragmentPath);
-}
-
-Material2D::Material2D(std::shared_ptr<Shader> shader) : Material(shader)
-{
+    if (sprite2D) shader_ = std::make_shared<Shader>(sprite2DVSPath_, fragmentPath);
+    else shader_ = std::make_shared<Shader>(sprite3DVSPath_, fragmentPath);
 }
 
 void Material2D::Update(const mat4& model, const mat4& view, const mat4& projection)

@@ -41,17 +41,17 @@ int main()
     // ---------------------------------------------------------------------------
 
     // material
-    auto material1 = new Material2D();
+    auto material1 = new Material2D(false);
     material1->color_ = RED;
-    auto material2 = new Material2D(material1->shader_);
+    auto material2 = new Material2D(false);
     material2->color_ = GREEN;
     material2->alpha_ = 0.5;
-    auto material3 = new Material2D(material1->shader_);
+    auto material3 = new Material2D(false);
     material3->color_ = BLUE;
     material3->pctColor_ = 1.0;
-    auto material4 = new Material2D(material1->shader_);
+    auto material4 = new Material2D(false);
     material4->color_ = BLUE;
-    auto material5 = new Material2D(material1->shader_);
+    auto material5 = new Material2D(false);
     material5->pctColor_ = 1.0;
 
     // rect mesh

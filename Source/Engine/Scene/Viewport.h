@@ -5,14 +5,16 @@
 #include "../Graphics/Shader.h"
 #include "../Graphics/Mesh.h"
 #include "../Graphics/Framebuffer.h"
+#include "../Object.h"
 
 class Scene;
 
-class Viewport
+class Viewport : public Object
 {
 public:
-    Viewport(const uvec2& size);
-    Viewport(const uvec2& size, std::shared_ptr<Scene> scene_);
+    Viewport(Application* app) : Object(app) {}
+    void Init(const uvec2& size);
+    void Init(const uvec2& size, std::shared_ptr<Scene> scene_);
     Scene* GetScene();
     Application* GetApplication();
     void Update(float deltaTime);

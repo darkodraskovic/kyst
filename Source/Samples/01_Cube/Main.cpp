@@ -45,7 +45,8 @@ int main()
         new Shader( "Shaders/LitTex.vs", "Shaders/LitTex.fs"));
 
     // procedural shader texture generation
-    auto vp = std::make_shared<Viewport>(uvec2(320, 320));
+    auto vp = std::make_shared<Viewport>(&app);
+    vp->Init(uvec2(320, 320));
     vp->AddEffect("Shaders/Textures/Tex2D.fs");
     vp->AddEffect("Shaders/Effects/Inversion.fs");
     vp->Render();

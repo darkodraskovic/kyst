@@ -13,7 +13,7 @@ public:
     void LoadImage(const std::string& filePath);
     void CreateImage(int width, int height, unsigned int* data);
     void SetData(int x, int y, int w, int h, unsigned int* data);
-    void SetPixel(int x, int y, unsigned int color);
+    void GetData(unsigned int* data);
     void SetParameter(unsigned int param, unsigned int value);
     unsigned int GetTexture();
 

@@ -5,20 +5,17 @@
 const std::string Viewport::vertexPath_ = "Shaders/Viewport/Viewport.vs";
 const std::string Viewport::fragmentPath_ = "Shaders/Viewport/Viewport.fs";
 
-Viewport::Viewport(const uvec2& size)
-{
+void Viewport::Init(const uvec2& size) {
     scene_ = std::make_shared<Scene>(std::make_shared<Camera>());
     Init(size.x, size.y);
 }
 
-Viewport::Viewport(const uvec2& size, std::shared_ptr<Scene> scene)
-    : scene_(scene)
-{
+void Viewport::Init(const uvec2& size, std::shared_ptr<Scene> scene) {
+    scene_ = scene;
     Init(size.x, size.y);
 }
 
-void Viewport::Init(unsigned int width, unsigned int height)
-{
+void Viewport::Init(unsigned int width, unsigned int height) {
     width_ = width;
     height_ = height;
     scene_->viewport_ = this;
@@ -30,15 +27,15 @@ Application* Viewport::GetApplication() { return application_;}
 
 Scene* Viewport::GetScene() { return scene_.get(); }
 
-void Viewport::GenBuffers(float width, float height)
-{
+void Viewport::GenBuffers(float width, float height) {
     shader_ = std::make_shared<Shader>(vertexPath_, fragmentPath_);
-    frontbuffer_ = std::make_shared<Framebuffer>(width, height);
-    backbuffer_ = std::make_shared<Framebuffer>(width, height);
+    frontbuffer_ = std::make_shared<Framebuffer>(app_);
+    frontbuffer_->Init(width_, height_);
+    backbuffer_ = std::make_shared<Framebuffer>(app_);
+    backbuffer_->Init(width_, height_);
 }
 
-void Viewport::GenQuad(float width, float height)
-{
+void Viewport::GenQuad(float width, float height) {
     quad_ = std::make_shared<Mesh>();
     quad_->mode_ = GL_TRIANGLE_FAN;
 
@@ -58,15 +55,13 @@ void Viewport::GenQuad(float width, float height)
     quad_->Generate(shader_->id_);
 }
 
-void Viewport::AddEffect(const char *fragmentPath)
-{
+void Viewport::AddEffect(const char *fragmentPath) {
     auto effect = std::make_shared<Shader>(Viewport::vertexPath_, fragmentPath);
     effects_.push_back(effect);
 }
 
 
-void Viewport::Render()
-{
+void Viewport::Render() {
     frontbuffer_->Bind();
     scene_->Draw(width_, height_);
     auto bound = frontbuffer_;
@@ -81,7 +76,7 @@ void Viewport::Render()
             auto tmp = bound;
             bound = unbound;
             unbound = tmp;
-            glBindTexture(GL_TEXTURE_2D, unbound->colorbuffer_);
+            glBindTexture(GL_TEXTURE_2D, unbound->texture_->GetTexture());
             effects_[i]->Use();
             effects_[i]->SetInt("uTexture", 0);
             quad_->Render();
@@ -89,11 +84,10 @@ void Viewport::Render()
     }
 
     bound->Unbind();
-    texture_ = bound->colorbuffer_;
+    texture_ = bound->texture_->GetTexture();
 }
 
-void Viewport::Draw()
-{
+void Viewport::Draw() {
     glDisable(GL_DEPTH_TEST);
 
     shader_->Use();
@@ -105,14 +99,12 @@ void Viewport::Draw()
     quad_->Render();
 }
 
-void Viewport::Update(float deltaTime)
-{
+void Viewport::Update(float deltaTime) {
     scene_->Update(deltaTime);
     Render();
     Draw();
 }
 
-unsigned int Viewport::GetTexture()
-{
+unsigned int Viewport::GetTexture() {
     return texture_;
 }

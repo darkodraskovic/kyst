@@ -1,24 +1,25 @@
 #ifndef FRAMBUFFER_H
 #define FRAMBUFFER_H
 
-class Framebuffer
+#include "../Application.h"
+#include "Texture2D.h"
+#include "../Object.h"
+
+class Framebuffer : public Object
 {
 public:
-    Framebuffer(unsigned int width, unsigned int height);
+    Framebuffer(Application* app);
     ~Framebuffer();
-    
-    void GenFramebuffer(unsigned int width, unsigned int height);
-    void GenRenderbuffer(unsigned int width, unsigned int height);
 
-    unsigned int GetColorBuffer();
-    
+    void Init(unsigned int width, unsigned int height);
+
     void Bind();
     static void Unbind();
 
 private:
+    Texture2D* texture_;
     unsigned int framebuffer_;
-    unsigned int colorbuffer_;
-    unsigned int renderbuffer_;
+      unsigned int renderbuffer_;
 
     friend class Viewport;
 };

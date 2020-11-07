@@ -31,6 +31,7 @@ public:
     void LookAt(const vec3& center);
     mat4 GetViewMatrix();
     mat4 GetProjectionMatrix(int scrWidth, int scrHeight);
+    mat4 GetOrthoMatrix(float scrWidth, int scrHeight);
 
     // TODO: remove this methods from Camera class
     void ProcessKeyboard(CameraMovement direction, float deltaTime);
@@ -51,6 +52,9 @@ public:
     float movementSpeed_;
     float mouseSensitivity_;
     float zoom_;
+
+    bool processMouseMovement_ = true;
+    bool ortho_ = false;
     
 private:
     void UpdateCameraVectors();

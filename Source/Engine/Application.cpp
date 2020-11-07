@@ -111,7 +111,8 @@ Input* Application::GetInput() { return input_; }
 
 Viewport* Application::AddViewport()
 {
-    auto viewport = std::make_shared<Viewport>(GetWindowSize());
+    auto viewport = std::make_shared<Viewport>(this);
+    viewport->Init(GetWindowSize());
     AddViewport(viewport);
     return viewport.get();
 }
@@ -153,5 +154,4 @@ void ScrollCallback(GLFWwindow* window, double scrollX, double scrollY)
 {
     MouseData::scrollX = scrollX;
     MouseData::scrollY = scrollY;
-
 }

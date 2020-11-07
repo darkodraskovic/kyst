@@ -21,7 +21,7 @@ public:
     bool GetKey(unsigned int key);
 
 private:
-    GLFWwindow* window_;    
+    GLFWwindow* window_;  
 };
 
 #endif /* INPUT_H */

@@ -21,13 +21,13 @@ Camera::Camera(vec3 position, vec3 up, float yaw, float pitch) :
 // Returns the view matrix calculated using Euler Angles and the LookAt Matrix
 mat4 Camera::GetViewMatrix()
 {
-    return lookAt(position_, position_ + front_, up_);
+    return glm::lookAt(position_, position_ + front_, up_);
 }
 
-// Returns the view matrix calculated using Euler Angles and the LookAt Matrix
 mat4 Camera::GetProjectionMatrix(int scrWidth, int scrHeight)
 {
-    return perspective(zoom_, (float)scrWidth/(float)scrHeight, 0.1f, 100.0f);
+    if (ortho_) return glm::ortho(0.0f, (float)scrWidth, 0.0f, (float)scrHeight, -1.0f, 1.0f);
+    return glm::perspective(zoom_, (float)scrWidth/(float)scrHeight, 0.1f, 100.0f);
 }
     
 // Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
@@ -53,8 +53,7 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, bool constrainPi
     yaw_   += xoffset * mouseSensitivity_;
     pitch_ -= yoffset * mouseSensitivity_;
 
-    if (constrainPitch)
-    {
+    if (constrainPitch) {
         pitch_ = clamp(pitch_, -89.0f, 89.0f);
     }
 
@@ -76,7 +75,7 @@ void Camera::ProcessInput(Input* input, float deltaTime)
     if (input->GetKey(GLFW_KEY_E)) ProcessKeyboard(CAM_UP, deltaTime);
     if (input->GetKey(GLFW_KEY_Q)) ProcessKeyboard(CAM_DOWN, deltaTime);
 
-    ProcessMouseMovement(input->mouseOffsetX_, input->mouseOffsetY_);
+    if (processMouseMovement_) ProcessMouseMovement(input->mouseOffsetX_, input->mouseOffsetY_);
     ProcessMouseScroll(MouseData::scrollY);
 }
 

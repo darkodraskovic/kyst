@@ -28,7 +28,7 @@ int main()
     cam->LookAt(ZERO);
 
     // Material
-    Material2D* material = new Material2D;
+    Material2D* material = new Material2D(false);
     material->pctColor_ = 1;
 
     // Mesh

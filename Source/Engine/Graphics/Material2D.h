@@ -2,15 +2,14 @@
 #define MATERIAL2D_H
 
 #include "Material.h"
+#include <string>
 
 using namespace glm;
 
 class Material2D : public Material
 {
 public:
-    Material2D();
-    Material2D(const std::string& fragmentPath);
-    Material2D(std::shared_ptr<Shader> shader);
+    Material2D(bool sprite2D = false, const std::string& fragmentPath = fragmentPath_);
     virtual void Update(const mat4& model, const mat4& view, const mat4& projection) override;
 
     float pctColor_ = .0f;
@@ -18,7 +17,8 @@ public:
     unsigned int texture_ = 0;
 
 private:
-    static const std::string vertexPath_;
+    static const std::string sprite2DVSPath_;
+    static const std::string sprite3DVSPath_;
     static const std::string fragmentPath_;
 };
 

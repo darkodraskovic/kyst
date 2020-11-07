@@ -11,7 +11,7 @@ using namespace ShapeFactory;
 
 Entity* GenEntity(const string& fragmentPath, const vec3& position = ZERO)
 {
-    auto material = new Material2D(fragmentPath);
+    auto material = new Material2D(false, fragmentPath);
     auto mesh = Shape2DFactory::SolidRect(LEFT + DOWN, glm::vec2(2, 2));
     mesh->Generate(material->shader_->id_);
     auto entity = new Entity(mesh, material);
