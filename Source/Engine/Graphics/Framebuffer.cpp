@@ -13,7 +13,7 @@ void Framebuffer::Init(unsigned int width, unsigned int height) {
 
     texture_ = new Texture2D(app_);
     texture_->CreateImage(width, height, nullptr);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_->GetTexture(), 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_->GetId(), 0);
 
     glGenRenderbuffers(1, &renderbuffer_);
     glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer_);
@@ -25,6 +25,8 @@ void Framebuffer::Init(unsigned int width, unsigned int height) {
 
     Unbind();
 }
+
+Texture2D *Framebuffer::GetTexture() { return texture_; }
 
 void Framebuffer::Bind() { glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_); }
 void Framebuffer::Unbind() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }

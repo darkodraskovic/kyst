@@ -2,6 +2,7 @@
 #define APPLICATION_H
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -23,7 +24,6 @@ public:
     Application();
         
     int Init();
-    void ProcessInput(float deltaTime);
     void Update();
     bool ShouldClose();
     void Terminate();
@@ -39,7 +39,7 @@ public:
   
     GLFWwindow* window_;
 
-    Viewport* AddViewport();
+    Viewport* AddViewport(bool perspective = true, int width = 0, int height = 0);
     void AddViewport(std::shared_ptr<Viewport> viewport);
 
 private:

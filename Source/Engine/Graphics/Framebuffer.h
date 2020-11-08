@@ -11,14 +11,15 @@ public:
     ~Framebuffer();
 
     void Init(unsigned int width, unsigned int height);
-
     void Bind();
+    Texture2D* GetTexture();
+    
     static void Unbind();
 
 private:
     Texture2D* texture_;
     unsigned int framebuffer_;
-      unsigned int renderbuffer_;
+    unsigned int renderbuffer_;
 
     friend class Viewport;
 };

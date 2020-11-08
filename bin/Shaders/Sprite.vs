@@ -12,6 +12,5 @@ void main()
     vCol = aCol;
     vTexCoord = aTexCoord;
     vPos = vec3(aPos.xy, 1);
-    // gl_Position = uProjection * uModel * vec4(aPos.x, aPos.y, 0.0, 1.0);
     gl_Position = uProjection * uView * uModel * vec4(aPos.x, aPos.y, 0.0, 1.0);
 }

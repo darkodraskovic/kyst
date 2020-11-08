@@ -2,7 +2,9 @@
 #include "Engine/Graphics/PhongMap.h"
 #include "Engine/Graphics/Framebuffer.h"
 #include "Engine/Scene/Scene.h"
+#include "Engine/Scene/Viewport.h"
 #include "Engine/VecConsts.h"
+#include "Engine/Scene/PerspectiveCamera.h"
 
 #include "Cube.h"
 
@@ -22,15 +24,13 @@ int main()
 
     // Viewport
     // ---------------------------------------------------------------------------
-    
-    auto viewport = app.AddViewport();
-    
-    viewport->GetScene()->camera_->position_.z = 12.0f;
 
+    auto viewport = app.AddViewport();    
+    viewport->scene_->camera_->position_.z = 12.0f;
     viewport->AddEffect("Shaders/Effects/Noop.fs");
     // viewport->AddEffect("Shaders/Effects/Remove.fs");
     // viewport->AddEffect("Shaders/Effects/Inversion.fs");
-    
+
     // Application CONTENT
     // ---------------------------------------------------------------------------
 
@@ -44,25 +44,24 @@ int main()
     auto litTexShader = std::shared_ptr<Shader>(
         new Shader( "Shaders/LitTex.vs", "Shaders/LitTex.fs"));
 
-    // procedural shader texture generation
-    auto vp = std::make_shared<Viewport>(&app);
-    vp->Init(uvec2(320, 320));
+    int size = 320;
+    auto vp = Viewport::Create(&app, true, size, size);
     vp->AddEffect("Shaders/Textures/Tex2D.fs");
     vp->AddEffect("Shaders/Effects/Inversion.fs");
     vp->Render();
-    glBindTexture(GL_TEXTURE_2D, vp->GetTexture());
+    glBindTexture(GL_TEXTURE_2D, vp->GetTexture()->GetId());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
     auto material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));
     material->diffuse_ = diffuseMetal;
-    material->diffuse_ = vp->GetTexture();
+    material->diffuse_ = vp->GetTexture()->GetId();
     material->emissive_ = emissiveMetal;
     material->specular_ = specularMetal;
     material->shininess_ = 1024.0f;
     material->lightPosition_ = vec3(0.5f, 0.0f, 5.0f);
     auto cube2 = std::make_shared<Cube>(material);
     cube2->scale_ *= 2;
-    viewport->GetScene()->AddEntity(cube2);
+    viewport->scene_->AddEntity(cube2);
 
     material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));    
     material->diffuse_ = diffuseBricks;
@@ -74,22 +73,22 @@ int main()
     cube4->position_ = ONE*2.0f;
     cube4->scale_*= 2;
     cube4->material_->alpha_ = 0.5;
-    viewport->GetScene()->AddEntity(cube4);
+    viewport->scene_->AddEntity(cube4);
 
     // Reset POINTERS
     // ---------------------------------------------------------------------------
     
-    vp.reset();
+    // vp.reset();
     material.reset();
     cube2.reset();
     cube4.reset();        
 
-    viewport->GetScene()->camera_->LookAt(ZERO);
+    viewport->scene_->camera_->LookAt(ZERO);
     // Application loop
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())
     {
-        viewport->GetScene()->camera_->ProcessInput(app.GetInput(), app.GetDeltaTime());
+        viewport->scene_->camera_->ProcessInput(app.GetInput(), app.GetDeltaTime());
         app.Update();
     }
     

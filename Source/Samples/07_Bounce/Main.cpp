@@ -30,8 +30,8 @@ int main()
     // Application CONTENT
     // ---------------------------------------------------------------------------
 
-    auto viewport = app.AddViewport();
-    auto cam = viewport->GetScene()->camera_;
+    auto viewport = app.AddViewport(true);
+    auto cam = viewport->scene_->camera_;
     cam->position_.z = 5;
     cam->LookAt(ZERO);
 
@@ -40,7 +40,7 @@ int main()
     auto mesh = Shape2DFactory::SolidEllipse(ZERO, ONE*2.f);
     mesh->Generate(material->shader_->id_);
     auto entity = new Entity(mesh, material);
-    viewport->GetScene()->AddEntity(entity);
+    viewport->scene_->AddEntity(entity);
 
     // Application loop
     // ---------------------------------------------------------------------------

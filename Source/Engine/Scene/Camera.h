@@ -3,7 +3,6 @@
 
 #include "../Input.h"
 #include "../Object.h"
-#include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 // An abstraction to stay away from window-system specific input methods
@@ -17,39 +16,22 @@ class Camera : public Object
 public:
     Camera(Application* app);
     
-    void Init();
-
-    void LookAt(const vec3& center);
     mat4 GetViewMatrix();
-    mat4 GetProjectionMatrix(int scrWidth, int scrHeight);
-    mat4 GetOrthoMatrix(float scrWidth, int scrHeight);
-    void SetOrtho(bool enabled);
+    virtual mat4 GetProjectionMatrix(int scrWidth, int scrHeight) = 0;
 
+    virtual void LookAt(const vec3& center) = 0;    
     // TODO: remove this methods from Camera class
-    void ProcessKeyboard(CameraMovement direction, float deltaTime);
-    void ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
-    void ProcessMouseScroll(float yoffset);
-    void ProcessInput(Input* input, float deltaTime);
+    virtual void ProcessKeyboard(CameraMovement direction, float deltaTime) = 0;
+    virtual void ProcessInput(Input* input, float deltaTime) = 0;
     
     vec3 position_;
     
-    // Camera Attributes
     vec3 front_;
     vec3 up_;
     vec3 right_;
-    vec3 worldUp_;
 
-    // Euler Angles
-    float yaw_;
-    float pitch_;
-
-    // Camera options
-    float movementSpeed_;
-    float mouseSensitivity_;
     float zoom_;
-
-private:
-    bool ortho_ = false;    
-    void UpdateCameraVectors();
+    
+    float movementSpeed_;
 };
 #endif

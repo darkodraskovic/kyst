@@ -9,7 +9,7 @@ using namespace glm;
 class Material2D : public Material
 {
 public:
-    Material2D(bool sprite2D = false, const std::string& fragmentPath = fragmentPath_);
+    Material2D(const std::string& fragmentPath = fragmentPath_);
     virtual void Update(const mat4& model, const mat4& view, const mat4& projection) override;
 
     float pctColor_ = .0f;
@@ -17,8 +17,7 @@ public:
     unsigned int texture_ = 0;
 
 private:
-    static const std::string sprite2DVSPath_;
-    static const std::string sprite3DVSPath_;
+    static const std::string vertexPath_;
     static const std::string fragmentPath_;
 };
 

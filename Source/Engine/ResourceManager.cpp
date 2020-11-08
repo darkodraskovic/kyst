@@ -16,16 +16,16 @@ unsigned int ResourceManager::LoadTexture(char const* path)
     unsigned int textureID;
     glGenTextures(1, &textureID);
 
-    int width, height, nrComponents;
-    unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
+    int width, height, numComponents;
+    unsigned char *data = stbi_load(path, &width, &height, &numComponents, 0);
     if (data)
     {
         GLenum format;
-        if (nrComponents == 1)
+        if (numComponents == 1)
             format = GL_RED;
-        else if (nrComponents == 3)
+        else if (numComponents == 3)
             format = GL_RGB;
-        else if (nrComponents == 4)
+        else if (numComponents == 4)
             format = GL_RGBA;
 
         glBindTexture(GL_TEXTURE_2D, textureID);

@@ -3,10 +3,6 @@
 #include "Entity.h"
 #include "Scene.h"
 
-Scene::Scene(std::shared_ptr<Camera> camera) : camera_(camera)
-{
-}
-
 void Scene::AddEntity(Entity* entity)
 {
     for (auto it = entities_.begin(); it != entities_.end(); it++) {
@@ -20,11 +16,6 @@ void Scene::AddEntity(std::shared_ptr<Entity> entity)
     if (std::find(entities_.begin(), entities_.end(), entity) != entities_.end()) return;
     entitiesToCreate_.push_back(entity);
 }
-
-Viewport* Scene::GetViewport()
-{
-    return viewport_;
-}    
 
 void Scene::Update(float deltaTime)
 {

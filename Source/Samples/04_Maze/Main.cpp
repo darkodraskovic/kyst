@@ -26,11 +26,11 @@ int main()
     // Viewport
     // ---------------------------------------------------------------------------
     
-    auto viewport = app.AddViewport();
+    auto viewport = app.AddViewport(true);
 
-    viewport->GetScene()->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
+    viewport->scene_->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
     
-    auto cam = viewport->GetScene()->camera_;
+    auto cam = viewport->scene_->camera_;
     cam->position_.z = 9.0f;
     cam->position_.y = 1.0f;
 
@@ -46,7 +46,7 @@ int main()
     auto color2_ = ShapeUtils::Hex2rgb("FF847C");
     auto color3_ = ShapeUtils::Hex2rgb("FECEAB");
     
-    auto mazeGen = new MazeGen(viewport->GetScene());
+    auto mazeGen = new MazeGen(viewport->scene_.get());
     mazeGen->CreateMaze(12, 8, color1_);
     auto maze = mazeGen->CreateMaze(6, 18, color2_);
     maze->position_.x = -2;

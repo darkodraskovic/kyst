@@ -6,6 +6,7 @@ in vec2 vTexCoord;
 
 void main()
 {
-    vec2 col = round(vTexCoord * 5) / 5;
+    // vec2 col = round(vTexCoord * 5) / 5;
+    vec2 col = vTexCoord;
     FragColor = vec4(col, 0.0, 1.0);
 }

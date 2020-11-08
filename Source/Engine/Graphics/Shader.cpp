@@ -124,12 +124,6 @@ void Shader::SetMat4(const string& name, const mat4& mat) const
 // utility function for loading shader file and processing shader #include directves
 // ---------------------------------------------------------------------------------
 
-/*
-#include include/uniforms.incl
-#include include/functions.incl
-*/
-
-// Return the source code of the complete shader
 string Shader::Load(string path, string include)
 {
     static bool isRecursiveCall = false;

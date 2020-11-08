@@ -22,13 +22,13 @@ int main()
     // Application CONTENT
     // ---------------------------------------------------------------------------
 
-    Viewport* viewport = app.AddViewport();
-    auto cam = viewport->GetScene()->camera_;
+    Viewport* viewport = app.AddViewport(true);
+    auto cam = viewport->scene_->camera_;
     cam->position_.z = 5;
     cam->LookAt(ZERO);
 
     // Material
-    Material2D* material = new Material2D(false);
+    Material2D* material = new Material2D();
     material->pctColor_ = 1;
 
     // Mesh
@@ -39,7 +39,7 @@ int main()
 
     // Entity
     Entity* entity = new Entity(mesh, material);
-    viewport->GetScene()->AddEntity(entity);
+    viewport->scene_->AddEntity(entity);
 
     // Application loop
     // ---------------------------------------------------------------------------

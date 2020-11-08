@@ -13,7 +13,7 @@ public:
     void SetData(int x, int y, int w, int h, unsigned int* data);
     void GetData(unsigned int* data);
     void SetParameter(unsigned int param, unsigned int value);
-    unsigned int GetTexture();
+    unsigned int GetId();
 
 private:
     unsigned int id_;

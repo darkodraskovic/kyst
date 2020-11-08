@@ -26,21 +26,21 @@ int main()
     // Viewport
     // ---------------------------------------------------------------------------
     
-    auto viewport = app.AddViewport();
+    auto viewport = app.AddViewport(true);
     
-    viewport->GetScene()->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
+    viewport->scene_->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
     // viewport->AddEffect("Shaders/Effects/Noop.fs");
     // viewport->AddEffect("Shaders/Effects/Inversion.fs");
     // viewport->AddEffect("Shaders/Effects/Remove.fs");
 
-    viewport->GetScene()->camera_->position_.z = 7.0f;
-    viewport->GetScene()->camera_->position_.y = 5.0f;
+    viewport->scene_->camera_->position_.z = 7.0f;
+    viewport->scene_->camera_->position_.y = 5.0f;
     
     // Application CONTENT
     // ---------------------------------------------------------------------------
 
     
-    auto eFactory = new EntityFactory(viewport->GetScene());
+    auto eFactory = new EntityFactory(viewport->scene_.get());
     
     eFactory->color1_ = ShapeUtils::Hex2rgb("E84A5F");
     eFactory->color2_ = ShapeUtils::Hex2rgb("FF847C");
@@ -50,13 +50,13 @@ int main()
     // eFactory->CreateTriGasket(4, vec2(-limit, limit), true, true);
     eFactory->CreateSnowflakeEmitter();
 
-    viewport->GetScene()->camera_->LookAt(ZERO);  
+    viewport->scene_->camera_->LookAt(ZERO);  
     // Application loop
     // ---------------------------------------------------------------------------
     int i = 0;
     while (!app.ShouldClose())
     {
-        viewport->GetScene()->camera_->ProcessInput(app.GetInput(), app.GetDeltaTime());
+        viewport->scene_->camera_->ProcessInput(app.GetInput(), app.GetDeltaTime());
         app.Update();
     }
 

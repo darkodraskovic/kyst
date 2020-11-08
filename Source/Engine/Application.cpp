@@ -1,8 +1,10 @@
 #include <iostream>
+#include <memory>
 
 #include "Core.h"
 #include "Application.h"
 #include "Input.h"
+#include "Scene/Scene.h"
 #include "Scene/Viewport.h"
 
 using namespace glm;
@@ -79,15 +81,6 @@ int Application::Init()
     return 0;
 };
 
-void Application::ProcessInput(float deltaTime)
-{
-    if(glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window_, true);
-    }
-
-    input_->ProcessMouseMovement();
-}
-
 void Application::Update()
 {
     float currentFrame = glfwGetTime();
@@ -95,24 +88,26 @@ void Application::Update()
     lastFrame_ = currentFrame;
 
     glfwPollEvents();
-    ProcessInput(deltaTime_);
+    input_->Process();
 
     for(auto it = viewports_.begin(); it != viewports_.end(); ++it) {
         (*it)->Update(deltaTime_);
     }
+    
     glfwSwapBuffers(window_);
+    // input_->Reset();
 }
 
 float Application::GetDeltaTime() { return deltaTime_; }
 
 Input* Application::GetInput() { return input_; }
 
-Viewport* Application::AddViewport()
-{
-    auto viewport = std::make_shared<Viewport>(this);
-    viewport->Init(GetWindowSize());
-    AddViewport(viewport);
-    return viewport.get();
+Viewport* Application::AddViewport(bool perspective, int width, int height) {
+    if (!width) width = windowSize_.x;
+    if (!height) height = windowSize_.y;
+    auto viewport = Viewport::Create(this, perspective, width, height);
+    AddViewport(shared_ptr<Viewport>(viewport));
+    return viewport;
 }
 
 void Application::AddViewport(std::shared_ptr<Viewport> viewport)
@@ -152,4 +147,5 @@ void ScrollCallback(GLFWwindow* window, double scrollX, double scrollY)
 {
     MouseData::scrollX = scrollX;
     MouseData::scrollY = scrollY;
+    MouseData::scrolled = true;
 }

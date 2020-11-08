@@ -7,6 +7,7 @@ namespace MouseData
 {
     extern float scrollX, scrollY;
     extern float positionX, positionY;
+    extern bool scrolled;
 }
 
 class Input
@@ -16,7 +17,8 @@ public:
 
     float lastMouseX_{0}, lastMouseY_{0};
     float mouseOffsetX_{0}, mouseOffsetY_{0};
-
+    void Process();
+    void Reset();
     void ProcessMouseMovement();
     bool GetKey(unsigned int key);
 

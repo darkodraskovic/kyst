@@ -28,9 +28,9 @@ int main()
     // Viewport
     // ---------------------------------------------------------------------------
 
-    auto viewport = app.AddViewport();
+    auto viewport = app.AddViewport(true);
     
-    auto cam = viewport->GetScene()->camera_;
+    auto cam = viewport->scene_->camera_;
     cam->position_.z = 4.0f;
 
     viewport->AddEffect("Shaders/Effects/Noop.fs");
@@ -41,17 +41,17 @@ int main()
     // ---------------------------------------------------------------------------
 
     // material
-    auto material1 = new Material2D(false);
+    auto material1 = new Material2D();
     material1->color_ = RED;
-    auto material2 = new Material2D(false);
+    auto material2 = new Material2D();
     material2->color_ = GREEN;
     material2->alpha_ = 0.5;
-    auto material3 = new Material2D(false);
+    auto material3 = new Material2D();
     material3->color_ = BLUE;
     material3->pctColor_ = 1.0;
-    auto material4 = new Material2D(false);
+    auto material4 = new Material2D();
     material4->color_ = BLUE;
-    auto material5 = new Material2D(false);
+    auto material5 = new Material2D();
     material5->pctColor_ = 1.0;
 
     // rect mesh
@@ -60,14 +60,14 @@ int main()
 
     // rect entity 1
     auto entity = new Entity(mesh, material1);
-    viewport->GetScene()->AddEntity(entity);
+    viewport->scene_->AddEntity(entity);
 
     // rect entity 2
     entity = new Entity(entity->mesh_, shared_ptr<Material2D>(material2));
     entity->position_ = (LEFT + DOWN) / 4.f;
     entity->position_.z = 0.25;
     entity->rotation_.y = pi<float>() / 4;
-    viewport->GetScene()->AddEntity(entity);
+    viewport->scene_->AddEntity(entity);
 
     // line entity 3
     mesh = Shape2DFactory::Line(LEFT, RIGHT);
@@ -76,14 +76,14 @@ int main()
     mesh->Generate(material2->shader_->id_);
     entity = new Entity(mesh, material3);
     entity->position_.z = 1;
-    viewport->GetScene()->AddEntity(entity);
+    viewport->scene_->AddEntity(entity);
 
     // polygons 4, 5
     vector<vec3> points = {LEFT, DOWN, RIGHT, UP};
     mesh = Shape2DFactory::LinePolygon(points);
     mesh->Generate(material1->shader_->id_);
     entity = new Entity(mesh, material4);
-    viewport->GetScene()->AddEntity(entity);
+    viewport->scene_->AddEntity(entity);
 
     mesh = Shape2DFactory::SolidPolygon(points);
     mesh->colors_ = {GREEN, BLUE, RED, BLUE};
@@ -91,7 +91,7 @@ int main()
     entity = new Entity(mesh, material5);
     entity->scale_ *= 0.33f;
     entity->position_.z = 0.5;
-    viewport->GetScene()->AddEntity(entity);
+    viewport->scene_->AddEntity(entity);
     
     cam->LookAt(ZERO);
     // Application loop
