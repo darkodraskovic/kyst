@@ -1,3 +1,4 @@
+#include "../Core.h"
 #include "Shader.h"
 
 // constructor generates the shader on the fly

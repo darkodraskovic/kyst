@@ -1,7 +1,8 @@
 #include <iostream>
-#include <glad/glad.h>
+
+#include "../Core.h"
 #include "Framebuffer.h"
-#include "Source/Engine/Graphics/Texture2D.h"
+
 
 Framebuffer::Framebuffer(Application* app) : Object(app) {
     glGenFramebuffers(1, &framebuffer_);

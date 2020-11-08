@@ -1,11 +1,12 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
 #include <map>
+
+#include "../Core.h"
 
 using namespace glm;
 

@@ -1,7 +1,6 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <glad/glad.h>
 #include <glm/glm.hpp>
 
 #include <string>
@@ -37,6 +36,6 @@ public:
     unsigned int id_;
     
 private:
-    static void CheckCompileErrors(GLuint shader, string type);
+    static void CheckCompileErrors(unsigned int shader, string type);
 };
 #endif

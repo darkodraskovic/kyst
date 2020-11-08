@@ -1,9 +1,8 @@
 #ifndef FRAMBUFFER_H
 #define FRAMBUFFER_H
 
-#include "../Application.h"
-#include "Texture2D.h"
 #include "../Object.h"
+#include "Texture2D.h"
 
 class Framebuffer : public Object
 {

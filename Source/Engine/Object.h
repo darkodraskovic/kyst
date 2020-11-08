@@ -1,7 +1,7 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include "Source/Engine/Application.h"
+class Application;
 class Object
 {
 public:

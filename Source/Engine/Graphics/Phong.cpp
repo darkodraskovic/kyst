@@ -1,6 +1,7 @@
-#include "Phong.h"
 #include <map>
 #include <string>
+
+#include "Phong.h"
 
 const std::map<Phong_Uniform, std::string> PHONG_MAP {
     {LIGHT_DIFFUSE, "uLight.diffuse"}, {LIGHT_SPECULAR, "uLight.specular"},

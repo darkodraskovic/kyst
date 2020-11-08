@@ -2,8 +2,6 @@
 #define TEXTURE2D_H
 
 #include "../Object.h"
-#include "../Application.h"
-#include <glad/glad.h>
 
 #include <string>
 class Texture2D : public Object

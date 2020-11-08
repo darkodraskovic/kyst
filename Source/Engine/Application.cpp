@@ -1,19 +1,17 @@
+#include <iostream>
+
+#include "Core.h"
 #include "Application.h"
 #include "Input.h"
 #include "Scene/Viewport.h"
-#include <GLFW/glfw3.h>
-#include <iostream>
 
 using namespace glm;
 
 Application::Application() {};
 
-uvec2 Application::windowSize_ = vec2(1152,720);
-ivec2 Application::windowPosition_ = vec2(0, 0);
-
 void Application::SetWindowSize(const uvec2& size)
 {
-    windowSize_ = windowSize_;
+    windowSize_ = size;
 }
     
 const uvec2& Application::GetWindowSize()

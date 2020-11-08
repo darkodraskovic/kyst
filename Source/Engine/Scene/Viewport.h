@@ -1,14 +1,14 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
+#include <memory>
+#include <vector>
 
-#include "../Application.h"
 #include "../Graphics/Shader.h"
-#include "../Graphics/Mesh.h"
 #include "../Graphics/Framebuffer.h"
 #include "../Object.h"
 
 class Scene;
-
+class Mesh;
 class Viewport : public Object
 {
 public:

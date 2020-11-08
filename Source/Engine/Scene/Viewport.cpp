@@ -1,3 +1,5 @@
+#include "../Application.h"
+#include "../Graphics/Mesh.h"
 #include "Viewport.h"
 #include "Scene.h"
 #include <vector>
@@ -6,7 +8,7 @@ const std::string Viewport::vertexPath_ = "Shaders/Viewport/Viewport.vs";
 const std::string Viewport::fragmentPath_ = "Shaders/Viewport/Viewport.fs";
 
 void Viewport::Init(const uvec2& size) {
-    scene_ = std::make_shared<Scene>(std::make_shared<Camera>());
+    scene_ = std::make_shared<Scene>(std::make_shared<Camera>(app_));
     Init(size.x, size.y);
 }
 
@@ -39,8 +41,8 @@ void Viewport::GenQuad(float width, float height) {
     quad_ = std::make_shared<Mesh>();
     quad_->mode_ = GL_TRIANGLE_FAN;
 
-    float right = -1 + 2 * (width / Application::GetWindowSize().x);
-    float up = -1 + 2 * (height / Application::GetWindowSize().y);
+    float right = -1 + 2 * (width / app_->GetWindowSize().x);
+    float up = -1 + 2 * (height / app_->GetWindowSize().y);
 
     quad_->positions_.push_back(vec3(-1, -1, 0));
     quad_->positions_.push_back(vec3(right, -1, 0));

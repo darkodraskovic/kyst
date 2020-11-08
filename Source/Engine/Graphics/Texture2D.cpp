@@ -1,8 +1,5 @@
 #include "Texture2D.h"
-#include "../ResourceManager.h"
-#include "Source/Engine/Application.h"
-#include "Source/Engine/Object.h"
-
+#include "../Application.h"
 
 Texture2D::Texture2D(Application* app_) : Object(app_) {}
 

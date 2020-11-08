@@ -32,8 +32,10 @@ int main()
 
     Viewport* viewport = app.AddViewport();
     auto cam = viewport->GetScene()->camera_;
-    cam->processMouseMovement_ = false;
-    cam->ortho_ = true;
+    cam->SetOrtho(true);
+    
+    // cam->position_.x = app.GetWindowSize().x/2;
+    // cam->position_.y = app.GetWindowSize().y/2;
 
     for (int i = 0; i < width * height; ++i) {
         data[i] = 0x000000FF;
@@ -56,8 +58,8 @@ int main()
     mesh->Generate(material->shader_->id_);
     auto entity = new Entity(mesh, material);
     // entity->position_ = (LEFT + DOWN) * 0.5f;
-    entity->scale_.x = width * 2;
-    entity->scale_.y = height * 2;
+    entity->scale_.x = width;
+    entity->scale_.y = height;
     entity->position_.x = 100;
     entity->position_.y = 100;
     viewport->GetScene()->AddEntity(entity);

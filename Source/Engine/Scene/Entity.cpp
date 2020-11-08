@@ -1,10 +1,11 @@
+#include <memory>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "Entity.h"
 #include "../VecConsts.h"
-#include <memory>
 
 using namespace VecConsts;
 
-#include <glm/gtc/matrix_transform.hpp>
 
 Entity::Entity()
 {

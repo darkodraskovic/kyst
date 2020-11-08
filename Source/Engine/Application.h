@@ -4,12 +4,12 @@
 #include <memory>
 #include <vector>
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 #include "ResourceManager.h"
-#include "Scene/Camera.h"
 #include "Input.h"
+
+using namespace glm;
 
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 void MouseCallback(GLFWwindow* window, double posX, double posY);
@@ -30,10 +30,10 @@ public:
     float GetDeltaTime();
     Input* GetInput();
     
-    static void SetWindowSize(const uvec2& size);
-    static const uvec2& GetWindowSize();
-    static void SetWindowPosition(const ivec2& size);
-    static const ivec2& GetWindowPosition();
+    void SetWindowSize(const uvec2& size);
+    const uvec2& GetWindowSize();
+    void SetWindowPosition(const ivec2& size);
+    const ivec2& GetWindowPosition();
 
     ResourceManager resourceManager_;
   
@@ -53,8 +53,8 @@ private:
 
     Input* input_;
     
-    static uvec2 windowSize_;
-    static ivec2 windowPosition_;
+    uvec2 windowSize_{1152,720};
+    ivec2 windowPosition_{0,0};
 };
 
 #endif

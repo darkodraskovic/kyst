@@ -1,6 +1,0 @@
-#ifndef UNIFORMDEFINES_H
-#define UNIFORMDEFINES_H
-
-
-
-#endif /* UNIFORMDEFINES_H */

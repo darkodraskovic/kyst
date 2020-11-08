@@ -1,10 +1,11 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-#include <glm/fwd.hpp>
+#include <glm/glm.hpp>
 #include <memory>
 #include <map>
 
+#include "../Core.h"
 #include "Shader.h"
 
 using namespace glm;
