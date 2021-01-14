@@ -6,7 +6,6 @@ Camera::Camera(Application* app) : Object(app)
 {
     position_ = vec3(0.0f, 0.0f, 0.0f);
     
-    
     up_ = vec3(0.0f, 1.0f, 0.0f);
     front_ = vec3(0.0f, 0.0f, -1.0f);
     

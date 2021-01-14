@@ -4,7 +4,7 @@
 #include ../Lib/uniform.glsl
 #include ../Lib/matrix.glsl
 #include ../Lib/shape.glsl
-#include ../Lib/util.glsl
+#include ../Lib/function.glsl
 
 in vec2 vTexCoord;
 in vec3 vPos;
@@ -29,13 +29,13 @@ void main()
         float y = y_pos * sign_y;
 
         st = translate(vec2(x, y)) * st;
-        // color.r += rect_fill(st.xy, vec2(r_size - line_width), vec2(r_anchor));
-        color.g += rect_stroke(st.xy, vec2(r_size), vec2(r_anchor), line_width);
+        // color.r += rectFill(st.xy, vec2(r_size - line_width), vec2(r_anchor));
+        color.g += rectStroke(st.xy, vec2(r_size), vec2(r_anchor), line_width);
         st = vPos;
 
         st = translate(vec2(x, y)) * st;
-        color.r += rect_fill(st.xy, vec2(r_size - line_width), vec2(r_anchor));
-        // color.r += rect_stroke(st.xy, vec2(r_size), vec2(r_anchor), line_width);
+        color.r += rectFill(st.xy, vec2(r_size - line_width), vec2(r_anchor));
+        // color.r += rectStroke(st.xy, vec2(r_size), vec2(r_anchor), line_width);
         st = vPos;
     }
     

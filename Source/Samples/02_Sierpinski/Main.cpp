@@ -50,7 +50,9 @@ int main()
     // eFactory->CreateTriGasket(4, vec2(-limit, limit), true, true);
     eFactory->CreateSnowflakeEmitter();
 
-    viewport->scene_->camera_->LookAt(ZERO);  
+
+    viewport->scene_->camera_->LookAt(ZERO);
+
     // Application loop
     // ---------------------------------------------------------------------------
     int i = 0;

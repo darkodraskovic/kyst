@@ -25,7 +25,7 @@ void main()
     
     pt = translate(vec2(0.5)) * pt;
     pt = rotate(uTime) * pt;
-    color.g += rect_fill(pt.xy, vec2(0.2), vec2(0.5));
+    color.g += rectFill(pt.xy, vec2(0.2), vec2(0.5));
     
     FragCol = vec4(color, uAlpha);
 }

@@ -15,10 +15,10 @@ apt-get install libsoil-dev libglm-dev libassimp-dev libglew-dev libglfw3-dev li
 Install [Glad library](https://github.com/Dav1dde/glad.git), a GL/GLES/EGL/GLX/WGL Loader-Generator:
 
 ```
-git clone https://github.com/Dav1dde/glad.git 
-cd glad 
-cmake ./ 
-make 
+git clone https://github.com/Dav1dde/glad.git
+cd glad
+cmake ./
+make
 sudo cp -a include /usr/local/
 ```
 
@@ -27,7 +27,7 @@ Copy *glad.c* from *glad/src/* git cloned source directory to the project *Sourc
 Install [STB library](https://github.com/nothings/stb) for image handling:
 
 ```
-git clone https://github.com/nothings/stb.git 
+git clone https://github.com/nothings/stb.git
 cd stb
 sudo mkdir /usr/local/include/stb
 sudo cp -a stb* /usr/local/include/stb/
@@ -37,12 +37,12 @@ sudo cp -a stb* /usr/local/include/stb/
 
 In order to compile a specific example, `mkdir build`, `cd build` and run
 
-```cmake ../```
+`cmake ../`
 
 After the successful creation of the *Makefile* build the examples with
 
-```make <example> && ./example```
+`make <example> && ./example`
 
 where <sample> stands for the name of the corresponding sample directory. E.g. to make and run *01_Cube* run
 
-```make 01_Cube && ./01_Cube```
+`make 01_Cube && cd ../bin && ./01_Cube`

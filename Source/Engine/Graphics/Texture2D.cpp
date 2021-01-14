@@ -1,7 +1,7 @@
 #include "Texture2D.h"
 #include "../Application.h"
 
-Texture2D::Texture2D(Application* app_) : Object(app_) {}
+Texture2D::Texture2D(Application* app) : Object(app) {}
 
 void Texture2D::LoadImage(const std::string& filePath) {
     auto textures = app_->resourceManager_.textures_;

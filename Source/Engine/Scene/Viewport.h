@@ -27,9 +27,6 @@ public:
 
     std::shared_ptr<Scene> scene_;
 
-    static const std::string vertexPath_;
-    static const std::string fragmentPath_;
-
 private:
     void GenBuffers(float width, float height);
     void GenQuad(float width, float height);

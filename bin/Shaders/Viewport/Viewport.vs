@@ -1,6 +1,6 @@
 #version 330 core
 
-#include ../Lib/transform.glsl
+#include ../Lib/uniform.glsl
 #include ../Lib/attribute.glsl
 
 out vec2 vTexCoord;

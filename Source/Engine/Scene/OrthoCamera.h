@@ -10,12 +10,10 @@ public:
     OrthoCamera(Application* app);
 
     virtual mat4 GetProjectionMatrix(int scrWidth, int scrHeight) override;
-
     virtual void LookAt(const vec3& center) override;
     
-    virtual void ProcessKeyboard(CameraMovement direction, float deltaTime) override;
     virtual void ProcessInput(Input* input, float deltaTime) override;
+    virtual void Translate(CameraMovement direction, float deltaTime) override;
 };
-
 
 #endif /* ORTHOCAMERA_H */

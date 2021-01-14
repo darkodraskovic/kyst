@@ -1,9 +1,6 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <memory>
-#include <vector>
-
 #include "../Object.h"
 #include "Camera.h"
 #include "Viewport.h"

@@ -33,9 +33,10 @@ int main()
 
     // Viewport* viewport = app.AddViewport();
     Viewport* viewport = app.AddViewport(false, app.GetWindowSize().x / 2, app.GetWindowSize().y / 2);
-    // viewport->scale_.x = 2;
-    // viewport->scale_.y = 2;
-    
+    viewport->scale_.x = .5;
+    viewport->scale_.y = .5;
+    viewport->position_.x = .25;
+
     auto cam = viewport->scene_->camera_;
     // cam->zoom_ = 2;
     // cam->position_.z = 5;

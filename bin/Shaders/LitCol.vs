@@ -1,14 +1,15 @@
 #version 330 core
 
-#include Lib/transform.glsl
+#include Lib/uniform.glsl
 #include Lib/attribute.glsl
+#include Lib/function.glsl
 
 out vec3 vFragPos;
 out vec3 vFragNorm;
 
 void main()
 {
-    gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0);
-    vFragPos = mat3(uModel) * aPos;
-    vFragNorm = mat3(transpose(inverse(uModel))) * aNorm;
+    gl_Position = project3D(aPos);
+    vFragPos = fragPos3D(aPos);
+    vFragNorm = fragNorm(aNorm);
 }

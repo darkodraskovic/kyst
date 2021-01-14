@@ -2,16 +2,17 @@
 
 namespace MouseData
 {
-    float scrollX = 0, scrollY = 0;
-    float positionX = 0, positionY = 0;
-    bool scrolled = false;
+    float moveX{0}, moveY{0};
+    float scrollX{0}, scrollY{0};
+    float lastPositionX{0}, lastPositionY{0};
+    float positionX{0}, positionY{0};
+    bool scrolled{false};
 }
 
-Input::Input(GLFWwindow *window)
-    : window_(window)
-{}
+Input::Input(GLFWwindow *window) : window_(window) {}
 
-void Input::Process(){
+void Input::Process()
+{
     if(glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window_, true);
     }
@@ -19,21 +20,32 @@ void Input::Process(){
     ProcessMouseMovement();
 };
 
-void Input::Reset(){
-    MouseData::scrolled = false;
-};
+void Input::Reset() { MouseData::scrolled = false; };
 
 void Input::ProcessMouseMovement()
 {
     using namespace MouseData;
-
-    mouseOffsetX_ = positionX - lastMouseX_;
-    mouseOffsetY_ = positionY - lastMouseY_;
-    lastMouseX_ = positionX;
-    lastMouseY_ = positionY;
+    moveX = positionX - lastPositionX;
+    moveY = positionY - lastPositionY;
+    lastPositionX = positionX;
+    lastPositionY = positionY;
 }
 
 bool Input::GetKey(unsigned int key)
 {
     return glfwGetKey(window_, key) == GLFW_PRESS;
+}
+
+void Input::MouseMoveCallback(GLFWwindow* window, double posX, double posY)
+{
+    MouseData::positionX = posX;
+    MouseData::positionY = posY;
+}
+
+void Input::MouseScrollCallback(GLFWwindow* window, double scrollX, double scrollY)
+{
+    using namespace MouseData;
+    scrollX = scrollX;
+    scrollY = scrollY;
+    scrolled = true;
 }

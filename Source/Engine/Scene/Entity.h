@@ -4,6 +4,7 @@
 #include "../Graphics/Mesh.h"
 #include "../Graphics/Material.h"
 #include "Scene.h"
+#include <string>
 
 class Entity
 {
@@ -19,6 +20,7 @@ public:
     std::shared_ptr<Material> material_;
     std::shared_ptr<Mesh> mesh_;
 
+    std::string name_;
     bool visible_ = true;
 
     vec3 position_ = vec3(0.f);

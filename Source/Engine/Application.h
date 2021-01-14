@@ -13,8 +13,6 @@
 using namespace glm;
 
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
-void MouseCallback(GLFWwindow* window, double posX, double posY);
-void ScrollCallback(GLFWwindow* window, double offsetX, double offsetY);
 
 class Viewport;
 

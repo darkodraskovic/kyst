@@ -3,7 +3,7 @@
 
 #include "Phong.h"
 
-const std::map<Phong_Uniform, std::string> PHONG_MAP {
+const std::map<PhongUniform, std::string> PHONG_MAP {
     {LIGHT_DIFFUSE, "uLight.diffuse"}, {LIGHT_SPECULAR, "uLight.specular"},
     {LIGHT_AMBIENT, "uLight.ambient"}, {LIGHT_POSITION, "uLight.position"},
     {MATERIAL_DIFFUSE, "uMaterial.diffuse"}, {MATERIAL_SPECULAR, "uMaterial.specular"},

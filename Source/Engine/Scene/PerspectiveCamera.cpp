@@ -2,12 +2,12 @@
 #include "Source/Engine/Input.h"
 
 PerspectiveCamera::PerspectiveCamera(Application* app) : Camera(app) {
-    yaw_ = glm::pi<float>();
+    yaw_ = pi<float>();
     pitch_ = 0.0f;
 
     worldUp_ = vec3(0.0f, 1.0f, 0.0f);;
 
-    mouseSensitivity_ = 0.001f;
+    sensitivity_ = 0.001f;
 
     UpdateCameraVectors();
 };
@@ -16,15 +16,10 @@ mat4 PerspectiveCamera::GetProjectionMatrix(int width, int height) {
     return glm::perspective(zoom_, (float)width / (float)height, 0.1f, 100.0f);
 }
 
-// Update front_, right_ and up_ Vectors using the updated Euler angles (yaw_ and pitch_)
-
-
 void PerspectiveCamera::UpdateCameraVectors()
 {
-    vec3 front;
-    front.x = cos(yaw_) * cos(pitch_);
-    front.y = sin(pitch_);
-    front.z = sin(yaw_) * cos(pitch_);
+    vec3 front(cos(yaw_) * cos(pitch_), sin(pitch_), sin(yaw_) * cos(pitch_));
+
     front_ = normalize(front);
     right_ = normalize(cross(front_, worldUp_));
     up_ = normalize(cross(right_, front_));
@@ -38,8 +33,21 @@ void PerspectiveCamera::LookAt(const vec3& center)
     UpdateCameraVectors();
 }
 
-// Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
-void PerspectiveCamera::ProcessKeyboard(CameraMovement direction, float deltaTime)
+void PerspectiveCamera::ProcessInput(Input* input, float deltaTime)
+{
+    if (input->GetKey(GLFW_KEY_W)) Translate(CAM_FORWARD, deltaTime);
+    if (input->GetKey(GLFW_KEY_S)) Translate(CAM_BACKWARD, deltaTime);
+    if (input->GetKey(GLFW_KEY_A)) Translate(CAM_LEFT, deltaTime);
+    if (input->GetKey(GLFW_KEY_D)) Translate(CAM_RIGHT, deltaTime);
+    if (input->GetKey(GLFW_KEY_E)) Translate(CAM_UP, deltaTime);
+    if (input->GetKey(GLFW_KEY_Q)) Translate(CAM_DOWN, deltaTime);
+
+    using namespace MouseData;
+    Rotate(moveX, moveY);
+    if (scrolled) Zoom(scrollY);
+}
+
+void PerspectiveCamera::Translate(CameraMovement direction, float deltaTime)
 {
     float velocity = movementSpeed_ * deltaTime;
     if (direction == CAM_FORWARD)
@@ -56,22 +64,10 @@ void PerspectiveCamera::ProcessKeyboard(CameraMovement direction, float deltaTim
         position_ -= up_ * velocity;
 }
 
-void PerspectiveCamera::ProcessInput(Input* input, float deltaTime)
+void PerspectiveCamera::Rotate(float xoffset, float yoffset, bool constrainPitch)
 {
-    if (input->GetKey(GLFW_KEY_W)) ProcessKeyboard(CAM_FORWARD, deltaTime);
-    if (input->GetKey(GLFW_KEY_S)) ProcessKeyboard(CAM_BACKWARD, deltaTime);
-    if (input->GetKey(GLFW_KEY_A)) ProcessKeyboard(CAM_LEFT, deltaTime);
-    if (input->GetKey(GLFW_KEY_D)) ProcessKeyboard(CAM_RIGHT, deltaTime);
-    if (input->GetKey(GLFW_KEY_E)) ProcessKeyboard(CAM_UP, deltaTime);
-    if (input->GetKey(GLFW_KEY_Q)) ProcessKeyboard(CAM_DOWN, deltaTime);
-
-    ProcessMouseMovement(input->mouseOffsetX_, input->mouseOffsetY_);
-    if (MouseData::scrolled) ProcessMouseScroll(MouseData::scrollY);
-}
-void PerspectiveCamera::ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch)
-{
-    yaw_   += xoffset * mouseSensitivity_;
-    pitch_ -= yoffset * mouseSensitivity_;
+    yaw_   += xoffset * sensitivity_;
+    pitch_ -= yoffset * sensitivity_;
 
     if (constrainPitch) {
         pitch_ = clamp(pitch_, -89.0f, 89.0f);
@@ -80,8 +76,8 @@ void PerspectiveCamera::ProcessMouseMovement(float xoffset, float yoffset, bool 
     UpdateCameraVectors();
 }
 
-void PerspectiveCamera::ProcessMouseScroll(float yoffset)
+void PerspectiveCamera::Zoom(float yoffset)
 {
-    zoom_ -= yoffset * mouseSensitivity_ * 10;
+    zoom_ -= yoffset * sensitivity_ * 10;
     zoom_ = clamp(zoom_, 1.0f, 45.0f);
 }

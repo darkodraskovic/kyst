@@ -5,7 +5,9 @@
 
 namespace MouseData
 {
+    extern float moveX, moveY;
     extern float scrollX, scrollY;
+    extern float lastPositionX, lastPositionY;
     extern float positionX, positionY;
     extern bool scrolled;
 }
@@ -15,15 +17,17 @@ class Input
 public:
     Input(GLFWwindow* window);
 
-    float lastMouseX_{0}, lastMouseY_{0};
-    float mouseOffsetX_{0}, mouseOffsetY_{0};
     void Process();
     void Reset();
-    void ProcessMouseMovement();
     bool GetKey(unsigned int key);
 
+    static void MouseMoveCallback(GLFWwindow* window, double posX, double posY);
+    static void MouseScrollCallback(GLFWwindow* window, double scrollX, double scrollY);
+
 private:
-    GLFWwindow* window_;  
+    GLFWwindow* window_;
+
+    void ProcessMouseMovement();    
 };
 
 #endif /* INPUT_H */

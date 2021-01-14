@@ -7,21 +7,21 @@ class PerspectiveCamera : public Camera {
 public:
     PerspectiveCamera(Application* app);
 
-    void ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
-    void ProcessMouseScroll(float yoffset);
+    void Zoom(float yoffset);
     virtual void LookAt(const vec3& center) override;
 
     virtual mat4 GetProjectionMatrix(int scrWidth, int scrHeight) override;
-    
-    virtual void ProcessKeyboard(CameraMovement direction, float deltaTime) override;
-    virtual void ProcessInput(Input* input, float deltaTime) override;
+
+    virtual void ProcessInput(Input* input, float deltaTime) override;    
+    virtual void Translate(CameraMovement direction, float deltaTime) override;
+    void Rotate(float xoffset, float yoffset, bool constrainPitch = true);
     
     vec3 worldUp_;
 
     float yaw_;
     float pitch_;
 
-    float mouseSensitivity_;
+    float sensitivity_;
 
 private:
     void UpdateCameraVectors();

@@ -15,6 +15,8 @@ const std::map<MeshAttribute, std::string> ATTRIBUTE_MAP
     {COLORS, "aCol"},
 };
 
+// DEFINE
+
 // VBO interleaved
 
 void Mesh::GenArrayBuffer(const float* data, int elemPerAttr, int numAttrs, int numVerts)
@@ -66,7 +68,9 @@ void Mesh::GenArrayBuffer(const float *data, int elemPerAttr, int numVerts, unsi
     glBindVertexArray(0);
 }
 
-void Mesh::GenArrayBuffer(const float *data, int elemPerAttr, int numVerts)
+// VBO helpers
+
+void Mesh::GenArrayBuffer(const float* data, int elemPerAttr, int numVerts)
 {
     GenArrayBuffer(data, elemPerAttr, numVerts, (unsigned int)VBOs_.size());
 }
@@ -98,7 +102,7 @@ void Mesh::GenArrayBuffer(const std::vector<vec3>& attribs, unsigned int program
 
 // EBO
 
-void Mesh::GenElementBuffer(const unsigned int *data, int numIdx) {
+void Mesh::GenElementBuffer(const unsigned int* data, int numIdx) {
     numIdx_ = numIdx;
 
     glBindVertexArray(VAO_);
@@ -117,36 +121,6 @@ void Mesh::GenElementBuffer(const std::vector<unsigned int>& indices)
 }
 
 // GENERATE
-
-// Attribute order in attributes argument must match (location = n) in shader
-void Mesh::Generate(const std::vector<MeshAttribute>& attribOrder)
-{
-    DeleteBuffers();
-    
-    for (int i = 0; i < attribOrder.size(); ++i)
-    {
-        switch (attribOrder[i]) {
-        case POSITIONS:
-            GenArrayBuffer(positions_);
-            break;
-        case NORMALS:
-            GenArrayBuffer(normals_);
-            break;
-        case TANGENTS:
-            GenArrayBuffer(tangents_);
-            break;
-        case TEX_COORDS:
-            GenArrayBuffer(texCoords_);
-            break;
-        case COLORS:
-            GenArrayBuffer(colors_);
-            break;
-        default:
-            std::cout << "ERROR::MESH:: Unknown mesh attribute!" << std::endl;
-            break;
-        }
-    }
-}
 
 void Mesh::Generate(unsigned int program)
 {
@@ -190,4 +164,4 @@ Mesh::~Mesh()
 {
     DeleteBuffers();
     glDeleteVertexArrays(1, &VAO_);
-};
+}

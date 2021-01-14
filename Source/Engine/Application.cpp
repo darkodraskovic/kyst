@@ -1,6 +1,3 @@
-#include <iostream>
-#include <memory>
-
 #include "Core.h"
 #include "Application.h"
 #include "Input.h"
@@ -35,14 +32,12 @@ const ivec2& Application::GetWindowPosition()
 int Application::Init()
 {
     // glfw: initialize and configure
-    // ------------------------------
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // glfw window creation
-    // --------------------
     window_ = glfwCreateWindow(windowSize_.x, windowSize_.y, "Camera", NULL, NULL);
     if (window_ == NULL)
     {
@@ -55,11 +50,10 @@ int Application::Init()
     glfwSetFramebufferSizeCallback(window_, FramebufferSizeCallback);
     
     glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPosCallback(window_, MouseCallback);
-    glfwSetScrollCallback(window_, ScrollCallback);
+    glfwSetCursorPosCallback(window_, Input::MouseMoveCallback);
+    glfwSetScrollCallback(window_, Input::MouseScrollCallback);
     
     // glad: load all OpenGL function pointers
-    // ---------------------------------------
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
@@ -67,16 +61,14 @@ int Application::Init()
     }
 
     // configure global opengl state and init screen frambuffer
-    // -----------------------------
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
 
     // configure input and mouse position
-    // -----------------------------
     input_ = new Input(window_);
-    input_->lastMouseX_ = MouseData::positionX = windowSize_.x / 2;
-    input_->lastMouseY_ = MouseData::positionY = windowSize_.y / 2;
+    MouseData::lastPositionX = MouseData::positionX = windowSize_.x / 2;
+    MouseData::lastPositionY = MouseData::positionY = windowSize_.y / 2;
     
     return 0;
 };
@@ -128,24 +120,7 @@ void Application::Terminate()
     glfwTerminate();
 };
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
-}
-
-// glfw: whenever the mouse moves, this callback is called
-// -------------------------------------------------------
-void MouseCallback(GLFWwindow* window, double posX, double posY)
-{
-    MouseData::positionX = posX;
-    MouseData::positionY = posY;
-}
-
-void ScrollCallback(GLFWwindow* window, double scrollX, double scrollY)
-{
-    MouseData::scrollX = scrollX;
-    MouseData::scrollY = scrollY;
-    MouseData::scrolled = true;
 }

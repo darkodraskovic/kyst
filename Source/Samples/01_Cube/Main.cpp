@@ -1,4 +1,5 @@
 #include "Engine/Application.h"
+#include "Engine/Graphics/PhongCol.h"
 #include "Engine/Graphics/PhongMap.h"
 #include "Engine/Graphics/Framebuffer.h"
 #include "Engine/Scene/Scene.h"
@@ -43,14 +44,14 @@ int main()
     
     auto litTexShader = std::shared_ptr<Shader>(
         new Shader( "Shaders/LitTex.vs", "Shaders/LitTex.fs"));
+    auto litColShader = std::shared_ptr<Shader>(
+        new Shader( "Shaders/LitCol.vs", "Shaders/LitCol.fs"));
 
     int size = 320;
     auto vp = Viewport::Create(&app, true, size, size);
     vp->AddEffect("Shaders/Textures/Tex2D.fs");
     vp->AddEffect("Shaders/Effects/Inversion.fs");
     vp->Render();
-    glBindTexture(GL_TEXTURE_2D, vp->GetTexture()->GetId());
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     
     auto material = std::shared_ptr<PhongMap>(new PhongMap(litTexShader));
     material->diffuse_ = diffuseMetal;
@@ -75,6 +76,17 @@ int main()
     cube4->material_->alpha_ = 0.5;
     viewport->scene_->AddEntity(cube4);
 
+    auto material2 = std::shared_ptr<PhongCol>(new PhongCol(litColShader));
+    material2->diffuse_ = BLUE;
+    material2->specular_ = RED;
+    material2->shininess_ = 128.0f;
+    material2->lightPosition_ = vec3(0.5f, 0.0f, 5.0f);
+    auto cube5 = std::make_shared<Cube>(material2);
+    cube5->position_ = -ONE*2.0f;
+    cube5->scale_*= 2;
+    // cube5->material_->alpha_ = 0.5;
+    viewport->scene_->AddEntity(cube5);
+
     // Reset POINTERS
     // ---------------------------------------------------------------------------
     
@@ -82,6 +94,7 @@ int main()
     material.reset();
     cube2.reset();
     cube4.reset();        
+    cube5.reset();        
 
     viewport->scene_->camera_->LookAt(ZERO);
     // Application loop

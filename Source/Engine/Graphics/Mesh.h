@@ -11,7 +11,6 @@
 using namespace glm;
 
 enum MeshAttribute { POSITIONS, NORMALS, TANGENTS, TEX_COORDS, COLORS };
-extern const std::map<MeshAttribute, std::string> ATTRIBUTE_MAP;
 
 class Mesh
 {
@@ -35,7 +34,6 @@ public:
     void GenElementBuffer(const unsigned int* data, int numIdx);
     void GenElementBuffer(const std::vector<unsigned int>&);
 
-    void Generate(const std::vector<MeshAttribute>& attribOrder);
     void Generate(unsigned int program);
     void Render();
 

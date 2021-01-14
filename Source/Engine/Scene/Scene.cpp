@@ -5,15 +5,16 @@
 
 void Scene::AddEntity(Entity* entity)
 {
-    for (auto it = entities_.begin(); it != entities_.end(); it++) {
-        if ((*it).get() == entity) return;
-    }
+    for (std::shared_ptr<Entity>& e : entities_)
+        if (e.get() == entity) return;
+    
     entitiesToCreate_.push_back(std::shared_ptr<Entity>(entity));
 }
 
 void Scene::AddEntity(std::shared_ptr<Entity> entity)
 {
     if (std::find(entities_.begin(), entities_.end(), entity) != entities_.end()) return;
+    
     entitiesToCreate_.push_back(entity);
 }
 
@@ -24,16 +25,15 @@ void Scene::Update(float deltaTime)
         if ((*it)->remove_) entities_.erase(it--);
     }
 
-    // add entities
-    for (auto it = entitiesToCreate_.begin(); it != entitiesToCreate_.end(); ++it) {
-        entities_.push_back(*it);
-        (*it)->scene_ = this;
+    for (std::shared_ptr<Entity>& e : entitiesToCreate_) {
+        entities_.push_back(e);
+        e->scene_ = this;
     }
     entitiesToCreate_.clear();
     
     // update entities
-    for(auto it = entities_.begin(); it != entities_.end(); ++it) {
-        (*it)->Update(deltaTime);
+    for(std::shared_ptr<Entity>& e : entities_) {
+        e->Update(deltaTime);
     }
 };
 
@@ -53,9 +53,9 @@ void Scene::Draw(unsigned int width, unsigned int height)
         if (!e->visible_) continue;
         if (e->material_->alpha_ < 1.0) {
             alphaEntities_.push_back(e);
-        } else {
-            e->Draw(view, projection);
+            continue;
         }
+        e->Draw(view, projection);
     }
     glDisable(GL_CULL_FACE);
 

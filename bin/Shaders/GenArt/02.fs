@@ -4,7 +4,7 @@
 #include ../Lib/uniform.glsl
 #include ../Lib/matrix.glsl
 #include ../Lib/shape.glsl
-#include ../Lib/util.glsl
+#include ../Lib/function.glsl
 
 in vec2 vTexCoord;
 in vec3 vPos;
@@ -25,24 +25,24 @@ void main()
         
         // st = scale(vec2(s)) * translate(vec2(x, y)) * st;
         st = scale(vec2(s)) * rotate(r) * translate(vec2(x, y)) * st;
-        color[i%2] += 0.075 * rect_fill(st.xy, vec2(0.5), vec2(0.5)); // pos, size, anchor
+        color[i%2] += 0.075 * rectFill(st.xy, vec2(0.5), vec2(0.5)); // pos, size, anchor
 
         st = vPos;
         
         // st = scale(vec2(s)) * rotate(r) * translate(vec2(y, x)) * st;
-        // color[i%2] += 0.02 * rect_fill(st.xy, vec2(0.5), vec2(0.5)); // pos, size, anchor
+        // color[i%2] += 0.02 * rectFill(st.xy, vec2(0.5), vec2(0.5)); // pos, size, anchor
         // st = vPos;
     }
     
     tnl_y = 0.01;
     float col_int = 0.4;
     st = translate(vec2(0, -tnl_y)) * st;
-    color[2] += col_int * rect_fill(st.xy, vec2(2,0.01), vec2(0.5)); // pos, size, anchor
+    color[2] += col_int * rectFill(st.xy, vec2(2,0.01), vec2(0.5)); // pos, size, anchor
     st = vPos;
     st = translate(vec2(0, tnl_y)) * st;
-    color[2] += col_int * rect_fill(st.xy, vec2(2,0.01), vec2(0.5)); // pos, size, anchor
+    color[2] += col_int * rectFill(st.xy, vec2(2,0.01), vec2(0.5)); // pos, size, anchor
     st = vPos;
-    color[2] += col_int * rect_fill(st.xy, vec2(0.03,2.0), vec2(0.5)); // pos, size, anchor
+    color[2] += col_int * rectFill(st.xy, vec2(0.03,2.0), vec2(0.5)); // pos, size, anchor
     
     gl_FragColor = vec4(color, 1.0);
 }

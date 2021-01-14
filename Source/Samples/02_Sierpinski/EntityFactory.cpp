@@ -33,7 +33,9 @@ std::shared_ptr<Mover> EntityFactory::AddMover(bool vCol)
     if (vCol) {
         mover->material_->shader_ = vColShader_;
     }
-    
+
+    mover->name_ = "mover";
+
     scene_->AddEntity(mover);
     return mover;
 }
@@ -116,6 +118,7 @@ std::shared_ptr<Mover> EntityFactory::CreateTriGasket(int numDivisions, const ve
 std::shared_ptr<ParticleEmitter> EntityFactory::CreateSnowflakeEmitter()
 {
     auto emitter = std::shared_ptr<ParticleEmitter>(new ParticleEmitter());
+    emitter->name_ = "emitter";
     emitter->mesh_ = snowflakeMesh_;
     emitter->material_ = std::make_shared<Material>(colShader_);
     emitter->material_->color_ = color3_;

@@ -25,7 +25,7 @@ void main()
         
         // st = scale(vec2(s)) * translate(vec2(x, y)) * st;
         st = scale(vec2(s)) * rotate(uTime * s / 3 * fct_y) * translate(vec2(x, y)) * st;
-        color[i%3] += 0.2 * rect_fill(st.xy, vec2(0.5), vec2(0.5)); // pos, size, anchor
+        color[i%3] += 0.2 * rectFill(st.xy, vec2(0.5), vec2(0.5)); // pos, size, anchor
         
         st = vPos;
     }

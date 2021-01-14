@@ -10,7 +10,6 @@ enum CameraMovement { CAM_FORWARD, CAM_BACKWARD, CAM_LEFT, CAM_RIGHT, CAM_UP, CA
 
 using namespace glm;
 
-// Processes input and calculates the corresponding Euler Angles, Vectors and Matrices
 class Camera : public Object
 {
 public:
@@ -21,7 +20,7 @@ public:
 
     virtual void LookAt(const vec3& center) = 0;    
     // TODO: remove this methods from Camera class
-    virtual void ProcessKeyboard(CameraMovement direction, float deltaTime) = 0;
+    virtual void Translate(CameraMovement direction, float deltaTime) = 0;
     virtual void ProcessInput(Input* input, float deltaTime) = 0;
     
     vec3 position_;
