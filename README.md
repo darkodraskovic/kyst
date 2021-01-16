@@ -46,3 +46,51 @@ After the successful creation of the *Makefile* build the examples with
 where <sample> stands for the name of the corresponding sample directory. E.g. to make and run *01_Cube* run
 
 `make 01_Cube && cd ../bin && ./01_Cube`
+
+## Boilerplate
+
+```
+#include "Engine/VecConsts.h"
+#include "Engine/Application.h"
+
+class App : public Application {
+public:
+    virtual int Init() {
+        Application::Init();
+        auto viewport = AddViewport();
+        viewport->scene_->camera_->position_.z = 5.0f;
+        viewport->scene_->camera_->LookAt(ZERO);
+        
+        return 0;
+    }
+    
+    virtual void ProcessInput() {
+        Application::ProcessInput();
+        if(input_->GetKey(GLFW_KEY_ESCAPE)) Close();
+    }
+    
+    virtual void Update(float deltaTime) {
+        viewports_[0]->scene_->camera_->ProcessInput(input_, deltaTime_);
+        Application::Update(deltaTime);
+    }
+};
+
+int main()
+{
+    App app;
+    if (app.Init() < 0) {
+        std::cout << "Failed to create an OpenGL app" << std::endl;
+        return -1;
+    };
+
+
+    while (!app.ShouldClose()) {
+        app.Run();
+    }
+    
+    app.Terminate();
+
+    return 0;
+}
+
+```

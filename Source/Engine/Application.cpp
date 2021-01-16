@@ -12,7 +12,7 @@ void Application::SetWindowSize(const uvec2& size)
 {
     windowSize_ = size;
 }
-    
+
 const uvec2& Application::GetWindowSize()
 {
     return windowSize_;
@@ -22,7 +22,7 @@ void Application::SetWindowPosition(const ivec2& position)
 {
     windowPosition_ = position;
 }
-    
+
 const ivec2& Application::GetWindowPosition()
 {
     return windowPosition_;
@@ -45,14 +45,14 @@ int Application::Init()
         glfwTerminate();
         return -1;
     }
-    glfwSetWindowPos(window_, windowPosition_.x, windowPosition_.y);    
+    glfwSetWindowPos(window_, windowPosition_.x, windowPosition_.y);
     glfwMakeContextCurrent(window_);
     glfwSetFramebufferSizeCallback(window_, FramebufferSizeCallback);
-    
+
     glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window_, Input::MouseMoveCallback);
     glfwSetScrollCallback(window_, Input::MouseScrollCallback);
-    
+
     // glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -69,25 +69,33 @@ int Application::Init()
     input_ = new Input(window_);
     MouseData::lastPositionX = MouseData::positionX = windowSize_.x / 2;
     MouseData::lastPositionY = MouseData::positionY = windowSize_.y / 2;
-    
+
     return 0;
 };
 
-void Application::Update()
+void Application::ProcessInput(){
+    glfwPollEvents();
+    input_->Process();
+}
+
+void Application::Update(float deltaTime) {
+    for(auto it = viewports_.begin(); it != viewports_.end(); ++it) {
+        (*it)->Update(deltaTime_);
+    }
+}
+
+void Application::Run()
 {
     float currentFrame = glfwGetTime();
     deltaTime_ = currentFrame - lastFrame_;
     lastFrame_ = currentFrame;
 
-    glfwPollEvents();
-    input_->Process();
+    ProcessInput();
 
-    for(auto it = viewports_.begin(); it != viewports_.end(); ++it) {
-        (*it)->Update(deltaTime_);
-    }
-    
+    Update(deltaTime_);
+
     glfwSwapBuffers(window_);
-    // input_->Reset();
+    input_->Reset();
 }
 
 float Application::GetDeltaTime() { return deltaTime_; }
@@ -110,7 +118,12 @@ void Application::AddViewport(std::shared_ptr<Viewport> viewport)
 
 bool Application::ShouldClose()
 {
-    return glfwWindowShouldClose(window_);    
+    return glfwWindowShouldClose(window_);
+};
+
+void Application::Close()
+{
+    glfwSetWindowShouldClose(window_, true);
 };
 
 void Application::Terminate()

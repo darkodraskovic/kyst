@@ -1,4 +1,5 @@
 #include "Input.h"
+#include <iostream>
 
 namespace MouseData
 {
@@ -13,23 +14,14 @@ Input::Input(GLFWwindow *window) : window_(window) {}
 
 void Input::Process()
 {
-    if(glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window_, true);
-    }
-
-    ProcessMouseMovement();
-};
-
-void Input::Reset() { MouseData::scrolled = false; };
-
-void Input::ProcessMouseMovement()
-{
     using namespace MouseData;
     moveX = positionX - lastPositionX;
     moveY = positionY - lastPositionY;
     lastPositionX = positionX;
     lastPositionY = positionY;
-}
+};
+
+void Input::Reset() { MouseData::scrolled = false; };
 
 bool Input::GetKey(unsigned int key)
 {
@@ -42,10 +34,10 @@ void Input::MouseMoveCallback(GLFWwindow* window, double posX, double posY)
     MouseData::positionY = posY;
 }
 
-void Input::MouseScrollCallback(GLFWwindow* window, double scrollX, double scrollY)
+void Input::MouseScrollCallback(GLFWwindow* window, double scrX, double scrY)
 {
     using namespace MouseData;
-    scrollX = scrollX;
-    scrollY = scrollY;
+    scrollX = scrX;
+    scrollY = scrY;
     scrolled = true;
 }

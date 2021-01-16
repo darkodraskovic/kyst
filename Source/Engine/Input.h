@@ -26,8 +26,6 @@ public:
 
 private:
     GLFWwindow* window_;
-
-    void ProcessMouseMovement();    
 };
 
 #endif /* INPUT_H */

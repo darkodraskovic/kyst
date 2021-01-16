@@ -1,5 +1,6 @@
 #include "PerspectiveCamera.h"
 #include "Source/Engine/Input.h"
+#include <iostream>
 
 PerspectiveCamera::PerspectiveCamera(Application* app) : Camera(app) {
     yaw_ = pi<float>();
@@ -42,9 +43,8 @@ void PerspectiveCamera::ProcessInput(Input* input, float deltaTime)
     if (input->GetKey(GLFW_KEY_E)) Translate(CAM_UP, deltaTime);
     if (input->GetKey(GLFW_KEY_Q)) Translate(CAM_DOWN, deltaTime);
 
-    using namespace MouseData;
-    Rotate(moveX, moveY);
-    if (scrolled) Zoom(scrollY);
+    Rotate(MouseData::moveX, MouseData::moveY);
+    if (MouseData::scrolled) Zoom(MouseData::scrollY);
 }
 
 void PerspectiveCamera::Translate(CameraMovement direction, float deltaTime)
@@ -78,6 +78,6 @@ void PerspectiveCamera::Rotate(float xoffset, float yoffset, bool constrainPitch
 
 void PerspectiveCamera::Zoom(float yoffset)
 {
-    zoom_ -= yoffset * sensitivity_ * 10;
-    zoom_ = clamp(zoom_, 1.0f, 45.0f);
+    zoom_ -= yoffset * sensitivity_ * 1e2;
+    zoom_ = clamp(zoom_, .5f, 2.0f);
 }

@@ -19,7 +19,7 @@ int main()
     // ---------------------------------------------------------------------------
     while (!app.ShouldClose())
     {
-        app.Update();
+        app.Run();
     }
     
     // Application termination
