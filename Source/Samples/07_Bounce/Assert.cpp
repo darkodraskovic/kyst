@@ -1,5 +1,9 @@
+#include <glm/gtc/constants.hpp>
+
 #include "Engine/VecConsts.h"
 #include "Engine/Collision/Collision2D.h"
+
+#include "Assert.h"
 
 using namespace VecConsts;
 

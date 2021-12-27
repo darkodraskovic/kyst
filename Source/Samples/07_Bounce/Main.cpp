@@ -1,15 +1,18 @@
+#include <iostream>
 #include <cassert>
 #include <glm/ext/scalar_constants.hpp>
 #include <glm/fwd.hpp>
-#include <iostream>
+
 #include "Engine/Application.h"
 #include "Engine/Scene/Entity.h"
 #include "Engine/Graphics/Material2D.h"
 
 #include "ShapeFactory/Shape2DFactory.h"
-#include "Assert.cpp"
+#include "Assert.h"
 
+#include "Engine/VecConsts.h"
 using namespace VecConsts;
+
 using namespace ShapeFactory;
 
 class App : public Application {
@@ -42,8 +45,6 @@ public:
         Application::Update(deltaTime);
     }
 };
-
-void assertColllide();
 
 int main()
 {
