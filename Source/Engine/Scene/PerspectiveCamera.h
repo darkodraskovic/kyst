@@ -4,28 +4,27 @@
 #include "Camera.h"
 
 class PerspectiveCamera : public Camera {
-public:
-    PerspectiveCamera(Application* app);
+ public:
+  PerspectiveCamera(Application* app);
 
-    void Zoom(float yoffset);
-    virtual void LookAt(const vec3& center) override;
+  void Zoom(float yoffset);
+  virtual void LookAt(const vec3& center) override;
 
-    virtual mat4 GetProjectionMatrix(int scrWidth, int scrHeight) override;
+  virtual mat4 GetProjectionMatrix(int scrWidth, int scrHeight) override;
 
-    virtual void ProcessInput(Input* input, float deltaTime) override;    
-    virtual void Translate(CameraMovement direction, float deltaTime) override;
-    void Rotate(float xoffset, float yoffset, bool constrainPitch = true);
-    
-    vec3 worldUp_;
+  virtual void ProcessInput(Input* input, float deltaTime) override;
+  virtual void Translate(CameraMovement direction, float deltaTime) override;
+  void Rotate(float xoffset, float yoffset, bool constrainPitch = true);
 
-    float yaw_;
-    float pitch_;
+  vec3 worldUp_;
 
-    float sensitivity_;
+  float yaw_;
+  float pitch_;
 
-private:
-    void UpdateCameraVectors();
+  float sensitivity_;
+
+ private:
+  void UpdateCameraVectors();
 };
-
 
 #endif /* PERSPECTIVECAMERA_H */

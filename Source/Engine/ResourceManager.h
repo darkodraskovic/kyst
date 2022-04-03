@@ -4,13 +4,12 @@
 #include <map>
 #include <string>
 
-class ResourceManager
-{
-public:
-    ResourceManager();
-    unsigned int LoadTexture(char const* path);
+class ResourceManager {
+ public:
+  ResourceManager();
+  unsigned int LoadTexture(char const* path);
 
-    std::map<std::string, unsigned int> textures_;
+  std::map<std::string, unsigned int> textures_;
 };
 
 #endif

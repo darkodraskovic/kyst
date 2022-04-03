@@ -1,12 +1,13 @@
+#include "Viewport.h"
+
+#include <glm/fwd.hpp>
+
 #include "../Application.h"
 #include "../Graphics/Mesh.h"
 #include "../Graphics/Texture2D.h"
-#include "Viewport.h"
-#include "Scene.h"
-
-#include "PerspectiveCamera.h"
 #include "OrthoCamera.h"
-#include <glm/fwd.hpp>
+#include "PerspectiveCamera.h"
+#include "Scene.h"
 
 using namespace std;
 
@@ -14,105 +15,105 @@ const string vertexPath_ = "Shaders/Viewport/Viewport.vs";
 const string fragmentPath_ = "Shaders/Viewport/Viewport.fs";
 
 void Viewport::Init(unsigned int width, unsigned int height) {
-    width_ = width;
-    height_ = height;
-    GenBuffers(width, height);
-    GenQuad(width, height);
+  width_ = width;
+  height_ = height;
+  GenBuffers(width, height);
+  GenQuad(width, height);
 }
 
 void Viewport::GenBuffers(float width, float height) {
-    shader_ = make_shared<Shader>(vertexPath_, fragmentPath_);
-    frontbuffer_ = make_shared<Framebuffer>(app_);
-    frontbuffer_->Init(width_, height_);
-    backbuffer_ = make_shared<Framebuffer>(app_);
-    backbuffer_->Init(width_, height_);
+  shader_ = make_shared<Shader>(vertexPath_, fragmentPath_);
+  frontbuffer_ = make_shared<Framebuffer>(app_);
+  frontbuffer_->Init(width_, height_);
+  backbuffer_ = make_shared<Framebuffer>(app_);
+  backbuffer_->Init(width_, height_);
 }
 
 void Viewport::GenQuad(float width, float height) {
-    quad_ = make_shared<Mesh>();
-    quad_->mode_ = GL_TRIANGLE_FAN;
+  quad_ = make_shared<Mesh>();
+  quad_->mode_ = GL_TRIANGLE_FAN;
 
-    quad_->positions_.push_back(vec3(-1, -1, 0));
-    quad_->positions_.push_back(vec3(1, -1, 0));
-    quad_->positions_.push_back(vec3(1, 1, 0));
-    quad_->positions_.push_back(vec3(-1, 1, 0));
+  quad_->positions_.push_back(vec3(-1, -1, 0));
+  quad_->positions_.push_back(vec3(1, -1, 0));
+  quad_->positions_.push_back(vec3(1, 1, 0));
+  quad_->positions_.push_back(vec3(-1, 1, 0));
 
-    quad_->texCoords_.push_back(vec2(0, 0));
-    quad_->texCoords_.push_back(vec2(1, 0));
-    quad_->texCoords_.push_back(vec2(1, 1));
-    quad_->texCoords_.push_back(vec2(0, 1));
+  quad_->texCoords_.push_back(vec2(0, 0));
+  quad_->texCoords_.push_back(vec2(1, 0));
+  quad_->texCoords_.push_back(vec2(1, 1));
+  quad_->texCoords_.push_back(vec2(0, 1));
 
-    quad_->Generate(shader_->id_);
+  quad_->Generate(shader_->id_);
 }
 
-void Viewport::AddEffect(const char *fragmentPath) {
-    auto effect = make_shared<Shader>(vertexPath_, fragmentPath);
-    effects_.push_back(effect);
+void Viewport::AddEffect(const char* fragmentPath) {
+  auto effect = make_shared<Shader>(vertexPath_, fragmentPath);
+  effects_.push_back(effect);
 }
-
 
 void Viewport::Render() {
-    glViewport(0, 0, width_, height_);
-    frontbuffer_->Bind();
-    bound_ = frontbuffer_.get();
+  glViewport(0, 0, width_, height_);
+  frontbuffer_->Bind();
+  bound_ = frontbuffer_.get();
 
-    // draw scene
-    scene_->Draw(width_, height_);
+  // draw scene
+  scene_->Draw(width_, height_);
 
-    // render effects
-    if (!effects_.empty()) {
-        glDisable(GL_DEPTH_TEST);
-        glActiveTexture(GL_TEXTURE0);
-        Framebuffer* unbound = backbuffer_.get();
-        for (int i = 0; i < effects_.size(); i++) {
-            // switch buffers
-            bound_->Unbind();
-            unbound->Bind();
-            Framebuffer* tmp = bound_;
-            bound_ = unbound;
-            unbound = tmp;
+  // render effects
+  if (!effects_.empty()) {
+    glDisable(GL_DEPTH_TEST);
+    glActiveTexture(GL_TEXTURE0);
+    Framebuffer* unbound = backbuffer_.get();
+    for (int i = 0; i < effects_.size(); i++) {
+      // switch buffers
+      bound_->Unbind();
+      unbound->Bind();
+      Framebuffer* tmp = bound_;
+      bound_ = unbound;
+      unbound = tmp;
 
-            // render unbound buffer's texture to bound buffer
-            glBindTexture(GL_TEXTURE_2D, unbound->texture_->GetId());
-            effects_[i]->Use();
-            effects_[i]->SetInt("uTexture", 0);
-            quad_->Render();
-        }
+      // render unbound buffer's texture to bound buffer
+      glBindTexture(GL_TEXTURE_2D, unbound->texture_->GetId());
+      effects_[i]->Use();
+      effects_[i]->SetInt("uTexture", 0);
+      quad_->Render();
     }
+  }
 
-    bound_->Unbind();
-    glViewport(0, 0, app_->GetWindowSize().x, app_->GetWindowSize().y);
+  bound_->Unbind();
+  glViewport(0, 0, app_->GetWindowSize().x, app_->GetWindowSize().y);
 }
 
 void Viewport::Draw() {
-    glDisable(GL_DEPTH_TEST);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, bound_->GetTexture()->GetId());
+  glDisable(GL_DEPTH_TEST);
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, bound_->GetTexture()->GetId());
 
-    shader_->Use();
-    shader_->SetInt("uTexture", 0);
-    glm::mat4 transform = glm::translate(glm::mat4(1.f), position_);
-    transform = glm::scale(transform, scale_);
-    shader_->SetMat4("uModel", transform);
+  shader_->Use();
+  shader_->SetInt("uTexture", 0);
+  glm::mat4 transform = glm::translate(glm::mat4(1.f), position_);
+  transform = glm::scale(transform, scale_);
+  shader_->SetMat4("uModel", transform);
 
-    quad_->Render();
+  quad_->Render();
 }
 
 void Viewport::Update(float deltaTime) {
-    scene_->Update(deltaTime);
-    Render();
-    Draw();
+  scene_->Update(deltaTime);
+  Render();
+  Draw();
 }
 
-Texture2D* Viewport::GetTexture() {
-    return bound_->GetTexture();
-}
+Texture2D* Viewport::GetTexture() { return bound_->GetTexture(); }
 
-Viewport* Viewport::Create(Application* app, bool perspective, int width, int height) {
-    Viewport* viewport = new Viewport(app);
-    viewport->Init(width, height);
-    viewport->scene_ = make_shared<Scene>(app);
-    if (perspective) viewport->scene_->camera_ = make_shared<PerspectiveCamera>(app);
-    else viewport->scene_->camera_ = make_shared<OrthoCamera>(app);
-    return viewport;
+Viewport* Viewport::Create(Application* app, bool perspective, int width,
+                           int height) {
+  Viewport* viewport = new Viewport(app);
+  viewport->Init(width, height);
+  viewport->scene_ = make_shared<Scene>(app);
+  if (perspective)
+    viewport->scene_->camera_ = make_shared<PerspectiveCamera>(app);
+  else
+    viewport->scene_->camera_ = make_shared<OrthoCamera>(app);
+  return viewport;
 }

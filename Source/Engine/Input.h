@@ -3,29 +3,42 @@
 
 #include "Core.h"
 
-namespace MouseData
-{
-    extern float moveX, moveY;
-    extern float scrollX, scrollY;
-    extern float lastPositionX, lastPositionY;
-    extern float positionX, positionY;
-    extern bool scrolled;
-}
+class Input {
+ public:
+  struct MouseData {
+    float moveX_, moveY_;
+    float scrollX_, scrollY_;
+    float lastPositionX_, lastPositionY_;
+    float positionX_, positionY_;
+    bool scrolled_;
 
-class Input
-{
-public:
-    Input(GLFWwindow* window);
+    MouseData()
+        : moveX_(0),
+          moveY_(0),
+          scrollX_(0),
+          scrollY_(0),
+          lastPositionX_(0),
+          lastPositionY_(0),
+          positionX_(0),
+          positionY_(0),
+          scrolled_(false) {}
+  };
 
-    void Process();
-    void Reset();
-    bool GetKey(unsigned int key);
+ public:
+  Input(GLFWwindow* window);
 
-    static void MouseMoveCallback(GLFWwindow* window, double posX, double posY);
-    static void MouseScrollCallback(GLFWwindow* window, double scrollX, double scrollY);
+  void Process();
+  void Reset();
+  bool GetKey(unsigned int key);
 
-private:
-    GLFWwindow* window_;
+  static void MouseMoveCallback(GLFWwindow* window, double posX, double posY);
+  static void MouseScrollCallback(GLFWwindow* window, double scrollX,
+                                  double scrollY);
+
+  static MouseData mouseData_;
+
+ private:
+  GLFWwindow* window_;
 };
 
 #endif /* INPUT_H */
