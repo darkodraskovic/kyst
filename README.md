@@ -6,6 +6,8 @@ Includes selected solutions for [Interactive Computer Graphics: A Top-Down Appro
 
 ## Installation
 
+### Ubuntu
+
 On Ubuntu, install the following libraries:
 
 ```
@@ -33,6 +35,19 @@ sudo mkdir /usr/local/include/stb
 sudo cp -a stb* /usr/local/include/stb/
 ```
 
+### Windows
+
+Make dir `lib`, `cd` into `lib` and
+
+```
+git clone https://github.com/g-truc/glm
+git clone https://github.com/nothings/stb
+```
+
+Go to https://glad.dav1d.de/ and choose `C/C++` as Language, `OpenGL` as Specification, `Core` Profile and API `Version 3.3`. Download `glad.zip` and unzip it into `glad` dir in `lib` dir. Copy `lib\glad\src\glad.c` in `kyst\Source\Engine`. 
+
+Download [GLFW Windows pre-compiled binaries](https://www.glfw.org/download) and unzip it into `lib\glfw` dir.
+
 ## Build
 
 In order to compile a specific example, `mkdir build`, `cd build` and run
@@ -47,50 +62,26 @@ where <sample> stands for the name of the corresponding sample directory. E.g. t
 
 `make 01_Cube && cd ../bin && ./01_Cube`
 
+### Windows
+
+```
+# configure
+
+cd build && cmake ..
+
+# build
+
+cd build && MSBuild.exe -target:Build /property:Configuration=Release <target>.vcxproj
+
+# or
+
+cd build && MSBuild.exe -target:Build /property:Configuration=Release kyst.sln
+
+# run
+
+cd bin/ && <target>.exe
+```
+
 ## Boilerplate
 
-```
-#include "Engine/VecConsts.h"
-#include "Engine/Application.h"
-
-class App : public Application {
-public:
-    virtual int Init() {
-        Application::Init();
-        auto viewport = AddViewport();
-        viewport->scene_->camera_->position_.z = 5.0f;
-        viewport->scene_->camera_->LookAt(ZERO);
-        
-        return 0;
-    }
-    
-    virtual void ProcessInput() {
-        Application::ProcessInput();
-        if(input_->GetKey(GLFW_KEY_ESCAPE)) Close();
-    }
-    
-    virtual void Update(float deltaTime) {
-        viewports_[0]->scene_->camera_->ProcessInput(input_, deltaTime_);
-        Application::Update(deltaTime);
-    }
-};
-
-int main()
-{
-    App app;
-    if (app.Init() < 0) {
-        std::cout << "Failed to create an OpenGL app" << std::endl;
-        return -1;
-    };
-
-
-    while (!app.ShouldClose()) {
-        app.Run();
-    }
-    
-    app.Terminate();
-
-    return 0;
-}
-
-```
+For the minimal app, see `Source/Samples/00_BasicApp`. For other examples, see `Source/Samples/`.

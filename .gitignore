@@ -4,3 +4,5 @@ bin/[0-9]*
 compile_commands.json
 Source/Engine/glad.c
 .cache
+ninja/
+lib/

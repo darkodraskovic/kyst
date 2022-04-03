@@ -56,9 +56,9 @@ int Application::Init() {
   // configure input and mouse position
   input_ = new Input(window_);
   Input::mouseData_.lastPositionX_ = Input::mouseData_.positionX_ =
-      int(windowSize_.x / 2);
+      windowSize_.x / 2.f;
   Input::mouseData_.lastPositionY_ = Input::mouseData_.positionY_ =
-      int(windowSize_.y / 2);
+      windowSize_.y / 2.f;
 
   return 0;
 };
@@ -75,7 +75,7 @@ void Application::Update(float deltaTime) {
 }
 
 void Application::Run() {
-  float currentFrame = glfwGetTime();
+  float currentFrame = (float)glfwGetTime();
   deltaTime_ = currentFrame - lastFrame_;
   lastFrame_ = currentFrame;
 
