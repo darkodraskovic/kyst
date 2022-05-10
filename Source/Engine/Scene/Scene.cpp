@@ -24,17 +24,18 @@ void Scene::Update(float deltaTime)
     for (auto it = entities_.begin(); it != entities_.end(); ++it) {
         if ((*it)->remove_) entities_.erase(it--);
     }
-
-    for (std::shared_ptr<Entity>& e : entitiesToCreate_) {
-        entities_.push_back(e);
-        e->scene_ = this;
-    }
-    entitiesToCreate_.clear();
     
     // update entities
     for(std::shared_ptr<Entity>& e : entities_) {
         e->Update(deltaTime);
     }
+
+    // create entities
+    for (std::shared_ptr<Entity>& e : entitiesToCreate_) {
+      entities_.push_back(e);
+      e->scene_ = this;
+    }
+    entitiesToCreate_.clear();
 };
 
 void Scene::Draw(unsigned int width, unsigned int height)
@@ -46,7 +47,7 @@ void Scene::Draw(unsigned int width, unsigned int height)
     glm::mat4 view = camera_->GetViewMatrix();
     glm::mat4 projection = camera_->GetProjectionMatrix(width, height);
 
-    // solid
+    // render solid entities
     glEnable(GL_CULL_FACE);
     for(auto it = entities_.begin(); it != entities_.end(); ++it) {
         auto e = *it;
@@ -59,7 +60,7 @@ void Scene::Draw(unsigned int width, unsigned int height)
     }
     glDisable(GL_CULL_FACE);
 
-    // alpha
+    // render transparent entities
     std::sort(alphaEntities_.begin(), alphaEntities_.end(),
               [this](std::shared_ptr<Entity> lhs, std::shared_ptr<Entity> rhs) {
                   return glm::length(lhs->position_ - camera_->position_) <

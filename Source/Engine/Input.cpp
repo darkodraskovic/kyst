@@ -15,7 +15,7 @@ void Input::Process() {
 
 void Input::Reset() { mouseData_.scrolled_ = false; };
 
-bool Input::GetKey(unsigned int key) {
+bool Input::GetKey(unsigned int key) const {
   return glfwGetKey(window_, key) == GLFW_PRESS;
 }
 

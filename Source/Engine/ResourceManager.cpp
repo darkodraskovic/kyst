@@ -9,14 +9,23 @@
 
 ResourceManager::ResourceManager(){};
 
+bool ResourceManager::IsTextureLoaded(const std::string& filePath) {
+  return textures_.find(filePath) != textures_.end();
+}
+
 // utility function for loading a 2D texture from file
 // ---------------------------------------------------
-unsigned int ResourceManager::LoadTexture(char const* path) {
+unsigned int ResourceManager::LoadTexture(const std::string& path) {
+  if (IsTextureLoaded(path)) {
+    return textures_.at(path);
+  }
+
   unsigned int textureID;
   glGenTextures(1, &textureID);
 
   int width, height, numComponents;
-  unsigned char* data = stbi_load(path, &width, &height, &numComponents, 0);
+  unsigned char* data =
+      stbi_load(path.c_str(), &width, &height, &numComponents, 0);
   if (data) {
     GLenum format;
     if (numComponents == 1)

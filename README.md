@@ -52,15 +52,21 @@ Download [GLFW Windows pre-compiled binaries](https://www.glfw.org/download) and
 
 In order to compile a specific example, `mkdir build`, `cd build` and run
 
-`cmake ../`
+```
+cmake ../
+```
 
 After the successful creation of the *Makefile* build the examples with
 
-`make <example> && ./example`
+```
+make <example> && ./example <example>
+```
 
 where <sample> stands for the name of the corresponding sample directory. E.g. to make and run *01_Cube* run
 
-`make 01_Cube && cd ../bin && ./01_Cube`
+```
+make 01_Cube && cd ../bin && ./01_Cube
+```
 
 ### Windows
 

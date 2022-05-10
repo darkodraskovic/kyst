@@ -6,14 +6,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_SOURCE_DIR}/bin")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_SOURCE_DIR}/debug")
 
 if (WIN32)
   include_directories(lib/ lib/glad/include lib/glm lib/glfw/include)
+
   link_directories(lib/glfw/lib-vc2019)
   link_libraries(glfw3.lib)
 
   set(warning_compiler_options /W3 /wd"4267" /wd"4305" /wd"4244")
-  add_compile_options(${warning_compiler_options} /MD)
+  add_compile_options(${warning_compiler_options} /MD /JMC)
 endif()
 
 # Engine
@@ -43,29 +45,12 @@ function(add_target TARGET)
   target_link_libraries(${TARGET} engine shapeFactory)
 endfunction()
 
-# cd build/ && make 00_BasicApp && cd ../bin && ./00_BasicApp
 add_target(00_BasicApp)
-
-# cd build/ && make 01_Cube && cd ../bin && ./01_Cube
 add_target(01_Cube)
-
-# cd build/ && make 02_Sierpinski && cd ../bin && ./02_Sierpinski
 add_target(02_Sierpinski)
-
-# cd build/ && make 03_Shapes2D && cd ../bin && ./03_Shapes2D
 add_target(03_Shapes2D)
-
-# cd build/ && make 04_Maze && cd ../bin && ./04_Maze
 add_target(04_Maze)
-
-# cd build/ && make 05_GenArt && cd ../bin && ./05_GenArt
 add_target(05_GenArt)
-
-# cd build/ && make 06_Maxwell && cd ../bin && ./06_Maxwell
 add_target(06_Maxwell)
-
-# cd build/ && make 07_Bounce && cd ../bin && ./07_Bounce
 add_target(07_Bounce)
-
-# cd build/ && make 08_Pixels && cd ../bin && ./08_Pixels
 add_target(08_Pixels)

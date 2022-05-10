@@ -1,30 +1,15 @@
 #include <iostream>
+
 #include "Engine/Application.h"
 
-int main()
-{
-    // Application init
-    // ---------------------------------------------------------------------------    
-    Application app;
-    if (app.Init() < 0)
-    {
-        std::cout << "Failed to create an OpenGL app" << std::endl;
-        return -1;
-    };
+int main() {
+  Application app;
 
-    // Application CONTENT
-    // ---------------------------------------------------------------------------
+  app.Init();
 
-    // Application loop
-    // ---------------------------------------------------------------------------
-    while (!app.ShouldClose())
-    {
-        app.Run();
-    }
-    
-    // Application termination
-    // ---------------------------------------------------------------------------
-    app.Terminate();
+  app.Run();
 
-    return 0;
+  app.Terminate();
+
+  return 0;
 }

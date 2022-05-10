@@ -6,3 +6,4 @@ Source/Engine/glad.c
 .cache
 ninja/
 lib/
+debug/

@@ -7,8 +7,10 @@
 class ResourceManager {
  public:
   ResourceManager();
-  unsigned int LoadTexture(char const* path);
+  unsigned int LoadTexture(const std::string& path);
 
+ private:
+  bool IsTextureLoaded(const std::string& filePath);
   std::map<std::string, unsigned int> textures_;
 };
 

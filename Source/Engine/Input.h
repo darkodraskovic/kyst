@@ -29,7 +29,7 @@ class Input {
 
   void Process();
   void Reset();
-  bool GetKey(unsigned int key);
+  bool GetKey(unsigned int key) const;
 
   static void MouseMoveCallback(GLFWwindow* window, double posX, double posY);
   static void MouseScrollCallback(GLFWwindow* window, double scrollX,

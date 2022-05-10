@@ -15,8 +15,7 @@ class Viewport : public Object {
   Viewport(Application* app) : Object(app) {}
   void Init(unsigned int width, unsigned int height);
   void Update(float deltaTime);
-  void Render();
-  void Draw();
+  void DrawToBuffer();
   Texture2D* GetTexture();
   void AddEffect(const char* fragmentPath);
   static Viewport* Create(Application* app, bool perspective, int width,
@@ -30,6 +29,8 @@ class Viewport : public Object {
  private:
   void GenBuffers(float width, float height);
   void GenQuad(float width, float height);
+  void DrawToScreen();
+  void Render();
 
   Application* application_;
 

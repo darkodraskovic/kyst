@@ -13,7 +13,7 @@ using namespace ShapeFactory;
 
 class App : public Application {
  public:
-  virtual int Init() {
+  virtual void Init() {
     Application::Init();
 
     glLineWidth(5);
@@ -24,8 +24,8 @@ class App : public Application {
     cam->position_.z = 4.0f;
 
     viewport->AddEffect("Shaders/Effects/Noop.fs");
+    viewport->AddEffect("Shaders/Effects/Remove.fs");
     viewport->AddEffect("Shaders/Effects/Inversion.fs");
-    // viewport->AddEffect("Shaders/Effects/Remove.fs");
 
     // material
     auto material1 = new Material2D();
@@ -82,17 +82,10 @@ class App : public Application {
 
     cam->LookAt(ZERO);
     // Application loop
-
-    return 0;
-  }
-
-  virtual void ProcessInput() {
-    Application::ProcessInput();
-    if (input_->GetKey(GLFW_KEY_ESCAPE)) Close();
   }
 
   virtual void Update(float deltaTime) {
-    viewports_[0]->scene_->camera_->ProcessInput(input_, deltaTime_);
+    viewports_[0]->scene_->camera_->Update(deltaTime_);
     Application::Update(deltaTime);
   }
 };
@@ -100,18 +93,10 @@ class App : public Application {
 int main() {
   App app;
 
-  if (app.Init() < 0) {
-    std::cout << "Failed to create an OpenGL app" << std::endl;
-    return -1;
-  };
+  app.Init();
 
-  // ---------------------------------------------------------------------------
-  while (!app.ShouldClose()) {
-    app.Run();
-  }
+  app.Run();
 
-  // Application termination
-  // ---------------------------------------------------------------------------
   app.Terminate();
   return 0;
 }

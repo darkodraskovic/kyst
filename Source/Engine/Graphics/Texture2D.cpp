@@ -5,29 +5,25 @@
 Texture2D::Texture2D(Application* app) : Object(app) {}
 
 void Texture2D::LoadImage(const std::string& filePath) {
-  auto textures = app_->resourceManager_.textures_;
-  if (textures.find(filePath) == textures.end()) {
-    id_ = app_->resourceManager_.LoadTexture(filePath.c_str());
-  } else {
-    id_ = textures.at(filePath);
-  }
+  id_ = app_->resourceManager_.LoadTexture(filePath.c_str());
 }
 
-void Texture2D::CreateImage(int width, int height,
-                            unsigned int* data = nullptr) {
+void Texture2D::CreateImage(int width, int height, unsigned int* data = nullptr,
+                            GLuint interpolation) {
   glGenTextures(1, &id_);
   glBindTexture(GL_TEXTURE_2D, id_);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA,
                GL_UNSIGNED_BYTE, data);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, interpolation);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, interpolation);
 }
 
-void Texture2D::SetParameter(unsigned int param, unsigned int value) {
+void Texture2D::SetParameter(unsigned int param, GLuint value) {
   glBindTexture(GL_TEXTURE_2D, id_);
   glTexParameteri(GL_TEXTURE_2D, param, value);
 }
 
+// cf. https://www.khronos.org/opengl/wiki/Pixel_Transfer
 void Texture2D::SetData(int x, int y, int w, int h, unsigned int* data) {
   glBindTexture(GL_TEXTURE_2D, id_);
   glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, w, h, GL_RGBA, GL_UNSIGNED_BYTE,

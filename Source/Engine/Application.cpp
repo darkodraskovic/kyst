@@ -13,13 +13,11 @@ void Application::SetWindowSize(const uvec2& size) { windowSize_ = size; }
 
 const uvec2& Application::GetWindowSize() { return windowSize_; }
 
-void Application::SetWindowPosition(const ivec2& position) {
-  windowPosition_ = position;
-}
+void Application::SetWindowPosition(const ivec2& position) { windowPosition_ = position; }
 
 const ivec2& Application::GetWindowPosition() { return windowPosition_; }
 
-int Application::Init() {
+void Application::Init() {
   // glfw: initialize and configure
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -27,12 +25,10 @@ int Application::Init() {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   // glfw window creation
-  window_ =
-      glfwCreateWindow(windowSize_.x, windowSize_.y, "Camera", NULL, NULL);
+  window_ = glfwCreateWindow(windowSize_.x, windowSize_.y, "Camera", NULL, NULL);
   if (window_ == NULL) {
     std::cout << "Failed to create GLFW window" << std::endl;
-    glfwTerminate();
-    return -1;
+    exit(EXIT_FAILURE);
   }
   glfwSetWindowPos(window_, windowPosition_.x, windowPosition_.y);
   glfwMakeContextCurrent(window_);
@@ -45,7 +41,7 @@ int Application::Init() {
   // glad: load all OpenGL function pointers
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cout << "Failed to initialize GLAD" << std::endl;
-    return -1;
+    exit(EXIT_FAILURE);
   }
 
   // configure global opengl state and init screen frambuffer
@@ -55,17 +51,14 @@ int Application::Init() {
 
   // configure input and mouse position
   input_ = new Input(window_);
-  Input::mouseData_.lastPositionX_ = Input::mouseData_.positionX_ =
-      windowSize_.x / 2.f;
-  Input::mouseData_.lastPositionY_ = Input::mouseData_.positionY_ =
-      windowSize_.y / 2.f;
-
-  return 0;
+  Input::mouseData_.lastPositionX_ = Input::mouseData_.positionX_ = windowSize_.x / 2.f;
+  Input::mouseData_.lastPositionY_ = Input::mouseData_.positionY_ = windowSize_.y / 2.f;
 };
 
 void Application::ProcessInput() {
   glfwPollEvents();
   input_->Process();
+  if (input_->GetKey(GLFW_KEY_ESCAPE)) Close();
 }
 
 void Application::Update(float deltaTime) {
@@ -74,17 +67,25 @@ void Application::Update(float deltaTime) {
   }
 }
 
+void Application::Render() {
+  for (auto it = viewports_.begin(); it != viewports_.end(); ++it) {
+    (*it)->Render();
+  }
+}
+
 void Application::Run() {
-  float currentFrame = (float)glfwGetTime();
-  deltaTime_ = currentFrame - lastFrame_;
-  lastFrame_ = currentFrame;
+  while (!ShouldClose()) {
+    float currentFrame = (float)glfwGetTime();
+    deltaTime_ = currentFrame - lastFrame_;
+    lastFrame_ = currentFrame;
 
-  ProcessInput();
+    ProcessInput();
+    Update(deltaTime_);
+    Render();
 
-  Update(deltaTime_);
-
-  glfwSwapBuffers(window_);
-  input_->Reset();
+    glfwSwapBuffers(window_);
+    input_->Reset();
+  }
 }
 
 float Application::GetDeltaTime() { return deltaTime_; }
@@ -114,6 +115,4 @@ void Application::Terminate() {
   glfwTerminate();
 };
 
-void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
-  glViewport(0, 0, width, height);
-}
+void FramebufferSizeCallback(GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height); }

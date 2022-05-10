@@ -35,7 +35,7 @@ public:
     void GenElementBuffer(const std::vector<unsigned int>&);
 
     void Generate(unsigned int program);
-    void Render();
+    void Draw();
 
     GLuint VAO_;
     std::vector<GLuint> VBOs_;    

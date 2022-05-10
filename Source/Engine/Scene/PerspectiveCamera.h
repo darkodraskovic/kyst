@@ -12,7 +12,7 @@ class PerspectiveCamera : public Camera {
 
   virtual mat4 GetProjectionMatrix(int scrWidth, int scrHeight) override;
 
-  virtual void ProcessInput(Input* input, float deltaTime) override;
+  virtual void Update(float deltaTime) override;
   virtual void Translate(CameraMovement direction, float deltaTime) override;
   void Rotate(float xoffset, float yoffset, bool constrainPitch = true);
 

@@ -139,7 +139,7 @@ void Mesh::Generate(unsigned int program)
 
 // RENDER
 
-void Mesh::Render()
+void Mesh::Draw()
 {
     glBindVertexArray(VAO_);
     

@@ -19,9 +19,11 @@ class Application {
  public:
   Application();
 
-  virtual int Init();
+  virtual void Init();
   virtual void ProcessInput();
   virtual void Update(float deltaTime);
+  virtual void Render();
+
   void Run();
   bool ShouldClose();
   void Close();

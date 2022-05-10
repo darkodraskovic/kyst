@@ -51,12 +51,12 @@ void Viewport::AddEffect(const char* fragmentPath) {
   effects_.push_back(effect);
 }
 
-void Viewport::Render() {
+void Viewport::DrawToBuffer() {
   glViewport(0, 0, width_, height_);
   frontbuffer_->Bind();
   bound_ = frontbuffer_.get();
 
-  // draw scene
+  // render scene
   scene_->Draw(width_, height_);
 
   // render effects
@@ -76,7 +76,7 @@ void Viewport::Render() {
       glBindTexture(GL_TEXTURE_2D, unbound->texture_->GetId());
       effects_[i]->Use();
       effects_[i]->SetInt("uTexture", 0);
-      quad_->Render();
+      quad_->Draw();
     }
   }
 
@@ -84,7 +84,7 @@ void Viewport::Render() {
   glViewport(0, 0, app_->GetWindowSize().x, app_->GetWindowSize().y);
 }
 
-void Viewport::Draw() {
+void Viewport::DrawToScreen() {
   glDisable(GL_DEPTH_TEST);
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, bound_->GetTexture()->GetId());
@@ -95,13 +95,14 @@ void Viewport::Draw() {
   transform = glm::scale(transform, scale_);
   shader_->SetMat4("uModel", transform);
 
-  quad_->Render();
+  quad_->Draw();
 }
 
-void Viewport::Update(float deltaTime) {
-  scene_->Update(deltaTime);
-  Render();
-  Draw();
+void Viewport::Update(float deltaTime) { scene_->Update(deltaTime); }
+
+void Viewport::Render() {
+  DrawToBuffer();
+  DrawToScreen();
 }
 
 Texture2D* Viewport::GetTexture() { return bound_->GetTexture(); }

@@ -19,12 +19,11 @@ unsigned int data1[width * height];
 
 class App : public Application {
  public:
-  virtual int Init() {
+  virtual void Init() {
     Application::Init();
 
     // Viewport* viewport = app.AddViewport();
-    Viewport* viewport =
-        AddViewport(false, GetWindowSize().x / 2, GetWindowSize().y / 2);
+    Viewport* viewport = AddViewport(false, GetWindowSize().x / 2, GetWindowSize().y / 2);
     viewport->scale_.x = .5;
     viewport->scale_.y = .5;
     viewport->position_.x = .25;
@@ -64,31 +63,20 @@ class App : public Application {
     // viewport->GetTexture()->SetData(0, 0, width, height, data2);
     // viewport->position_ += (RIGHT + UP) * .5f;
     // viewport->position_ += (RIGHT + UP) / 4.f;
-
-    return 0;
-  }
-
-  virtual void ProcessInput() {
-    Application::ProcessInput();
-    if (input_->GetKey(GLFW_KEY_ESCAPE)) Close();
   }
 
   virtual void Update(float deltaTime) {
-    viewports_[0]->scene_->camera_->ProcessInput(input_, deltaTime_);
+    viewports_[0]->scene_->camera_->Update(deltaTime_);
     Application::Update(deltaTime);
   }
 };
 
 int main() {
   App app;
-  if (app.Init() < 0) {
-    std::cout << "Failed to create an OpenGL app" << std::endl;
-    return -1;
-  };
 
-  while (!app.ShouldClose()) {
-    app.Run();
-  }
+  app.Init();
+
+  app.Run();
 
   app.Terminate();
 

@@ -29,5 +29,5 @@ void Entity::Draw(const glm::mat4& uView, const glm::mat4& uProjection)
     transform = glm::rotate(transform, rotation_.z, FORWARD);
     transform = glm::scale(transform, scale_);
     material_->Update(transform, uView, uProjection);
-    mesh_->Render();
+    mesh_->Draw();
 }

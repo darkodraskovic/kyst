@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "Source/Engine/Application.h"
 #include "Source/Engine/Input.h"
 
 PerspectiveCamera::PerspectiveCamera(Application* app) : Camera(app) {
@@ -35,7 +36,8 @@ void PerspectiveCamera::LookAt(const vec3& center) {
   UpdateCameraVectors();
 }
 
-void PerspectiveCamera::ProcessInput(Input* input, float deltaTime) {
+void PerspectiveCamera::Update(float deltaTime) {
+  auto input = app_->GetInput();
   if (input->GetKey(GLFW_KEY_W)) Translate(CAM_FORWARD, deltaTime);
   if (input->GetKey(GLFW_KEY_S)) Translate(CAM_BACKWARD, deltaTime);
   if (input->GetKey(GLFW_KEY_A)) Translate(CAM_LEFT, deltaTime);
@@ -57,8 +59,7 @@ void PerspectiveCamera::Translate(CameraMovement direction, float deltaTime) {
   if (direction == CAM_DOWN) position_ -= up_ * velocity;
 }
 
-void PerspectiveCamera::Rotate(float xoffset, float yoffset,
-                               bool constrainPitch) {
+void PerspectiveCamera::Rotate(float xoffset, float yoffset, bool constrainPitch) {
   yaw_ += xoffset * sensitivity_;
   pitch_ -= yoffset * sensitivity_;
 
