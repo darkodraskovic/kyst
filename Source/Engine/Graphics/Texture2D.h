@@ -10,8 +10,7 @@ class Texture2D : public Object {
  public:
   Texture2D(Application* app);
   void LoadImage(const std::string& filePath);
-  void CreateImage(int width, int height, unsigned int* data,
-                   GLuint interpolation = GL_NEAREST);
+  void CreateImage(int width, int height, unsigned int* data, GLuint interpolation = GL_NEAREST);
   void SetData(int x, int y, int w, int h, unsigned int* data);
   void GetData(unsigned int* data);
   void SetParameter(unsigned int param, GLuint value);
