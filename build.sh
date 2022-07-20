@@ -9,7 +9,7 @@ validate_exit() {
 # state variabls
 
 TARGET=
-PROJ_DIR=~/Development/kyst
+ROOT_DIR=~/Development/kyst
 COMPILE_CMD="make"
 CONFIGURE=false
 RUN=true
@@ -19,7 +19,7 @@ SLN=kyst.sln
 WIN=false
 if [ "$OSTYPE" = "msys" ]; then
     WIN=true
-    PROJ_DIR="c:/Users/darko/Development/kyst/"    
+    ROOT_DIR="c:/Users/darko/Development/kyst/"    
 fi
 
 # command line arguments
@@ -43,13 +43,13 @@ fi
 
 if [ $CONFIGURE = true ]; then
     echo "INFO: configure MSBuild"
-    cd ${PROJ_DIR}/build
+    cd ${ROOT_DIR}/build
     cmake ..
     validate_exit
     
     if [ $WIN == true ]; then
         echo "INFO: configure Ninja"    
-        cd $PROJ_DIR/ninja/
+        cd $ROOT_DIR/ninja/
         cmake -G"Ninja" ..
         mv compile_commands.json ..
         validate_exit
@@ -72,7 +72,7 @@ if [ $WIN == true ]; then
 fi
 
 echo "COMPILE_CMD: ${COMPILE_CMD}"
-cd $PROJ_DIR/build
+cd $ROOT_DIR/build
 $COMPILE_CMD $TARGET
 
 
@@ -80,7 +80,7 @@ $COMPILE_CMD $TARGET
 
 if [ $RUN == true ]; then
     echo "EXE_NAME: ${EXE_NAME}"    
-    cd $PROJ_DIR/bin
+    cd $ROOT_DIR/bin
     $EXE_NAME
 fi
 

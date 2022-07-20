@@ -18,13 +18,14 @@ Install [Glad library](https://github.com/Dav1dde/glad.git), a GL/GLES/EGL/GLX/W
 
 ```
 git clone https://github.com/Dav1dde/glad.git
-cd glad
-cmake ./
+cd glad && make build && cd build
+cmake ../
 make
+# the -a option means -R and -p, plus same directory tree, same file types, same contents, same metadata
 sudo cp -a include /usr/local/
 ```
 
-Copy *glad.c* from *glad/src/* git cloned source directory to the project *Source/Engine/* directory.
+Copy *glad.c* from *build/src/* git cloned source directory to the project *Source/Engine/* directory.
 
 Install [STB library](https://github.com/nothings/stb) for image handling:
 
