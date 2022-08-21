@@ -115,4 +115,4 @@ void Application::Terminate() {
   glfwTerminate();
 };
 
-void FramebufferSizeCallback(GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height); }
+void Application::FramebufferSizeCallback(GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height); }

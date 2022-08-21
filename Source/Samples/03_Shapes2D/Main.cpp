@@ -24,7 +24,7 @@ class App : public Application {
     cam->position_.z = 4.0f;
 
     viewport->AddEffect("Shaders/Effects/Noop.fs");
-    viewport->AddEffect("Shaders/Effects/Remove.fs");
+    // viewport->AddEffect("Shaders/Effects/Remove.fs");
     viewport->AddEffect("Shaders/Effects/Inversion.fs");
 
     // material
@@ -50,7 +50,8 @@ class App : public Application {
     viewport->scene_->AddEntity(entity);
 
     // rect entity 2
-    entity = new Entity(entity->mesh_, shared_ptr<Material2D>(material2));
+    // entity = new Entity(entity->GetModel()->mesh_, shared_ptr<Material2D>(material2));
+    entity = new Entity(mesh, material2);
     entity->position_ = (LEFT + DOWN) / 4.f;
     entity->position_.z = 0.25;
     entity->rotation_.y = pi<float>() / 4;

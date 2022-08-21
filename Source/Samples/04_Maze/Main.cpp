@@ -27,7 +27,7 @@ class App : public Application {
     cam->position_.y = 1.0f;
 
     viewport->AddEffect("Shaders/Effects/Noop.fs");
-    viewport->AddEffect("Shaders/Effects/Inversion.fs");
+    // viewport->AddEffect("Shaders/Effects/Inversion.fs");
     // viewport->AddEffect("Shaders/Effects/Remove.fs");
 
     // Application CONTENT

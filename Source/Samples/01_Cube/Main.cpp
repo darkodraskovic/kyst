@@ -20,7 +20,7 @@ class App : public Application {
     viewport->scene_->camera_->position_.z = 12.0f;
     viewport->AddEffect("Shaders/Effects/Noop.fs");
     // viewport->AddEffect("Shaders/Effects/Remove.fs");
-     viewport->AddEffect("Shaders/Effects/Inversion.fs");
+    viewport->AddEffect("Shaders/Effects/Inversion.fs");
 
     unsigned int diffuseBricks = resourceManager_.LoadTexture("Assets/bricks_diffuse.jpg");
     unsigned int specularBricks = resourceManager_.LoadTexture("Assets/bricks_specular.jpg");
@@ -58,7 +58,7 @@ class App : public Application {
     auto cube4 = std::make_shared<Cube>(material);
     cube4->position_ = ONE * 2.0f;
     cube4->scale_ *= 2;
-    cube4->material_->alpha_ = 0.5;
+    cube4->GetModel()->material_->alpha_ = 0.5;
     viewport->scene_->AddEntity(cube4);
 
     auto material2 = std::shared_ptr<PhongCol>(new PhongCol(litColShader));

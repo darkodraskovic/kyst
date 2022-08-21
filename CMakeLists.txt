@@ -45,6 +45,12 @@ function(add_target TARGET)
   add_executable(${TARGET} ${APP_C})
   target_include_directories(${TARGET} PUBLIC "${TARGET}/")
   target_link_libraries(${TARGET} engine shapeFactory)
+
+  if (WIN32)
+    set_target_properties(
+      ${TARGET} PROPERTIES
+      VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
+  endif()
 endfunction()
 
 add_target(00_BasicApp)

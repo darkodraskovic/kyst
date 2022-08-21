@@ -74,7 +74,7 @@ fi
 echo "COMPILE_CMD: ${COMPILE_CMD}"
 cd $ROOT_DIR/build
 $COMPILE_CMD $TARGET
-
+validate_exit
 
 # run
 

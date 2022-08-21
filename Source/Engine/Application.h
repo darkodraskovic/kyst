@@ -49,11 +49,7 @@ class Application {
   float deltaTime_ = 0.0f;
 
  private:
-  friend void FramebufferSizeCallback(GLFWwindow* window, int width,
-                                      int height);
-  friend void MouseCallback(GLFWwindow* window, double posX, double posY);
-  friend void ScrollCallback(GLFWwindow* window, double scrollX,
-                             double scrollY);
+  static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 
   float lastFrame_ = 0.0f;
 
