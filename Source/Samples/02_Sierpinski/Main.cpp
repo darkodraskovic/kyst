@@ -26,7 +26,7 @@ class App : public Application {
     viewport->scene_->camera_->position_.z = 7.0f;
     viewport->scene_->camera_->position_.y = 5.0f;
 
-    auto eFactory = new EntityFactory(viewport->scene_.get());
+    auto eFactory = std::make_shared<EntityFactory>(viewport->scene_.get());
 
     eFactory->color1_ = ShapeUtils::Hex2rgb("E84A5F");
     eFactory->color2_ = ShapeUtils::Hex2rgb("FF847C");

@@ -5,12 +5,12 @@
 
 #include "Entity.h"
 
-void Scene::AddEntity(Entity* entity) {
-  for (std::shared_ptr<Entity>& e : entities_)
-    if (e.get() == entity) return;
+// void Scene::AddEntity(Entity* entity) {
+//   for (std::shared_ptr<Entity>& e : entities_)
+//     if (e.get() == entity) return;
 
-  entitiesToCreate_.push_back(std::shared_ptr<Entity>(entity));
-}
+//   entitiesToCreate_.push_back(std::shared_ptr<Entity>(entity));
+// }
 
 void Scene::AddEntity(std::shared_ptr<Entity> entity) {
   if (std::find(entities_.begin(), entities_.end(), entity) != entities_.end()) return;
@@ -50,7 +50,7 @@ void Scene::Draw(unsigned int width, unsigned int height) {
   for (auto it = entities_.begin(); it != entities_.end(); ++it) {
     auto e = *it;
     if (!e->visible_) continue;
-    if (e->GetModel()->material_->alpha_ < 1.0) {
+    if (e->GetModel()->GetMaterial()->alpha_ < 1.0) {
       alphaEntities_.push_back(e);
       continue;
     }

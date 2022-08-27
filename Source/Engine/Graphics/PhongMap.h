@@ -3,16 +3,15 @@
 
 #include "Phong.h"
 
-class PhongMap : public Phong
-{
-public:
-    PhongMap(std::shared_ptr<Shader> shader);
-    
-    virtual void Update(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) override;
+class PhongMap : public Phong {
+ public:
+  PhongMap();
 
-    unsigned int diffuse_;
-    unsigned int specular_;
-    unsigned int emissive_;
+  virtual void Update(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) override;
+
+  unsigned int diffuse_;
+  unsigned int specular_;
+  unsigned int emissive_;
 };
 
 #endif

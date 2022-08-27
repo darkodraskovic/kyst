@@ -18,6 +18,9 @@ if (WIN32)
 
   set(warning_compiler_options /W3 /wd"4267" /wd"4305" /wd"4244")
   add_compile_options(${warning_compiler_options} /MD /JMC)
+elseif(UNIX)
+  message("Configure for LINUX")  
+  SET(CMAKE_C_FLAGS "-g -Wall -std=gnu11 -O0")
 endif()
 
 # Engine

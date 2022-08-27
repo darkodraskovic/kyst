@@ -51,9 +51,9 @@ if [ $CONFIGURE = true ]; then
         echo "INFO: configure Ninja"    
         cd $ROOT_DIR/ninja/
         cmake -G"Ninja" ..
-        mv compile_commands.json ..
         validate_exit
     fi
+    mv compile_commands.json ..
 
     exit 0
 fi

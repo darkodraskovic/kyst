@@ -1,6 +1,7 @@
 #include "ParticleEmitter.h"
 
 #include <glm/gtc/random.hpp>
+#include <string>
 
 #include "Scene.h"
 
@@ -8,13 +9,8 @@ ParticleEmitter::ParticleEmitter() { visible_ = false; }
 
 void ParticleEmitter::CreateParticle() {
   auto particle = std::make_shared<Particle>();
-  particle->GetModel()->material_ = GetModel()->material_;
-  particle->GetModel()->mesh_ = GetModel()->mesh_;
-  InitParticle(particle.get());
-  GetScene()->AddEntity(particle);
-}
+  particle->SetModel(std::shared_ptr<Model>(GetModel()));
 
-void ParticleEmitter::InitParticle(Particle* particle) {
   particle->position_ = position_;
   if (uniformScale_) {
     float scl = linearRand(minScale_.x, maxScale_.x);
@@ -33,6 +29,8 @@ void ParticleEmitter::InitParticle(Particle* particle) {
   particle->aDrag_ = linearRand(minADrag_, maxADrag_);
 
   particle->lifespan_ = linearRand(minLifespan_, maxLifespan_);
+
+  GetScene()->AddEntity(particle);
 }
 
 void ParticleEmitter::Update(float deltaTime) {

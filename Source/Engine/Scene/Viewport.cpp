@@ -43,7 +43,7 @@ void Viewport::GenQuad(float width, float height) {
   quad_->texCoords_.push_back(vec2(1, 1));
   quad_->texCoords_.push_back(vec2(0, 1));
 
-  quad_->Generate(shader_->id_);
+  quad_->Generate(shader_->GetId());
 }
 
 void Viewport::AddEffect(const char* fragmentPath) {
@@ -107,8 +107,7 @@ void Viewport::Render() {
 
 Texture2D* Viewport::GetTexture() { return bound_->GetTexture(); }
 
-Viewport* Viewport::Create(Application* app, bool perspective, int width,
-                           int height) {
+Viewport* Viewport::Create(Application* app, bool perspective, int width, int height) {
   Viewport* viewport = new Viewport(app);
   viewport->Init(width, height);
   viewport->scene_ = make_shared<Scene>(app);

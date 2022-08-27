@@ -7,3 +7,4 @@ Source/Engine/glad.c
 ninja/
 lib/
 debug/
+.vscode/
