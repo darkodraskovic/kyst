@@ -18,8 +18,7 @@ class Viewport : public Object {
   void DrawToBuffer();
   Texture2D* GetTexture();
   void AddEffect(const char* fragmentPath);
-  static Viewport* Create(Application* app, bool perspective, int width,
-                          int height);
+  static std::shared_ptr<Viewport> Create(Application* app, bool perspective, int width, int height);
 
   vec3 position_ = vec3(0.f);
   vec3 scale_ = vec3(1.f);

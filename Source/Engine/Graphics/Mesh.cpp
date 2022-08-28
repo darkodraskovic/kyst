@@ -129,8 +129,8 @@ void Mesh::Draw() {
 }
 
 void Mesh::DeleteBuffers() {
-  glDeleteBuffers(1, &EBO_);
-  glDeleteBuffers(VBOs_.size(), &VBOs_.front());
+  if (EBO_) glDeleteBuffers(1, &EBO_);
+  if (VBOs_.size()) glDeleteBuffers(VBOs_.size(), &VBOs_.front());
 }
 
 // DESTRUCTOR

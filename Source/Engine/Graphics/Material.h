@@ -19,7 +19,7 @@ class Material {
 
   virtual void Update(const mat4& model, const mat4& view, const mat4& projection);
 
-  void SetShader(Shader* shader);
+  void SetShader(std::shared_ptr<Shader> shader);
   Shader* GetShader();
 
   vec3 color_ = vec3(1.0);

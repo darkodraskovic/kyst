@@ -8,7 +8,7 @@ const std::map<Uniform, std::string> UNIFORM_MAP{
 
 Material::Material(){};
 
-void Material::SetShader(Shader* shader) { shader_ = std::shared_ptr<Shader>(shader); }
+void Material::SetShader(std::shared_ptr<Shader> shader) { shader_ = std::shared_ptr<Shader>(shader); }
 Shader* Material::GetShader() { return shader_.get(); }
 
 void Material::Update(const mat4& model, const mat4& view, const mat4& projection) {

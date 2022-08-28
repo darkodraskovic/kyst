@@ -32,7 +32,7 @@ class EntityFactory {
 
  private:
   std::shared_ptr<Material> colMaterial_;
-  std::shared_ptr<Material> vColMaterial;
+  std::shared_ptr<Material> vColMaterial_;
   std::shared_ptr<Mesh> snowflakeMesh_;
 
   Scene* scene_;

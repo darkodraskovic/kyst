@@ -38,7 +38,8 @@ class App : public Application {
     vp->AddEffect("Shaders/Effects/Inversion.fs");
     vp->DrawToBuffer();
 
-    auto material = std::make_shared<PhongMap>(litTexShader);
+    auto material = std::make_shared<PhongMap>();
+    material->SetShader(litTexShader);
     // material->diffuse_ = diffuseMetal;
     material->diffuse_ = vp->GetTexture()->GetId();
     material->emissive_ = emissiveMetal;
@@ -49,7 +50,8 @@ class App : public Application {
     cube1->scale_ *= 2;
     viewport->scene_->AddEntity(cube1);
 
-    auto material2 = std::make_shared<PhongMap>(litTexShader);
+    auto material2 = std::make_shared<PhongMap>();
+    material2->SetShader(litTexShader);
     material2->diffuse_ = diffuseBricks;
     material2->emissive_ = emissiveBricks;
     material2->specular_ = specularBricks;
@@ -61,8 +63,9 @@ class App : public Application {
     cube2->GetModel()->GetMaterial()->alpha_ = 0.5;
     viewport->scene_->AddEntity(cube2);
 
-    // // TODO: material3 does not render consistently and sometimes appears black
-    auto material3 = std::make_shared<PhongCol>(litColShader);
+    auto material3 = std::make_shared<PhongCol>();
+    material3->SetShader(litColShader);
+    material3->ambient_ = WHITE * .4f;
     material3->diffuse_ = BLUE;
     material3->specular_ = RED;
     material3->shininess_ = 128.0f;
@@ -70,7 +73,7 @@ class App : public Application {
     auto cube3 = std::make_shared<Cube>(material3);
     cube3->position_ = -ONE * 2.0f;
     cube3->scale_ *= 2;
-    // cube5->material_->alpha_ = 0.5;
+    // cube3->GetModel()->GetMaterial()->alpha_ = 0.5;
     viewport->scene_->AddEntity(cube3);
 
     // vp.reset();

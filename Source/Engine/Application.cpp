@@ -97,7 +97,7 @@ Viewport* Application::AddViewport(bool perspective, int width, int height) {
   if (height == 0) height = windowSize_.y;
   auto viewport = Viewport::Create(this, perspective, width, height);
   AddViewport(shared_ptr<Viewport>(viewport));
-  return viewport;
+  return viewport.get();
 }
 
 void Application::AddViewport(std::shared_ptr<Viewport> viewport) {

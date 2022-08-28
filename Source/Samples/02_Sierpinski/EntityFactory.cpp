@@ -14,9 +14,16 @@
 using namespace ShapeFactory;
 
 EntityFactory::EntityFactory(Scene* scene) : scene_(scene) {
-  colMaterial_ = std::make_shared<Material>("Shaders/Col.vs", "Shaders/Col.fs");
-  vColMaterial = std::make_shared<Material>("Shaders/VCol.vs", "Shaders/VCol.fs");
+  // make materials
+  auto colShader = std::make_shared<Shader>("Shaders/Col.vs", "Shaders/Col.fs");
+  colMaterial_ = std::make_shared<Material>();
+  colMaterial_->SetShader(colShader);
 
+  auto vColShader = std::make_shared<Shader>("Shaders/VCol.vs", "Shaders/VCol.fs");
+  vColMaterial_ = std::make_shared<Material>();
+  vColMaterial_->SetShader(vColShader);
+
+  // make mesh
   snowflakeMesh_ = std::make_shared<Mesh>();
   snowflakeMesh_->mode_ = GL_LINE_LOOP;
   snowflakeMesh_->positions_ = KochFactory::Snowflake(3);
@@ -29,7 +36,7 @@ Mover* EntityFactory::AddMover(bool vCol) {
   mover->GetModel()->SetMaterial(colMaterial_);
   mover->GetModel()->GetMaterial()->color_ = color1_;
   if (vCol) {
-    mover->GetModel()->SetMaterial(vColMaterial);
+    mover->GetModel()->SetMaterial(vColMaterial_);
   }
 
   scene_->AddEntity(mover);

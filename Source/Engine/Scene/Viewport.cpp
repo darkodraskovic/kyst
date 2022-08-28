@@ -107,8 +107,8 @@ void Viewport::Render() {
 
 Texture2D* Viewport::GetTexture() { return bound_->GetTexture(); }
 
-Viewport* Viewport::Create(Application* app, bool perspective, int width, int height) {
-  Viewport* viewport = new Viewport(app);
+std::shared_ptr<Viewport> Viewport::Create(Application* app, bool perspective, int width, int height) {
+  auto viewport = std::make_shared<Viewport>(app);
   viewport->Init(width, height);
   viewport->scene_ = make_shared<Scene>(app);
   if (perspective)

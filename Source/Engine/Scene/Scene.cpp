@@ -5,13 +5,6 @@
 
 #include "Entity.h"
 
-// void Scene::AddEntity(Entity* entity) {
-//   for (std::shared_ptr<Entity>& e : entities_)
-//     if (e.get() == entity) return;
-
-//   entitiesToCreate_.push_back(std::shared_ptr<Entity>(entity));
-// }
-
 void Scene::AddEntity(std::shared_ptr<Entity> entity) {
   if (std::find(entities_.begin(), entities_.end(), entity) != entities_.end()) return;
 
