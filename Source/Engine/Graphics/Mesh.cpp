@@ -137,5 +137,5 @@ void Mesh::DeleteBuffers() {
 
 Mesh::~Mesh() {
   DeleteBuffers();
-  glDeleteVertexArrays(1, &VAO_);
+  if (VAO_) glDeleteVertexArrays(1, &VAO_);
 }

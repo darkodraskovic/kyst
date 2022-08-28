@@ -36,9 +36,9 @@ class Mesh {
   void Generate(unsigned int shaderId);
   void Draw();
 
-  GLuint VAO_;
+  GLuint VAO_{0};
   std::vector<GLuint> VBOs_;
-  GLuint EBO_ = 0;
+  GLuint EBO_{0};
 
   GLenum mode_ = GL_TRIANGLES;
   std::vector<glm::vec3> positions_;

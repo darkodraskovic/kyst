@@ -28,7 +28,7 @@ class Entity {
   // TODO: make private
   bool remove_ = false;
 
- private:
+ protected:
   shared_ptr<Model> model_;
 
   Scene* scene_;

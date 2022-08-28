@@ -19,8 +19,8 @@ class Framebuffer : public Object {
 
  private:
   std::shared_ptr<Texture2D> texture_;
-  unsigned int framebuffer_;
-  unsigned int renderbuffer_;
+  unsigned int framebuffer_{0};
+  unsigned int renderbuffer_{0};
 
   friend class Viewport;
 };

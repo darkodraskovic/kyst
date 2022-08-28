@@ -40,4 +40,7 @@ void Framebuffer::Unbind() {
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-Framebuffer::~Framebuffer() { glDeleteFramebuffers(1, &framebuffer_); }
+Framebuffer::~Framebuffer() {
+  if (framebuffer_) glDeleteFramebuffers(1, &framebuffer_);
+  if (renderbuffer_) glDeleteRenderbuffers(1, &renderbuffer_);
+}

@@ -117,7 +117,7 @@ ParticleEmitter* EntityFactory::CreateSnowflakeEmitter() {
   emitter->GetModel()->SetMaterial(colMaterial_);
   emitter->GetModel()->GetMaterial()->color_ = color3_;
 
-  emitter->emissionFreq_ = .03f;
+  emitter->emissionFreq_ = .05f;
 
   emitter->position_ = UP;
   emitter->minScale_ = ONE * 0.01f;

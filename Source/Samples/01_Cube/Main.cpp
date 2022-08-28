@@ -76,12 +76,6 @@ class App : public Application {
     // cube3->GetModel()->GetMaterial()->alpha_ = 0.5;
     viewport->scene_->AddEntity(cube3);
 
-    // vp.reset();
-    // material.reset();
-    // cube2.reset();
-    // cube4.reset();
-    // cube5.reset();
-
     viewport->scene_->camera_->LookAt(ZERO);
   }
 
