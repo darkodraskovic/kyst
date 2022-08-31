@@ -30,7 +30,7 @@ class Application {
   void Terminate();
 
   float GetDeltaTime();
-  const Input* GetInput();
+  Input* GetInput();
 
   void SetWindowSize(const uvec2& size);
   const uvec2& GetWindowSize();
@@ -45,7 +45,7 @@ class Application {
 
  protected:
   std::vector<std::shared_ptr<Viewport>> viewports_;
-  Input* input_;
+  std::shared_ptr<Input> input_;
   float deltaTime_ = 0.0f;
 
  private:
