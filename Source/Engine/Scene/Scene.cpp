@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "Component/ModelComponent.h"
 #include "Entity.h"
 
 void Scene::AddEntity(std::shared_ptr<Entity> entity) {
@@ -42,7 +43,7 @@ void Scene::Draw(unsigned int width, unsigned int height) {
   for (auto it = entities_.begin(); it != entities_.end(); ++it) {
     auto e = *it;
     if (!e->visible_) continue;
-    if (e->GetModel()->GetMaterial()->alpha_ < 1.0) {
+    if (e->GetComponent<ModelComponent>()->GetModel()->GetMaterial()->alpha_ < 1.0) {
       alphaEntities_.push_back(e);
       continue;
     }
