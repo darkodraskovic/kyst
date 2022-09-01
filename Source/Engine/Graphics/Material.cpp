@@ -3,20 +3,15 @@
 using namespace glm;
 
 const std::map<Uniform, std::string> UNIFORM_MAP{
-    {TIME, "uTime"},   {COLOR, "uColor"}, {ALPHA, "uAlpha"},
-    {MODEL, "uModel"}, {VIEW, "uView"},   {PROJECTION, "uProjection"},
+    {TIME, "uTime"}, {COLOR, "uColor"}, {ALPHA, "uAlpha"}, {MODEL, "uModel"}, {VIEW, "uView"}, {PROJECTION, "uProjection"},
 };
 
 Material::Material(){};
 
-Material::Material(std::shared_ptr<Shader> shader) { shader_ = shader; };
+void Material::SetShader(std::shared_ptr<Shader> shader) { shader_ = std::shared_ptr<Shader>(shader); }
+Shader* Material::GetShader() { return shader_.get(); }
 
-Material::Material(const char* vertexPath, const char* fragmentPath) {
-  shader_ = std::make_shared<Shader>(vertexPath, fragmentPath);
-};
-
-void Material::Update(const mat4& model, const mat4& view,
-                      const mat4& projection) {
+void Material::Update(const mat4& model, const mat4& view, const mat4& projection) {
   shader_->Use();
 
   shader_->SetFloat(UNIFORM_MAP.at(TIME), (float)glfwGetTime());

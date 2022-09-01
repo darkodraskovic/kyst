@@ -10,11 +10,11 @@ using namespace ShapeFactory;
 
 class Cube : public Entity {
  public:
-  Cube(const std::shared_ptr<Material>& material) : Entity() {
-    Model* model = GetModel();
-    GetModel()->material_ = material;
-    GetModel()->mesh_ = CubeFactory::GetMesh();
-    GetModel()->mesh_->Generate(material->shader_->id_);
+  Cube(std::shared_ptr<Material> material) : Entity() {
+    SetModel(std::make_shared<Model>());
+    GetModel()->SetMaterial(material);
+    GetModel()->SetMesh(CubeFactory::GetMesh());
+    GetModel()->GetMesh()->Generate(material->GetShader()->GetId());
   };
 
   virtual void Update(float deltaTime) override { rotation_.y += deltaTime * glm::quarter_pi<float>(); };

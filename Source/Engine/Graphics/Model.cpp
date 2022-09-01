@@ -6,10 +6,11 @@ using namespace VecConsts;
 
 Model::Model() {}
 
-Model::Model(Mesh* mesh, Material* material) {
-  mesh_ = std::shared_ptr<Mesh>(mesh);
-  material_ = std::shared_ptr<Material>(material);
-}
+void Model::SetMaterial(std::shared_ptr<Material> material) { material_ = material; }
+Material* Model::GetMaterial() { return material_.get(); }
+
+void Model::SetMesh(std::shared_ptr<Mesh> mesh) { mesh_ = mesh; }
+Mesh* Model::GetMesh() { return mesh_.get(); }
 
 void Model::Draw(const glm::mat4& uModel, const glm::mat4& uView, const glm::mat4& uProjection) {
   material_->Update(uModel, uView, uProjection);

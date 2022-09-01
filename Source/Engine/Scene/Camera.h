@@ -11,9 +11,9 @@ enum CameraMovement { CAM_FORWARD, CAM_BACKWARD, CAM_LEFT, CAM_RIGHT, CAM_UP, CA
 
 using namespace glm;
 
-class Camera : public Object {
+class Camera {
  public:
-  Camera(Application* app);
+  Camera();
 
   mat4 GetViewMatrix();
   virtual mat4 GetProjectionMatrix(int scrWidth, int scrHeight) = 0;
@@ -21,7 +21,7 @@ class Camera : public Object {
   virtual void LookAt(const vec3& center) = 0;
   // TODO: remove this methods from Camera class
   virtual void Translate(CameraMovement direction, float deltaTime) = 0;
-  virtual void Update(float deltaTime) = 0;
+  virtual void Update(float deltaTime, const Input& input) = 0;
 
   vec3 position_;
 

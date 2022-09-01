@@ -1,10 +1,6 @@
 #include "Texture2D.h"
 
-#include "../Application.h"
-
-Texture2D::Texture2D(Application* app) : Object(app) { glGenTextures(1, &id_); }
-
-void Texture2D::LoadImage(const std::string& filePath) { id_ = app_->resourceManager_.LoadTexture(filePath.c_str()); }
+Texture2D::Texture2D() { glGenTextures(1, &id_); }
 
 void Texture2D::CreateImage(int width, int height, unsigned int* data = nullptr, GLuint interpolation) {
   glBindTexture(GL_TEXTURE_2D, id_);

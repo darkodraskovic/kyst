@@ -50,7 +50,7 @@ void Application::Init() {
   glFrontFace(GL_CCW);
 
   // configure input and mouse position
-  input_ = new Input(window_);
+  input_ = make_shared<Input>(window_);
   Input::mouseData_.lastPositionX_ = Input::mouseData_.positionX_ = windowSize_.x / 2.f;
   Input::mouseData_.lastPositionY_ = Input::mouseData_.positionY_ = windowSize_.y / 2.f;
 };
@@ -90,20 +90,19 @@ void Application::Run() {
 
 float Application::GetDeltaTime() { return deltaTime_; }
 
-const Input* Application::GetInput() { return input_; }
+Input* Application::GetInput() { return input_.get(); }
+
+ResourceManager& Application::GetResourceManager() { return resourceManager_; }
 
 Viewport* Application::AddViewport(bool perspective, int width, int height) {
   if (width == 0) width = windowSize_.x;
   if (height == 0) height = windowSize_.y;
-  auto viewport = Viewport::Create(this, perspective, width, height);
+  auto viewport = Viewport::Create(perspective, width, height);
   AddViewport(shared_ptr<Viewport>(viewport));
-  return viewport;
+  return viewport.get();
 }
 
-void Application::AddViewport(std::shared_ptr<Viewport> viewport) {
-  viewports_.push_back(viewport);
-  viewport->application_ = this;
-}
+void Application::AddViewport(std::shared_ptr<Viewport> viewport) { viewports_.push_back(viewport); }
 
 bool Application::ShouldClose() { return glfwWindowShouldClose(window_); };
 
@@ -111,7 +110,6 @@ void Application::Close() { glfwSetWindowShouldClose(window_, true); };
 
 void Application::Terminate() {
   viewports_.clear();
-  delete input_;
   glfwTerminate();
 };
 

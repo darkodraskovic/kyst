@@ -1,8 +1,6 @@
 #include "OrthoCamera.h"
 
-#include "../Application.h"
-
-OrthoCamera::OrthoCamera(Application* app) : Camera(app) {
+OrthoCamera::OrthoCamera() {
   right_ = {1, 0, 0};
   movementSpeed_ = 500;
   zoom_ = 1;
@@ -16,14 +14,13 @@ mat4 OrthoCamera::GetProjectionMatrix(int width, int height) {
   return glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f) * m;
 }
 
-void OrthoCamera::Update(float deltaTime) {
-  auto input = app_->GetInput();
-  if (input->GetKey(GLFW_KEY_W)) Translate(CAM_FORWARD, deltaTime);
-  if (input->GetKey(GLFW_KEY_S)) Translate(CAM_BACKWARD, deltaTime);
-  if (input->GetKey(GLFW_KEY_A)) Translate(CAM_LEFT, deltaTime);
-  if (input->GetKey(GLFW_KEY_D)) Translate(CAM_RIGHT, deltaTime);
-  if (input->GetKey(GLFW_KEY_E)) Translate(CAM_UP, deltaTime);
-  if (input->GetKey(GLFW_KEY_Q)) Translate(CAM_DOWN, deltaTime);
+void OrthoCamera::Update(float deltaTime, const Input& input) {
+  if (input.GetKey(GLFW_KEY_W)) Translate(CAM_FORWARD, deltaTime);
+  if (input.GetKey(GLFW_KEY_S)) Translate(CAM_BACKWARD, deltaTime);
+  if (input.GetKey(GLFW_KEY_A)) Translate(CAM_LEFT, deltaTime);
+  if (input.GetKey(GLFW_KEY_D)) Translate(CAM_RIGHT, deltaTime);
+  if (input.GetKey(GLFW_KEY_E)) Translate(CAM_UP, deltaTime);
+  if (input.GetKey(GLFW_KEY_Q)) Translate(CAM_DOWN, deltaTime);
 }
 
 void OrthoCamera::Translate(CameraMovement direction, float deltaTime) {

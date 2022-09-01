@@ -2,16 +2,13 @@
 
 #include <iostream>
 
-#include "Source/Engine/Application.h"
-#include "Source/Engine/Input.h"
+#include "../Input.h"
 
-PerspectiveCamera::PerspectiveCamera(Application* app) : Camera(app) {
+PerspectiveCamera::PerspectiveCamera() {
   yaw_ = pi<float>();
   pitch_ = 0.0f;
 
   worldUp_ = vec3(0.0f, 1.0f, 0.0f);
-  ;
-
   sensitivity_ = 0.001f;
 
   UpdateCameraVectors();
@@ -36,14 +33,13 @@ void PerspectiveCamera::LookAt(const vec3& center) {
   UpdateCameraVectors();
 }
 
-void PerspectiveCamera::Update(float deltaTime) {
-  auto input = app_->GetInput();
-  if (input->GetKey(GLFW_KEY_W)) Translate(CAM_FORWARD, deltaTime);
-  if (input->GetKey(GLFW_KEY_S)) Translate(CAM_BACKWARD, deltaTime);
-  if (input->GetKey(GLFW_KEY_A)) Translate(CAM_LEFT, deltaTime);
-  if (input->GetKey(GLFW_KEY_D)) Translate(CAM_RIGHT, deltaTime);
-  if (input->GetKey(GLFW_KEY_E)) Translate(CAM_UP, deltaTime);
-  if (input->GetKey(GLFW_KEY_Q)) Translate(CAM_DOWN, deltaTime);
+void PerspectiveCamera::Update(float deltaTime, const Input& input) {
+  if (input.GetKey(GLFW_KEY_W)) Translate(CAM_FORWARD, deltaTime);
+  if (input.GetKey(GLFW_KEY_S)) Translate(CAM_BACKWARD, deltaTime);
+  if (input.GetKey(GLFW_KEY_A)) Translate(CAM_LEFT, deltaTime);
+  if (input.GetKey(GLFW_KEY_D)) Translate(CAM_RIGHT, deltaTime);
+  if (input.GetKey(GLFW_KEY_E)) Translate(CAM_UP, deltaTime);
+  if (input.GetKey(GLFW_KEY_Q)) Translate(CAM_DOWN, deltaTime);
 
   Rotate(Input::mouseData_.moveX_, Input::mouseData_.moveY_);
   if (Input::mouseData_.scrolled_) Zoom(Input::mouseData_.scrollY_);

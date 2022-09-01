@@ -1,14 +1,14 @@
 #include "Entity.h"
 
 #include "../VecConsts.h"
+#include "Scene.h"
 
 using namespace VecConsts;
 
-Entity::Entity() { model_ = std::shared_ptr<Model>(new Model); }
-
-Entity::Entity(Mesh* mesh, Material* material) { model_ = std::shared_ptr<Model>(new Model(mesh, material)); }
-
+void Entity::SetScene(Scene* scene) { scene_ = scene; }
 Scene* Entity::GetScene() { return scene_; }
+
+void Entity::SetModel(std::shared_ptr<Model> model) { model_ = model; }
 Model* Entity::GetModel() { return model_.get(); }
 
 void Entity::Update(float deltaTime) {}

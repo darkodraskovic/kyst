@@ -35,7 +35,7 @@ while getopts "t:c" option; do
     esac
 done
 
-if [ -z $TARGET  ] || [ $TARGET = ${SLN} ]; then
+if [ -z $TARGET  ] || [ $TARGET = ${SLN} ] || [ $TARGET = "engine" ]; then
     RUN=false
 fi
 
@@ -51,9 +51,9 @@ if [ $CONFIGURE = true ]; then
         echo "INFO: configure Ninja"    
         cd $ROOT_DIR/ninja/
         cmake -G"Ninja" ..
-        mv compile_commands.json ..
         validate_exit
     fi
+    mv compile_commands.json ..
 
     exit 0
 fi
