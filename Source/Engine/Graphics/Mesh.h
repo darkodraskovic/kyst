@@ -36,10 +36,6 @@ class Mesh {
   void Generate(unsigned int shaderId);
   void Draw();
 
-  GLuint VAO_{0};
-  std::vector<GLuint> VBOs_;
-  GLuint EBO_{0};
-
   GLenum mode_ = GL_TRIANGLES;
   std::vector<glm::vec3> positions_;
   std::vector<glm::vec3> normals_;
@@ -49,6 +45,10 @@ class Mesh {
   std::vector<unsigned int> indices_;
 
  private:
+  GLuint VAO_{0};
+  std::vector<GLuint> VBOs_;
+  GLuint EBO_{0};
+
   void DeleteBuffers();
 
   int numVerts_ = 0;

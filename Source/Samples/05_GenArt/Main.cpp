@@ -3,6 +3,7 @@
 #include "Engine/Application.h"
 #include "Engine/Graphics/Material2D.h"
 #include "Engine/Scene/Entity.h"
+#include "Engine/Scene/Scene.h"
 #include "Engine/Scene/Viewport.h"
 #include "Engine/VecConsts.h"
 #include "ShapeFactory/Shape2DFactory.h"
@@ -10,11 +11,15 @@
 using namespace VecConsts;
 using namespace ShapeFactory;
 
-Entity* GenEntity(const string& fragmentPath, const vec3& position = ZERO) {
-  auto material = new Material2D(fragmentPath);
-  auto mesh = Shape2DFactory::SolidRect(LEFT + DOWN, glm::vec2(2, 2));
-  mesh->Generate(material->shader_->id_);
-  auto entity = new Entity(mesh, material);
+std::shared_ptr<Entity> GenEntity(const string& fragmentPath, const vec3& position) {
+  Material2D* material = new Material2D(fragmentPath);
+  Mesh* mesh = Shape2DFactory::SolidRect(LEFT + DOWN, glm::vec2(2, 2));
+  mesh->Generate(material->GetShader()->GetId());
+  auto entity = make_shared<Entity>();
+  auto model = make_shared<Model>();
+  model->SetMaterial(std::shared_ptr<Material2D>(material));
+  model->SetMesh(std::shared_ptr<Mesh>(mesh));
+  entity->SetModel(model);
   entity->position_ = position;
   return entity;
 }
@@ -25,7 +30,7 @@ class App : public Application {
     Application::Init();
 
     auto viewport = AddViewport(true);
-    auto cam = viewport->scene_->camera_;
+    auto cam = viewport->GetScene()->camera_;
     cam->position_.z = 7.0f;
     cam->LookAt(ZERO);
 
@@ -33,14 +38,14 @@ class App : public Application {
     // viewport->AddEffect("Shaders/Effects/Inversion.fs");
     // viewport->AddEffect("Shaders/Effects/Remove.fs");
 
-    viewport->scene_->AddEntity(GenEntity("Shaders/GenArt/01.fs", LEFT + DOWN));
-    viewport->scene_->AddEntity(GenEntity("Shaders/GenArt/02.fs", RIGHT + DOWN));
-    viewport->scene_->AddEntity(GenEntity("Shaders/GenArt/03.fs", RIGHT + UP));
-    viewport->scene_->AddEntity(GenEntity("Shaders/GenArt/04_tiling.fs", LEFT + UP));
+    viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/01.fs", LEFT + DOWN));
+    viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/02.fs", RIGHT + DOWN));
+    viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/03.fs", RIGHT + UP));
+    viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/04_tiling.fs", LEFT + UP));
   }
 
   virtual void Update(float deltaTime) {
-    viewports_[0]->scene_->camera_->Update(deltaTime_);
+    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
     Application::Update(deltaTime);
   }
 };

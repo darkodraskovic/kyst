@@ -1,15 +1,15 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "../Object.h"
+#include <memory>
+#include <vector>
+
 #include "Camera.h"
-#include "Viewport.h"
 
 class Entity;
 
-class Scene : public Object {
+class Scene {
  public:
-  Scene(Application* app) : Object(app){};
   void Update(float deltaTime);
   void Draw(unsigned int width, unsigned int height);
   void AddEntity(std::shared_ptr<Entity> entity);
@@ -21,8 +21,6 @@ class Scene : public Object {
   std::vector<std::shared_ptr<Entity>> entities_;
   std::vector<std::shared_ptr<Entity>> entitiesToCreate_;
   std::vector<std::shared_ptr<Entity>> alphaEntities_;
-
-  friend class Viewport;
 };
 
 #endif /* SCENE_H */

@@ -17,23 +17,23 @@ class App : public Application {
     Application::Init();
 
     auto viewport = AddViewport();
-    viewport->scene_->camera_->position_.z = 12.0f;
+    viewport->GetScene()->camera_->position_.z = 12.0f;
     viewport->AddEffect("Shaders/Effects/Noop.fs");
     // viewport->AddEffect("Shaders/Effects/Remove.fs");
     // viewport->AddEffect("Shaders/Effects/Inversion.fs");
 
-    unsigned int diffuseBricks = resourceManager_.LoadTexture("Assets/bricks_diffuse.jpg");
-    unsigned int specularBricks = resourceManager_.LoadTexture("Assets/bricks_specular.jpg");
-    unsigned int emissiveBricks = resourceManager_.LoadTexture("Assets/bricks_emissive_green.png");
-    unsigned int diffuseMetal = resourceManager_.LoadTexture("Assets/metal_diffuse.jpg");
-    unsigned int specularMetal = resourceManager_.LoadTexture("Assets/metal_specular.jpg");
-    unsigned int emissiveMetal = resourceManager_.LoadTexture("Assets/metal_emissive_red.png");
+    unsigned int diffuseBricks = GetResourceManager().LoadTexture("Assets/bricks_diffuse.jpg");
+    unsigned int specularBricks = GetResourceManager().LoadTexture("Assets/bricks_specular.jpg");
+    unsigned int emissiveBricks = GetResourceManager().LoadTexture("Assets/bricks_emissive_green.png");
+    unsigned int diffuseMetal = GetResourceManager().LoadTexture("Assets/metal_diffuse.jpg");
+    unsigned int specularMetal = GetResourceManager().LoadTexture("Assets/metal_specular.jpg");
+    unsigned int emissiveMetal = GetResourceManager().LoadTexture("Assets/metal_emissive_red.png");
 
     auto litTexShader = std::make_shared<Shader>("Shaders/LitTex.vs", "Shaders/LitTex.fs");
     auto litColShader = std::make_shared<Shader>("Shaders/LitCol.vs", "Shaders/LitCol.fs");
 
     int size = 320;
-    auto vp = Viewport::Create(this, true, size, size);
+    auto vp = Viewport::Create(true, size, size);
     vp->AddEffect("Shaders/Textures/Tex2D.fs");
     vp->AddEffect("Shaders/Effects/Inversion.fs");
     vp->DrawToBuffer();
@@ -48,7 +48,7 @@ class App : public Application {
     material->lightPosition_ = vec3(0.5f, 0.0f, 5.0f);
     auto cube1 = std::make_shared<Cube>(material);
     cube1->scale_ *= 2;
-    viewport->scene_->AddEntity(cube1);
+    viewport->GetScene()->AddEntity(cube1);
 
     auto material2 = std::make_shared<PhongMap>();
     material2->SetShader(litTexShader);
@@ -61,7 +61,7 @@ class App : public Application {
     cube2->position_ = ONE * 2.0f;
     cube2->scale_ *= 2;
     cube2->GetModel()->GetMaterial()->alpha_ = 0.5;
-    viewport->scene_->AddEntity(cube2);
+    viewport->GetScene()->AddEntity(cube2);
 
     auto material3 = std::make_shared<PhongCol>();
     material3->SetShader(litColShader);
@@ -74,13 +74,13 @@ class App : public Application {
     cube3->position_ = -ONE * 2.0f;
     cube3->scale_ *= 2;
     // cube3->GetModel()->GetMaterial()->alpha_ = 0.5;
-    viewport->scene_->AddEntity(cube3);
+    viewport->GetScene()->AddEntity(cube3);
 
-    viewport->scene_->camera_->LookAt(ZERO);
+    viewport->GetScene()->camera_->LookAt(ZERO);
   }
 
   virtual void Update(float deltaTime) {
-    viewports_[0]->scene_->camera_->Update(deltaTime_);
+    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
     Application::Update(deltaTime);
   }
 };

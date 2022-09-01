@@ -15,7 +15,7 @@ class App : public Application {
     Application::Init();
 
     Viewport* viewport = AddViewport(true);
-    auto cam = viewport->scene_->camera_;
+    auto cam = viewport->GetScene()->camera_;
     cam->position_.z = 5;
     cam->LookAt(ZERO);
 
@@ -31,11 +31,11 @@ class App : public Application {
 
     // Entity
     Entity* entity = new Entity(mesh, material);
-    viewport->scene_->AddEntity(entity);
+    viewport->GetScene()->AddEntity(entity);
   }
 
   virtual void Update(float deltaTime) {
-    viewports_[0]->scene_->camera_->Update(deltaTime_);
+    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
     Application::Update(deltaTime);
   }
 };

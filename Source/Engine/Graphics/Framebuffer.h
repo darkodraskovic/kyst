@@ -3,12 +3,11 @@
 
 #include <memory>
 
-#include "../Object.h"
 #include "Texture2D.h"
 
-class Framebuffer : public Object {
+class Framebuffer {
  public:
-  Framebuffer(Application* app);
+  Framebuffer();
   ~Framebuffer();
 
   void Init(unsigned int width, unsigned int height);
@@ -21,8 +20,6 @@ class Framebuffer : public Object {
   std::shared_ptr<Texture2D> texture_;
   unsigned int framebuffer_{0};
   unsigned int renderbuffer_{0};
-
-  friend class Viewport;
 };
 
 #endif /* FRAMBUFFER_H */

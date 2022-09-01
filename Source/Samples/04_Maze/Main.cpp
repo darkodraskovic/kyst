@@ -20,9 +20,9 @@ class App : public Application {
 
     auto viewport = AddViewport(true);
 
-    viewport->scene_->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
+    viewport->GetScene()->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
 
-    auto cam = viewport->scene_->camera_;
+    auto cam = viewport->GetScene()->camera_;
     cam->position_.z = 9.0f;
     cam->position_.y = 1.0f;
 
@@ -37,7 +37,7 @@ class App : public Application {
     auto color2_ = ShapeUtils::Hex2rgb("FF847C");
     auto color3_ = ShapeUtils::Hex2rgb("FECEAB");
 
-    auto mazeGen = new MazeGen(viewport->scene_.get());
+    auto mazeGen = new MazeGen(viewport->GetScene().get());
     mazeGen->CreateMaze(12, 8, color1_);
     auto maze = mazeGen->CreateMaze(6, 18, color2_);
     maze->position_.x = -2;
@@ -50,7 +50,7 @@ class App : public Application {
   }
 
   virtual void Update(float deltaTime) {
-    viewports_[0]->scene_->camera_->Update(deltaTime_);
+    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
     Application::Update(deltaTime);
   }
 };

@@ -4,15 +4,14 @@
 #include <string>
 
 #include "../Graphics/Model.h"
-#include "Scene.h"
+class Scene;
 
 class Entity {
  public:
-  Entity();
-
   virtual void Update(float deltaTime);
   virtual void Draw(const glm::mat4& uView, const glm::mat4& uProjection);
 
+  void SetScene(Scene* scene);
   Scene* GetScene();
 
   void SetModel(std::shared_ptr<Model> model);
@@ -32,7 +31,6 @@ class Entity {
   shared_ptr<Model> model_;
 
   Scene* scene_;
-  friend class Scene;
 };
 
 #endif

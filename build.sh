@@ -35,7 +35,7 @@ while getopts "t:c" option; do
     esac
 done
 
-if [ -z $TARGET  ] || [ $TARGET = ${SLN} ]; then
+if [ -z $TARGET  ] || [ $TARGET = ${SLN} ] || [ $TARGET = "engine" ]; then
     RUN=false
 fi
 

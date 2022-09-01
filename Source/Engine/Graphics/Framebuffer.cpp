@@ -4,7 +4,7 @@
 
 #include "../Core.h"
 
-Framebuffer::Framebuffer(Application* app) : Object(app) {
+Framebuffer::Framebuffer() {
   glGenFramebuffers(1, &framebuffer_);
   glGenRenderbuffers(1, &renderbuffer_);
 }
@@ -13,7 +13,7 @@ void Framebuffer::Init(unsigned int width, unsigned int height) {
   Bind();
 
   // texture
-  texture_ = std::make_shared<Texture2D>(app_);
+  texture_ = std::make_shared<Texture2D>();
   texture_->CreateImage(width, height, nullptr);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_->GetId(), 0);
 

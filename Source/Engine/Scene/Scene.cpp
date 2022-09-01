@@ -1,7 +1,6 @@
 #include "Scene.h"
 
 #include <algorithm>
-#include <iostream>
 
 #include "Entity.h"
 
@@ -25,7 +24,7 @@ void Scene::Update(float deltaTime) {
   // create entities
   for (std::shared_ptr<Entity>& e : entitiesToCreate_) {
     entities_.push_back(e);
-    e->scene_ = this;
+    e->SetScene(this);
   }
   entitiesToCreate_.clear();
 };

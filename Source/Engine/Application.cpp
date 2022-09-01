@@ -92,18 +92,17 @@ float Application::GetDeltaTime() { return deltaTime_; }
 
 Input* Application::GetInput() { return input_.get(); }
 
+ResourceManager& Application::GetResourceManager() { return resourceManager_; }
+
 Viewport* Application::AddViewport(bool perspective, int width, int height) {
   if (width == 0) width = windowSize_.x;
   if (height == 0) height = windowSize_.y;
-  auto viewport = Viewport::Create(this, perspective, width, height);
+  auto viewport = Viewport::Create(perspective, width, height);
   AddViewport(shared_ptr<Viewport>(viewport));
   return viewport.get();
 }
 
-void Application::AddViewport(std::shared_ptr<Viewport> viewport) {
-  viewports_.push_back(viewport);
-  viewport->application_ = this;
-}
+void Application::AddViewport(std::shared_ptr<Viewport> viewport) { viewports_.push_back(viewport); }
 
 bool Application::ShouldClose() { return glfwWindowShouldClose(window_); };
 

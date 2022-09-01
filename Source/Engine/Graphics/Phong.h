@@ -26,10 +26,10 @@ class Phong : public Material {
   Phong();
   virtual void Update(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) override;
 
-  vec3 lightAmbient_ = GRAY;
-  vec3 lightDiffuse_ = GRAY;
-  vec3 lightSpecular_ = GRAY;
-  vec3 lightPosition_ = ZERO;
+  vec3 lightAmbient_{GRAY};
+  vec3 lightDiffuse_{WHITE};
+  vec3 lightSpecular_{WHITE};
+  vec3 lightPosition_{ZERO};
 
   float shininess_;
 };

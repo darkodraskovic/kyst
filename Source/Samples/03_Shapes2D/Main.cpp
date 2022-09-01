@@ -3,6 +3,7 @@
 
 #include "Engine/Application.h"
 #include "Engine/Graphics/Material2D.h"
+#include "Engine/Scene/Scene.h"
 #include "Engine/Scene/Viewport.h"
 #include "Engine/VecConsts.h"
 #include "ShapeFactory/Shape2DFactory.h"
@@ -20,11 +21,11 @@ class App : public Application {
 
     auto viewport = AddViewport(true);
 
-    auto cam = viewport->scene_->camera_;
+    auto cam = viewport->GetScene()->camera_;
     cam->position_.z = 4.0f;
 
     viewport->AddEffect("Shaders/Effects/Noop.fs");
-    viewport->AddEffect("Shaders/Effects/Remove.fs");
+    // viewport->AddEffect("Shaders/Effects/Remove.fs");
     viewport->AddEffect("Shaders/Effects/Inversion.fs");
 
     // materials
@@ -82,35 +83,35 @@ class App : public Application {
     // entities
     auto entity = std::make_shared<Entity>();
     entity->SetModel(solidRectModel);
-    viewport->scene_->AddEntity(entity);
+    viewport->GetScene()->AddEntity(entity);
 
     entity = std::make_shared<Entity>();
     entity->SetModel(transparentSolidRectModel);
     entity->position_ = (LEFT + DOWN) / 4.f;
     entity->position_.z = 0.25;
     entity->rotation_.y = pi<float>() / 4;
-    viewport->scene_->AddEntity(entity);
+    viewport->GetScene()->AddEntity(entity);
 
     entity = std::make_shared<Entity>();
     entity->SetModel(lineModel);
     entity->position_.z = 1;
-    viewport->scene_->AddEntity(entity);
+    viewport->GetScene()->AddEntity(entity);
 
     entity = std::make_shared<Entity>();
     entity->SetModel(linePolygonModel);
-    viewport->scene_->AddEntity(entity);
+    viewport->GetScene()->AddEntity(entity);
 
     entity = std::make_shared<Entity>();
     entity->SetModel(solidPolygonModel);
     entity->scale_ *= 0.33f;
     entity->position_.z = 0.5;
-    viewport->scene_->AddEntity(entity);
+    viewport->GetScene()->AddEntity(entity);
 
     cam->LookAt(ZERO);
   }
 
   virtual void Update(float deltaTime) {
-    viewports_[0]->scene_->camera_->Update(deltaTime_);
+    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
     Application::Update(deltaTime);
   }
 };

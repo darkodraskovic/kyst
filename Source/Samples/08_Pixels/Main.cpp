@@ -28,7 +28,7 @@ class App : public Application {
     viewport->scale_.y = .5;
     viewport->position_.x = .25;
 
-    auto cam = viewport->scene_->camera_;
+    auto cam = viewport->GetScene()->camera_;
     // cam->zoom_ = 2;
     // cam->position_.z = 5;
     // cam->LookAt(ZERO);
@@ -58,7 +58,7 @@ class App : public Application {
     // entity->position_.y = GetWindowSize().y / 2;
     // entity->position_.x = GetWindowSize().x / 8;
     // entity->position_.y = GetWindowSize().y / 8;
-    viewport->scene_->AddEntity(entity);
+    viewport->GetScene()->AddEntity(entity);
 
     // viewport->GetTexture()->SetData(0, 0, width, height, data2);
     // viewport->position_ += (RIGHT + UP) * .5f;
@@ -66,7 +66,7 @@ class App : public Application {
   }
 
   virtual void Update(float deltaTime) {
-    viewports_[0]->scene_->camera_->Update(deltaTime_);
+    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
     Application::Update(deltaTime);
   }
 };

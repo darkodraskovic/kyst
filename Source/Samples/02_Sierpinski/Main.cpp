@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "Engine/Application.h"
+#include "Engine/Scene/Scene.h"
 #include "Engine/Scene/Viewport.h"
 #include "Engine/VecConsts.h"
 #include "EntityFactory.h"
@@ -18,15 +19,15 @@ class App : public Application {
     glLineWidth(2.0f);
 
     auto viewport = AddViewport(true);
-    viewport->scene_->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
+    viewport->GetScene()->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
     // viewport->AddEffect("Shaders/Effects/Noop.fs");
     // viewport->AddEffect("Shaders/Effects/Inversion.fs");
     // viewport->AddEffect("Shaders/Effects/Remove.fs");
 
-    viewport->scene_->camera_->position_.z = 7.0f;
-    viewport->scene_->camera_->position_.y = 5.0f;
+    viewport->GetScene()->camera_->position_.z = 7.0f;
+    viewport->GetScene()->camera_->position_.y = 5.0f;
 
-    auto eFactory = std::make_shared<EntityFactory>(viewport->scene_.get());
+    auto eFactory = std::make_shared<EntityFactory>(viewport->GetScene());
 
     eFactory->color1_ = ShapeUtils::Hex2rgb("E84A5F");
     eFactory->color2_ = ShapeUtils::Hex2rgb("FF847C");
@@ -36,11 +37,11 @@ class App : public Application {
     // eFactory->CreateTriGasket(4, vec2(-limit, limit), true, true);
     eFactory->CreateSnowflakeEmitter();
 
-    viewport->scene_->camera_->LookAt(ZERO);
+    viewport->GetScene()->camera_->LookAt(ZERO);
   }
 
   virtual void Update(float deltaTime) {
-    viewports_[0]->scene_->camera_->Update(deltaTime_);
+    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
     Application::Update(deltaTime);
   }
 };

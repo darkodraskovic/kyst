@@ -1,11 +1,11 @@
 #include "Entity.h"
 
 #include "../VecConsts.h"
+#include "Scene.h"
 
 using namespace VecConsts;
 
-Entity::Entity() {}
-
+void Entity::SetScene(Scene* scene) { scene_ = scene; }
 Scene* Entity::GetScene() { return scene_; }
 
 void Entity::SetModel(std::shared_ptr<Model> model) { model_ = model; }
