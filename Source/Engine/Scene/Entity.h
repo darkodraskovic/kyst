@@ -1,9 +1,15 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <glm/glm.hpp>
+#include <map>
+#include <memory>
 #include <string>
+#include <vector>
 
-#include "../Graphics/Model.h"
+#include "Component/Component.h"
+
+using namespace glm;
 class Scene;
 
 class Entity {
@@ -13,9 +19,6 @@ class Entity {
 
   void SetScene(Scene* scene);
   Scene* GetScene();
-
-  void SetModel(std::shared_ptr<Model> model);
-  Model* GetModel();
 
   std::string name_;
   bool visible_ = true;
@@ -27,8 +30,36 @@ class Entity {
   // TODO: make private
   bool remove_ = false;
 
+  template <typename T>
+  T* AddComponent() {
+    std::shared_ptr<T> component = std::make_shared<T>();
+    component->entity_ = this;
+    components_.emplace_back(component);
+
+    T* raw = component.get();
+    typeMap_[&typeid(T)] = raw;
+    if (dynamic_cast<Updatable*>(raw)) updatables_.emplace_back(dynamic_cast<Updatable*>(raw));
+    if (dynamic_cast<Drawable*>(raw)) drawables_.emplace_back(dynamic_cast<Drawable*>(raw));
+
+    return raw;
+  }
+
+  template <typename T>
+  T* GetComponent() {
+    return static_cast<T*>(typeMap_[&typeid(T)]);
+  }
+
+  template <typename T>
+  bool HasComponent() const {
+    return typeMap_.find(&typeid(T)) != typeMap_.end();
+  };
+
  protected:
-  shared_ptr<Model> model_;
+  std::vector<std::shared_ptr<Component>> components_;
+  std::map<const type_info*, Component*> typeMap_;
+
+  std::vector<Updatable*> updatables_;
+  std::vector<Drawable*> drawables_;
 
   Scene* scene_;
 };

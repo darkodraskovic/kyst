@@ -9,7 +9,7 @@ ParticleEmitter::ParticleEmitter() { visible_ = false; }
 
 void ParticleEmitter::CreateParticle() {
   auto particle = std::make_shared<Particle>();
-  particle->SetModel(model_);
+  // particle->SetModel(GetModel());
 
   particle->position_ = position_;
   if (uniformScale_) {

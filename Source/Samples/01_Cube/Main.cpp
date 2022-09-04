@@ -3,6 +3,8 @@
 #include "Engine/Graphics/Framebuffer.h"
 #include "Engine/Graphics/PhongCol.h"
 #include "Engine/Graphics/PhongMap.h"
+#include "Engine/Scene/Component/CameraComponent.h"
+#include "Engine/Scene/Component/ModelComponent.h"
 #include "Engine/Scene/PerspectiveCamera.h"
 #include "Engine/Scene/Scene.h"
 #include "Engine/Scene/Viewport.h"
@@ -60,7 +62,7 @@ class App : public Application {
     auto cube2 = std::make_shared<Cube>(material2);
     cube2->position_ = ONE * 2.0f;
     cube2->scale_ *= 2;
-    cube2->GetModel()->GetMaterial()->alpha_ = 0.5;
+    material2->alpha_ = 0.5;
     viewport->GetScene()->AddEntity(cube2);
 
     auto material3 = std::make_shared<PhongCol>();
@@ -77,6 +79,25 @@ class App : public Application {
     viewport->GetScene()->AddEntity(cube3);
 
     viewport->GetScene()->camera_->LookAt(ZERO);
+
+    // cube3->AddComponent<ModelComponent>();
+    // auto component = cube3->GetComponent<ModelComponent>();
+
+    // cube3->AddComponent<ModelComponent>();
+    // auto hasComponent = cube3->HasComponent<Updatable>();
+
+    // cube3->AddComponent<ModelComponent>();
+    // hasComponent = cube3->HasComponent<Drawable>();
+
+    // cube3->AddComponent<CameraComponent>();
+    // hasComponent = cube3->HasComponent<CameraComponent>();
+
+    // for (auto it = cube3->components_.begin(); it != cube3->components_.end(); ++it) {
+    //   auto drawable = dynamic_cast<Drawable*>((*it).get());
+    //   auto updatable = dynamic_cast<Updatable*>((*it).get());
+    //   std::cout << ""
+    //             << "\n";
+    // }
   }
 
   virtual void Update(float deltaTime) {
