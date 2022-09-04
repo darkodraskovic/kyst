@@ -7,20 +7,17 @@ class PerspectiveCamera : public Camera {
  public:
   PerspectiveCamera();
 
-  void Zoom(float yoffset);
   virtual void LookAt(const vec3& center) override;
-
   virtual mat4 GetProjectionMatrix(int scrWidth, int scrHeight) override;
 
+  virtual void HandleInput(const Input& input) override;
   virtual void Update(float deltaTime, const Input& input) override;
-  virtual void Translate(CameraMovement direction, float deltaTime) override;
-  void Rotate(float xoffset, float yoffset, bool constrainPitch = true);
+  virtual void Translate(float deltaTime) override;
+  void Rotate(bool constrainPitch = true);
+
+  virtual void Zoom() override;
 
   vec3 worldUp_;
-
-  float yaw_;
-  float pitch_;
-
   float sensitivity_;
 
  private:

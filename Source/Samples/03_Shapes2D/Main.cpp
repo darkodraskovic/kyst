@@ -3,6 +3,8 @@
 
 #include "Engine/Application.h"
 #include "Engine/Graphics/Material2D.h"
+#include "Engine/Graphics/Model.h"
+#include "Engine/Scene/Component/ModelComponent.h"
 #include "Engine/Scene/Scene.h"
 #include "Engine/Scene/Viewport.h"
 #include "Engine/VecConsts.h"
@@ -82,27 +84,32 @@ class App : public Application {
 
     // entities
     auto entity = std::make_shared<Entity>();
-    entity->SetModel(solidRectModel);
+    auto modelComponent = entity->AddComponent<ModelComponent>();
+    modelComponent->SetModel(solidRectModel);
     viewport->GetScene()->AddEntity(entity);
 
     entity = std::make_shared<Entity>();
-    entity->SetModel(transparentSolidRectModel);
+    modelComponent = entity->AddComponent<ModelComponent>();
+    modelComponent->SetModel(transparentSolidRectModel);
     entity->position_ = (LEFT + DOWN) / 4.f;
     entity->position_.z = 0.25;
     entity->rotation_.y = pi<float>() / 4;
     viewport->GetScene()->AddEntity(entity);
 
     entity = std::make_shared<Entity>();
-    entity->SetModel(lineModel);
+    modelComponent = entity->AddComponent<ModelComponent>();
+    modelComponent->SetModel(lineModel);
     entity->position_.z = 1;
     viewport->GetScene()->AddEntity(entity);
 
     entity = std::make_shared<Entity>();
-    entity->SetModel(linePolygonModel);
+    modelComponent = entity->AddComponent<ModelComponent>();
+    modelComponent->SetModel(linePolygonModel);
     viewport->GetScene()->AddEntity(entity);
 
     entity = std::make_shared<Entity>();
-    entity->SetModel(solidPolygonModel);
+    modelComponent = entity->AddComponent<ModelComponent>();
+    modelComponent->SetModel(solidPolygonModel);
     entity->scale_ *= 0.33f;
     entity->position_.z = 0.5;
     viewport->GetScene()->AddEntity(entity);

@@ -6,7 +6,6 @@
 
 #include "../Graphics/Framebuffer.h"
 #include "../Graphics/Shader.h"
-#include "../Object.h"
 
 class Scene;
 class Mesh;
