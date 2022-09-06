@@ -40,8 +40,7 @@ void PerspectiveCamera::Update(float deltaTime, const Input& input) {
 
   Translate(deltaTime);
   Rotate();
-
-  if (Input::mouseData_.scrolled_) Zoom();
+  Zoom();
 }
 
 void PerspectiveCamera::Translate(float deltaTime) {

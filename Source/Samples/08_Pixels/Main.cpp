@@ -26,7 +26,6 @@ class App : public Application {
   virtual void Init() {
     Application::Init();
 
-    // Viewport* viewport = app.AddViewport();
     Viewport* viewport = AddViewport(false, GetWindowSize().x / 2, GetWindowSize().y / 2);
     viewport->scale_.x = .5;
     viewport->scale_.y = .5;

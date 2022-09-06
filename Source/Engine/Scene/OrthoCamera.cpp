@@ -1,10 +1,6 @@
 #include "OrthoCamera.h"
 
-OrthoCamera::OrthoCamera() {
-  right_ = {1, 0, 0};
-  movementSpeed_ = 500;
-  zoom_ = 1;
-}
+OrthoCamera::OrthoCamera() { movementSpeed_ = 500; }
 
 mat4 OrthoCamera::GetProjectionMatrix(int width, int height) {
   vec3 center(width / 2, height / 2, 0);
@@ -16,7 +12,12 @@ mat4 OrthoCamera::GetProjectionMatrix(int width, int height) {
 
 void OrthoCamera::HandleInput(const Input& input) { Camera::HandleInput(input); }
 
-void OrthoCamera::Update(float deltaTime, const Input& input) { HandleInput(input); }
+void OrthoCamera::Update(float deltaTime, const Input& input) {
+  HandleInput(input);
+
+  Translate(deltaTime);
+  Zoom();
+}
 
 void OrthoCamera::Translate(float deltaTime) {
   float velocity = movementSpeed_ * deltaTime;
@@ -27,9 +28,9 @@ void OrthoCamera::Translate(float deltaTime) {
 }
 
 void OrthoCamera::Zoom() {
-  zoom_ += movement_[CAM_FORWARD];
-  zoom_ += movement_[CAM_BACKWARD];
-  zoom_ += movement_[CAM_ZOOM];
+  zoom_ += movement_[CAM_FORWARD] * zoomRate_;
+  zoom_ -= movement_[CAM_BACKWARD] * zoomRate_;
+  zoom_ += movement_[CAM_ZOOM] * zoomRate_;
 }
 
 void OrthoCamera::LookAt(const vec3& center) { position_ = center; }

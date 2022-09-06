@@ -26,7 +26,7 @@ void Camera::HandleInput(const Input& input) {
   movement_[CAM_ROT_X] = Input::mouseData_.moveX_;
   movement_[CAM_ROT_Y] = Input::mouseData_.moveY_;
 
-  if (Input::mouseData_.scrolled_) movement_[CAM_ZOOM] = Input::mouseData_.scrollY_;
+  movement_[CAM_ZOOM] = Input::mouseData_.scrollY_;
 }
 
 mat4 Camera::GetViewMatrix() { return glm::lookAt(position_, position_ + front_, up_); }

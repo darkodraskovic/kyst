@@ -82,6 +82,9 @@ void Viewport::DrawToBuffer() {
   }
 
   bound_->Unbind();
+
+  // TODO: replace hard-coded values by window size
+  glViewport(0, 0, 1152, 720);
 }
 
 void Viewport::DrawToScreen() {

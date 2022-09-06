@@ -29,7 +29,7 @@ class Camera {
 
   vec3 right_{1, 0, 0};
   vec3 up_{0, 1, 0};
-  vec3 front_{0, 0, 1};
+  vec3 front_{0, 0, -1};
 
   float zoom_{1};
 
