@@ -5,6 +5,8 @@
 #include "Component/ModelComponent.h"
 #include "Entity.h"
 
+Viewport* Scene::GetViewport() { return viewport_; }
+
 void Scene::AddEntity(std::shared_ptr<Entity> entity) {
   if (std::find(entities_.begin(), entities_.end(), entity) != entities_.end()) return;
 
@@ -42,7 +44,9 @@ void Scene::Draw(unsigned int width, unsigned int height) {
   glEnable(GL_CULL_FACE);
   for (auto it = entities_.begin(); it != entities_.end(); ++it) {
     auto e = *it;
-    if (!e->visible_) continue;
+    // TODO: Remove references to Entity components from Scene class
+    auto modelComponent = e->GetComponent<ModelComponent>();
+    if (!e->visible_ || !modelComponent) continue;
     if (e->GetComponent<ModelComponent>()->GetModel()->GetMaterial()->alpha_ < 1.0) {
       alphaEntities_.push_back(e);
       continue;

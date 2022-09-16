@@ -5,6 +5,8 @@
 #include "../Application.h"
 #include "../Graphics/Mesh.h"
 #include "../Graphics/Texture2D.h"
+#include "Component/CameraComponent.h"
+#include "Entity.h"
 #include "OrthoCamera.h"
 #include "PerspectiveCamera.h"
 #include "Scene.h"
@@ -20,6 +22,7 @@ void Viewport::Init(unsigned int width, unsigned int height) {
   GenBuffers(width, height);
   GenQuad(width, height);
   scene_ = make_shared<Scene>();
+  scene_->viewport_ = this;
 }
 
 void Viewport::GenBuffers(float width, float height) {
@@ -114,9 +117,18 @@ Scene* Viewport::GetScene() { return scene_.get(); }
 std::shared_ptr<Viewport> Viewport::Create(bool perspective, int width, int height) {
   auto viewport = std::make_shared<Viewport>();
   viewport->Init(width, height);
-  if (perspective)
-    viewport->scene_->camera_ = make_shared<PerspectiveCamera>();
-  else
-    viewport->scene_->camera_ = make_shared<OrthoCamera>();
+
+  auto cameraEntity = std::make_shared<Entity>();
+  viewport->scene_->AddEntity(cameraEntity);
+
+  cameraEntity->AddComponent<CameraComponent>();
+  std::shared_ptr<Camera> camera;
+  if (perspective) {
+    camera = make_shared<PerspectiveCamera>();
+  } else {
+    camera = make_shared<OrthoCamera>();
+  }
+  viewport->scene_->camera_ = camera;
+
   return viewport;
 }
