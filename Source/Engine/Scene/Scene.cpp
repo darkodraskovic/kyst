@@ -44,7 +44,6 @@ void Scene::Draw(unsigned int width, unsigned int height) {
   glEnable(GL_CULL_FACE);
   for (auto it = entities_.begin(); it != entities_.end(); ++it) {
     auto e = *it;
-    // TODO: Remove references to Entity components from Scene class
     auto modelComponent = e->GetComponent<ModelComponent>();
     if (!e->visible_ || !modelComponent) continue;
     if (e->GetComponent<ModelComponent>()->GetModel()->GetMaterial()->alpha_ < 1.0) {

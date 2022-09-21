@@ -34,9 +34,9 @@ class Application {
   ResourceManager& GetResourceManager();
 
   void SetWindowSize(const uvec2& size);
-  const uvec2& GetWindowSize();
+  const uvec2& GetWindowSize() const;
   void SetWindowPosition(const ivec2& size);
-  const ivec2& GetWindowPosition();
+  const ivec2& GetWindowPosition() const;
 
   Viewport* AddViewport(bool perspective = true, int width = 0, int height = 0);
   void AddViewport(std::shared_ptr<Viewport> viewport);

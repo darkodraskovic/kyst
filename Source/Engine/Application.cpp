@@ -11,11 +11,11 @@ Application::Application(){};
 
 void Application::SetWindowSize(const uvec2& size) { windowSize_ = size; }
 
-const uvec2& Application::GetWindowSize() { return windowSize_; }
+const uvec2& Application::GetWindowSize() const { return windowSize_; }
 
 void Application::SetWindowPosition(const ivec2& position) { windowPosition_ = position; }
 
-const ivec2& Application::GetWindowPosition() { return windowPosition_; }
+const ivec2& Application::GetWindowPosition() const { return windowPosition_; }
 
 void Application::Init() {
   // glfw: initialize and configure
