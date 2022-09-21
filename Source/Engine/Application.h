@@ -30,7 +30,7 @@ class Application {
   void Terminate();
 
   float GetDeltaTime();
-  Input* GetInput();
+  const Input* GetInput() const;
   ResourceManager& GetResourceManager();
 
   void SetWindowSize(const uvec2& size);

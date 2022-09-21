@@ -90,14 +90,14 @@ void Application::Run() {
 
 float Application::GetDeltaTime() { return deltaTime_; }
 
-Input* Application::GetInput() { return input_.get(); }
+const Input* Application::GetInput() const { return input_.get(); }
 
 ResourceManager& Application::GetResourceManager() { return resourceManager_; }
 
 Viewport* Application::AddViewport(bool perspective, int width, int height) {
   if (width == 0) width = windowSize_.x;
   if (height == 0) height = windowSize_.y;
-  auto viewport = Viewport::Create(perspective, width, height);
+  auto viewport = Viewport::Create(this, perspective, width, height);
   AddViewport(shared_ptr<Viewport>(viewport));
   return viewport.get();
 }

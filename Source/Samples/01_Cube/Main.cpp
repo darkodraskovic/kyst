@@ -35,7 +35,7 @@ class App : public Application {
     auto litColShader = std::make_shared<Shader>("Shaders/LitCol.vs", "Shaders/LitCol.fs");
 
     int size = 320;
-    auto vp = Viewport::Create(true, size, size);
+    auto vp = Viewport::Create(this, true, size, size);
     vp->AddEffect("Shaders/Textures/Tex2D.fs");
     vp->AddEffect("Shaders/Effects/Inversion.fs");
     vp->DrawToBuffer();
@@ -98,11 +98,6 @@ class App : public Application {
     //   std::cout << ""
     //             << "\n";
     // }
-  }
-
-  virtual void Update(float deltaTime) {
-    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
-    Application::Update(deltaTime);
   }
 };
 

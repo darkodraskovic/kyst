@@ -5,6 +5,8 @@
 #include "../Application.h"
 #include "../Graphics/Mesh.h"
 #include "../Graphics/Texture2D.h"
+#include "Component/CameraComponent.h"
+#include "Entity.h"
 #include "OrthoCamera.h"
 #include "PerspectiveCamera.h"
 #include "Scene.h"
@@ -14,12 +16,15 @@ using namespace std;
 const string vertexPath_ = "Shaders/Viewport/Viewport.vs";
 const string fragmentPath_ = "Shaders/Viewport/Viewport.fs";
 
+Viewport::Viewport(Application* app) : Object(app){};
+
 void Viewport::Init(unsigned int width, unsigned int height) {
   width_ = width;
   height_ = height;
   GenBuffers(width, height);
   GenQuad(width, height);
   scene_ = make_shared<Scene>();
+  scene_->viewport_ = this;
 }
 
 void Viewport::GenBuffers(float width, float height) {
@@ -82,6 +87,9 @@ void Viewport::DrawToBuffer() {
   }
 
   bound_->Unbind();
+
+  // TODO: replace hard-coded values by window size
+  glViewport(0, 0, 1152, 720);
 }
 
 void Viewport::DrawToScreen() {
@@ -108,12 +116,22 @@ void Viewport::Render() {
 Texture2D* Viewport::GetTexture() { return bound_->GetTexture(); }
 Scene* Viewport::GetScene() { return scene_.get(); }
 
-std::shared_ptr<Viewport> Viewport::Create(bool perspective, int width, int height) {
-  auto viewport = std::make_shared<Viewport>();
+std::shared_ptr<Viewport> Viewport::Create(Application* app, bool perspective, int width, int height) {
+  auto viewport = std::make_shared<Viewport>(app);
   viewport->Init(width, height);
-  if (perspective)
-    viewport->scene_->camera_ = make_shared<PerspectiveCamera>();
-  else
-    viewport->scene_->camera_ = make_shared<OrthoCamera>();
+
+  auto cameraEntity = std::make_shared<Entity>();
+  viewport->scene_->AddEntity(cameraEntity);
+
+  auto cameraComponent = cameraEntity->AddComponent<CameraComponent>();
+  std::shared_ptr<Camera> camera;
+  if (perspective) {
+    camera = make_shared<PerspectiveCamera>();
+  } else {
+    camera = make_shared<OrthoCamera>();
+  }
+  viewport->scene_->camera_ = camera;
+  cameraComponent->SetCamera(camera);
+
   return viewport;
 }

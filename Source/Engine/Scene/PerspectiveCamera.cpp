@@ -5,8 +5,8 @@
 #include "../Input.h"
 
 PerspectiveCamera::PerspectiveCamera() {
-  yaw_ = pi<float>();
-  pitch_ = 0.0f;
+  rotation_.y = pi<float>();
+  rotation_.x = 0.0f;
 
   worldUp_ = vec3(0.0f, 1.0f, 0.0f);
   sensitivity_ = 0.001f;
@@ -19,7 +19,7 @@ mat4 PerspectiveCamera::GetProjectionMatrix(int width, int height) {
 }
 
 void PerspectiveCamera::UpdateCameraVectors() {
-  vec3 front(cos(yaw_) * cos(pitch_), sin(pitch_), sin(yaw_) * cos(pitch_));
+  vec3 front(cos(rotation_.y) * cos(rotation_.x), sin(rotation_.x), sin(rotation_.y) * cos(rotation_.x));
 
   front_ = normalize(front);
   right_ = normalize(cross(front_, worldUp_));
@@ -28,45 +28,42 @@ void PerspectiveCamera::UpdateCameraVectors() {
 
 void PerspectiveCamera::LookAt(const vec3& center) {
   vec3 front = normalize(center - position_);
-  pitch_ = asin(front.y);
-  yaw_ = acos(front.x / cos(pitch_)) + pi<float>();
+  rotation_.x = asin(front.y);
+  rotation_.y = acos(front.x / cos(rotation_.x)) + pi<float>();
   UpdateCameraVectors();
 }
 
-void PerspectiveCamera::Update(float deltaTime, const Input& input) {
-  if (input.GetKey(GLFW_KEY_W)) Translate(CAM_FORWARD, deltaTime);
-  if (input.GetKey(GLFW_KEY_S)) Translate(CAM_BACKWARD, deltaTime);
-  if (input.GetKey(GLFW_KEY_A)) Translate(CAM_LEFT, deltaTime);
-  if (input.GetKey(GLFW_KEY_D)) Translate(CAM_RIGHT, deltaTime);
-  if (input.GetKey(GLFW_KEY_E)) Translate(CAM_UP, deltaTime);
-  if (input.GetKey(GLFW_KEY_Q)) Translate(CAM_DOWN, deltaTime);
+void PerspectiveCamera::Update(float deltaTime, const Input* input) {
+  Camera::Update(deltaTime, input);
 
-  Rotate(Input::mouseData_.moveX_, Input::mouseData_.moveY_);
-  if (Input::mouseData_.scrolled_) Zoom(Input::mouseData_.scrollY_);
+  Translate(deltaTime);
+  Rotate();
+  Zoom();
 }
 
-void PerspectiveCamera::Translate(CameraMovement direction, float deltaTime) {
+void PerspectiveCamera::Translate(float deltaTime) {
   float velocity = movementSpeed_ * deltaTime;
-  if (direction == CAM_FORWARD) position_ += front_ * velocity;
-  if (direction == CAM_BACKWARD) position_ -= front_ * velocity;
-  if (direction == CAM_LEFT) position_ -= right_ * velocity;
-  if (direction == CAM_RIGHT) position_ += right_ * velocity;
-  if (direction == CAM_UP) position_ += up_ * velocity;
-  if (direction == CAM_DOWN) position_ -= up_ * velocity;
+
+  if (movement_[CAM_FORWARD]) position_ += front_ * velocity;
+  if (movement_[CAM_BACKWARD]) position_ -= front_ * velocity;
+  if (movement_[CAM_LEFT]) position_ -= right_ * velocity;
+  if (movement_[CAM_RIGHT]) position_ += right_ * velocity;
+  if (movement_[CAM_UP]) position_ += up_ * velocity;
+  if (movement_[CAM_DOWN]) position_ -= up_ * velocity;
 }
 
-void PerspectiveCamera::Rotate(float xoffset, float yoffset, bool constrainPitch) {
-  yaw_ += xoffset * sensitivity_;
-  pitch_ -= yoffset * sensitivity_;
+void PerspectiveCamera::Rotate(bool constrainPitch) {
+  rotation_.y += movement_[CAM_ROT_X] * sensitivity_;
+  rotation_.x -= movement_[CAM_ROT_Y] * sensitivity_;
 
   if (constrainPitch) {
-    pitch_ = clamp(pitch_, -89.0f, 89.0f);
+    rotation_.x = clamp(rotation_.x, -89.0f, 89.0f);
   }
 
   UpdateCameraVectors();
 }
 
-void PerspectiveCamera::Zoom(float yoffset) {
-  zoom_ -= yoffset * sensitivity_ * 1e2;
+void PerspectiveCamera::Zoom() {
+  zoom_ -= movement_[CAM_ZOOM] * sensitivity_ * 1e2;
   zoom_ = clamp(zoom_, .5f, 2.0f);
 }

@@ -1,10 +1,6 @@
 #include "OrthoCamera.h"
 
-OrthoCamera::OrthoCamera() {
-  right_ = {1, 0, 0};
-  movementSpeed_ = 500;
-  zoom_ = 1;
-}
+OrthoCamera::OrthoCamera() { movementSpeed_ = 500; }
 
 mat4 OrthoCamera::GetProjectionMatrix(int width, int height) {
   vec3 center(width / 2, height / 2, 0);
@@ -14,23 +10,25 @@ mat4 OrthoCamera::GetProjectionMatrix(int width, int height) {
   return glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f) * m;
 }
 
-void OrthoCamera::Update(float deltaTime, const Input& input) {
-  if (input.GetKey(GLFW_KEY_W)) Translate(CAM_FORWARD, deltaTime);
-  if (input.GetKey(GLFW_KEY_S)) Translate(CAM_BACKWARD, deltaTime);
-  if (input.GetKey(GLFW_KEY_A)) Translate(CAM_LEFT, deltaTime);
-  if (input.GetKey(GLFW_KEY_D)) Translate(CAM_RIGHT, deltaTime);
-  if (input.GetKey(GLFW_KEY_E)) Translate(CAM_UP, deltaTime);
-  if (input.GetKey(GLFW_KEY_Q)) Translate(CAM_DOWN, deltaTime);
+void OrthoCamera::Update(float deltaTime, const Input* input) {
+  Camera::Update(deltaTime, input);
+
+  Translate(deltaTime);
+  Zoom();
 }
 
-void OrthoCamera::Translate(CameraMovement direction, float deltaTime) {
+void OrthoCamera::Translate(float deltaTime) {
   float velocity = movementSpeed_ * deltaTime;
-  if (direction == CAM_FORWARD) zoom_ += 0.02;
-  if (direction == CAM_BACKWARD) zoom_ -= 0.02;
-  if (direction == CAM_LEFT) position_ -= right_ * velocity;
-  if (direction == CAM_RIGHT) position_ += right_ * velocity;
-  if (direction == CAM_UP) position_ += up_ * velocity;
-  if (direction == CAM_DOWN) position_ -= up_ * velocity;
+  if (movement_[CAM_LEFT]) position_ -= right_ * velocity;
+  if (movement_[CAM_RIGHT]) position_ += right_ * velocity;
+  if (movement_[CAM_UP]) position_ += up_ * velocity;
+  if (movement_[CAM_DOWN]) position_ -= up_ * velocity;
+}
+
+void OrthoCamera::Zoom() {
+  zoom_ += movement_[CAM_FORWARD] * zoomRate_;
+  zoom_ -= movement_[CAM_BACKWARD] * zoomRate_;
+  zoom_ += movement_[CAM_ZOOM] * zoomRate_;
 }
 
 void OrthoCamera::LookAt(const vec3& center) { position_ = center; }

@@ -68,7 +68,8 @@ if [ $WIN == true ]; then
     else 
         TARGET=${TARGET}.vcxproj
     fi
-    COMPILE_CMD="MSBuild.exe -target:Build /property:Configuration=Release"
+    # COMPILE_CMD="MSBuild.exe -target:Build /property:Configuration=Release"
+    COMPILE_CMD="MSBuild.exe -target:Build /property:Configuration=Debug"
 fi
 
 echo "COMPILE_CMD: ${COMPILE_CMD}"

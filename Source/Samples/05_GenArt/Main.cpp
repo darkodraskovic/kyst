@@ -2,6 +2,7 @@
 
 #include "Engine/Application.h"
 #include "Engine/Graphics/Material2D.h"
+#include "Engine/Scene/Component/ModelComponent.h"
 #include "Engine/Scene/Entity.h"
 #include "Engine/Scene/Scene.h"
 #include "Engine/Scene/Viewport.h"
@@ -15,11 +16,14 @@ std::shared_ptr<Entity> GenEntity(const string& fragmentPath, const vec3& positi
   Material2D* material = new Material2D(fragmentPath);
   Mesh* mesh = Shape2DFactory::SolidRect(LEFT + DOWN, glm::vec2(2, 2));
   mesh->Generate(material->GetShader()->GetId());
-  auto entity = make_shared<Entity>();
+
   auto model = make_shared<Model>();
   model->SetMaterial(std::shared_ptr<Material2D>(material));
   model->SetMesh(std::shared_ptr<Mesh>(mesh));
-  entity->SetModel(model);
+
+  auto entity = make_shared<Entity>();
+  auto modelComponent = entity->AddComponent<ModelComponent>();
+  modelComponent->SetModel(model);
   entity->position_ = position;
   return entity;
 }
@@ -42,11 +46,6 @@ class App : public Application {
     viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/02.fs", RIGHT + DOWN));
     viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/03.fs", RIGHT + UP));
     viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/04_tiling.fs", LEFT + UP));
-  }
-
-  virtual void Update(float deltaTime) {
-    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
-    Application::Update(deltaTime);
   }
 };
 
