@@ -33,7 +33,7 @@ void PerspectiveCamera::LookAt(const vec3& center) {
   UpdateCameraVectors();
 }
 
-void PerspectiveCamera::Update(float deltaTime, const Input& input) {
+void PerspectiveCamera::Update(float deltaTime, const Input* input) {
   Camera::Update(deltaTime, input);
 
   Translate(deltaTime);

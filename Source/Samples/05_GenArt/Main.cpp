@@ -47,11 +47,6 @@ class App : public Application {
     viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/03.fs", RIGHT + UP));
     viewport->GetScene()->AddEntity(GenEntity("Shaders/GenArt/04_tiling.fs", LEFT + UP));
   }
-
-  virtual void Update(float deltaTime) {
-    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
-    Application::Update(deltaTime);
-  }
 };
 
 int main() {

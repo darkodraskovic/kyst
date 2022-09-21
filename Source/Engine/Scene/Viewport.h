@@ -6,11 +6,13 @@
 
 #include "../Graphics/Framebuffer.h"
 #include "../Graphics/Shader.h"
+#include "Object.h"
 
 class Scene;
 class Mesh;
-class Viewport {
+class Viewport : public Object {
  public:
+  Viewport(Application* app);
   void Init(unsigned int width, unsigned int height);
   void Update(float deltaTime);
 
@@ -21,7 +23,7 @@ class Viewport {
   Texture2D* GetTexture();
   Scene* GetScene();
 
-  static std::shared_ptr<Viewport> Create(bool perspective, int width, int height);
+  static std::shared_ptr<Viewport> Create(Application* app, bool perspective, int width, int height);
 
   vec3 position_ = vec3(0.f);
   vec3 scale_ = vec3(1.f);

@@ -116,11 +116,6 @@ class App : public Application {
 
     cam->LookAt(ZERO);
   }
-
-  virtual void Update(float deltaTime) {
-    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
-    Application::Update(deltaTime);
-  }
 };
 
 int main() {

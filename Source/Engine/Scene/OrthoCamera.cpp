@@ -10,7 +10,7 @@ mat4 OrthoCamera::GetProjectionMatrix(int width, int height) {
   return glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f) * m;
 }
 
-void OrthoCamera::Update(float deltaTime, const Input& input) {
+void OrthoCamera::Update(float deltaTime, const Input* input) {
   Camera::Update(deltaTime, input);
 
   Translate(deltaTime);

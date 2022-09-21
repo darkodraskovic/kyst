@@ -78,11 +78,6 @@ class App : public Application {
     // viewport->position_ += (RIGHT + UP) * .5f;
     // viewport->position_ += (RIGHT + UP) / 4.f;
   }
-
-  virtual void Update(float deltaTime) {
-    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
-    Application::Update(deltaTime);
-  }
 };
 
 int main() {

@@ -8,9 +8,10 @@ class Component {
   virtual ~Component() {}
   Entity* GetEntity() { return entity_; };
 
- private:
+ protected:
   Entity* entity_;
 
+ private:
   friend class Entity;
 };
 

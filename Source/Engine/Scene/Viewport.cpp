@@ -16,6 +16,8 @@ using namespace std;
 const string vertexPath_ = "Shaders/Viewport/Viewport.vs";
 const string fragmentPath_ = "Shaders/Viewport/Viewport.fs";
 
+Viewport::Viewport(Application* app) : Object(app){};
+
 void Viewport::Init(unsigned int width, unsigned int height) {
   width_ = width;
   height_ = height;
@@ -114,14 +116,14 @@ void Viewport::Render() {
 Texture2D* Viewport::GetTexture() { return bound_->GetTexture(); }
 Scene* Viewport::GetScene() { return scene_.get(); }
 
-std::shared_ptr<Viewport> Viewport::Create(bool perspective, int width, int height) {
-  auto viewport = std::make_shared<Viewport>();
+std::shared_ptr<Viewport> Viewport::Create(Application* app, bool perspective, int width, int height) {
+  auto viewport = std::make_shared<Viewport>(app);
   viewport->Init(width, height);
 
   auto cameraEntity = std::make_shared<Entity>();
   viewport->scene_->AddEntity(cameraEntity);
 
-  cameraEntity->AddComponent<CameraComponent>();
+  auto cameraComponent = cameraEntity->AddComponent<CameraComponent>();
   std::shared_ptr<Camera> camera;
   if (perspective) {
     camera = make_shared<PerspectiveCamera>();
@@ -129,6 +131,7 @@ std::shared_ptr<Viewport> Viewport::Create(bool perspective, int width, int heig
     camera = make_shared<OrthoCamera>();
   }
   viewport->scene_->camera_ = camera;
+  cameraComponent->SetCamera(camera);
 
   return viewport;
 }

@@ -5,7 +5,7 @@
 #include "Component/ModelComponent.h"
 #include "Entity.h"
 
-Viewport* Scene::GetViewport() { return viewport_; }
+const Viewport* Scene::GetViewport() const { return viewport_; }
 
 void Scene::AddEntity(std::shared_ptr<Entity> entity) {
   if (std::find(entities_.begin(), entities_.end(), entity) != entities_.end()) return;

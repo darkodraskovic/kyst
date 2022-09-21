@@ -20,8 +20,8 @@ class Camera {
   virtual void LookAt(const vec3& center) = 0;
   // TODO: move this method from Camera to Entity
   virtual void Translate(float deltaTime) = 0;
-  virtual void HandleInput(const Input& input);
-  virtual void Update(float deltaTime, const Input& input);
+  virtual void HandleInput(const Input* input);
+  virtual void Update(float deltaTime, const Input* input);
   virtual void Zoom() = 0;
 
   vec3 position_{0, 0, 0};

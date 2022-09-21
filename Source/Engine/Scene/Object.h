@@ -5,6 +5,7 @@ class Application;
 class Object {
  public:
   Object(Application* app) : app_(app){};
+  const Application* GetApplication() const { return app_; }
 
  protected:
   Application* app_;
