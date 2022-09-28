@@ -123,15 +123,16 @@ std::shared_ptr<Viewport> Viewport::Create(Application* app, bool perspective, i
   auto cameraEntity = std::make_shared<Entity>();
   viewport->scene_->AddEntity(cameraEntity);
 
-  auto cameraComponent = cameraEntity->AddComponent<CameraComponent>();
   std::shared_ptr<Camera> camera;
   if (perspective) {
     camera = make_shared<PerspectiveCamera>();
   } else {
     camera = make_shared<OrthoCamera>();
   }
-  viewport->scene_->camera_ = camera;
+
+  auto cameraComponent = cameraEntity->AddComponent<CameraComponent>();
   cameraComponent->SetCamera(camera);
+  viewport->scene_->cameraComponent_ = cameraComponent;
 
   return viewport;
 }

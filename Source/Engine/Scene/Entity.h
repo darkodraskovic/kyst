@@ -56,7 +56,7 @@ class Entity {
 
  protected:
   std::vector<std::shared_ptr<Component>> components_;
-  std::map<const type_info*, Component*> typeMap_;
+  std::map<const std::type_info*, Component*> typeMap_;
 
   std::vector<Updatable*> updatables_;
   std::vector<Drawable*> drawables_;

@@ -9,5 +9,6 @@ void CameraComponent::SetCamera(std::shared_ptr<Camera> camera) { camera_ = came
 Camera* CameraComponent::GetCamera() { return camera_.get(); }
 
 void CameraComponent::Update(float deltaTime) {
-  camera_->Update(deltaTime, entity_->GetScene()->GetViewport()->GetApplication()->GetInput());
+  camera_->Update(deltaTime, entity_->GetScene()->GetViewport()->GetApplication()->GetInput(), GetEntity()->position_,
+                  GetEntity()->rotation_);
 }

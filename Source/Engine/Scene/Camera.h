@@ -14,18 +14,16 @@ class Camera {
  public:
   Camera();
 
-  mat4 GetViewMatrix();
+  mat4 GetViewMatrix(const vec3& position);
   virtual mat4 GetProjectionMatrix(int scrWidth, int scrHeight) = 0;
 
-  virtual void LookAt(const vec3& center) = 0;
+  virtual void LookAt(const vec3& center, vec3& position, vec3& rotation) = 0;
   // TODO: move this method from Camera to Entity
-  virtual void Translate(float deltaTime) = 0;
+  virtual void Translate(float deltaTime, vec3& position) = 0;
+  virtual void Rotate(vec3& rotation, bool constrainPitch = true) = 0;
   virtual void HandleInput(const Input* input);
-  virtual void Update(float deltaTime, const Input* input);
+  virtual void Update(float deltaTime, const Input* input, vec3& position, vec3& rotation);
   virtual void Zoom() = 0;
-
-  vec3 position_{0, 0, 0};
-  vec3 rotation_{0, 0, 0};
 
   vec3 right_{1, 0, 0};
   vec3 up_{0, 1, 0};

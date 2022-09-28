@@ -19,7 +19,7 @@ class App : public Application {
     Application::Init();
 
     auto viewport = AddViewport();
-    viewport->GetScene()->camera_->position_.z = 12.0f;
+    viewport->GetScene()->cameraComponent_->GetEntity()->position_.z = 12.0f;
     viewport->AddEffect("Shaders/Effects/Noop.fs");
     // viewport->AddEffect("Shaders/Effects/Remove.fs");
     // viewport->AddEffect("Shaders/Effects/Inversion.fs");
@@ -78,7 +78,9 @@ class App : public Application {
     // cube3->GetModel()->GetMaterial()->alpha_ = 0.5;
     viewport->GetScene()->AddEntity(cube3);
 
-    viewport->GetScene()->camera_->LookAt(ZERO);
+    viewport->GetScene()->cameraComponent_->GetCamera()->LookAt(ZERO,
+                                                                viewport->GetScene()->cameraComponent_->GetEntity()->position_,
+                                                                viewport->GetScene()->cameraComponent_->GetEntity()->rotation_);
 
     // cube3->AddComponent<ModelComponent>();
     // auto component = cube3->GetComponent<ModelComponent>();
