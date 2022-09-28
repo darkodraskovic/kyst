@@ -37,14 +37,14 @@ void Scene::Draw(unsigned int width, unsigned int height) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnable(GL_DEPTH_TEST);
 
-  glm::mat4 view = camera_->GetViewMatrix();
-  glm::mat4 projection = camera_->GetProjectionMatrix(width, height);
+  auto pos = cameraComponent_->GetEntity()->position_;
+  glm::mat4 view = cameraComponent_->GetCamera()->GetViewMatrix(pos);
+  glm::mat4 projection = cameraComponent_->GetCamera()->GetProjectionMatrix(width, height);
 
   // render solid entities
   glEnable(GL_CULL_FACE);
   for (auto it = entities_.begin(); it != entities_.end(); ++it) {
     auto e = *it;
-    // TODO: Remove references to Entity components from Scene class
     auto modelComponent = e->GetComponent<ModelComponent>();
     if (!e->visible_ || !modelComponent) continue;
     if (e->GetComponent<ModelComponent>()->GetModel()->GetMaterial()->alpha_ < 1.0) {
@@ -57,7 +57,8 @@ void Scene::Draw(unsigned int width, unsigned int height) {
 
   // render transparent entities
   std::sort(alphaEntities_.begin(), alphaEntities_.end(), [this](std::shared_ptr<Entity> lhs, std::shared_ptr<Entity> rhs) {
-    return glm::length(lhs->position_ - camera_->position_) < glm::length(rhs->position_ - camera_->position_);
+    return glm::length(lhs->position_ - cameraComponent_->GetEntity()->position_) <
+           glm::length(rhs->position_ - cameraComponent_->GetEntity()->position_);
   });
   glEnable(GL_BLEND);
   for (auto it = alphaEntities_.begin(); it != alphaEntities_.end(); ++it) {

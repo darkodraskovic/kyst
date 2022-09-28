@@ -9,13 +9,12 @@ class OrthoCamera : public Camera {
   OrthoCamera();
 
   virtual mat4 GetProjectionMatrix(int scrWidth, int scrHeight) override;
-  virtual void LookAt(const vec3& center) override;
+  virtual void LookAt(const vec3& center, vec3& position, vec3& rotation) override;
 
-  virtual void Update(float deltaTime, const Input* input) override;
-  virtual void Translate(float deltaTime) override;
-  virtual void Zoom() override;
-
-  float zoomRate_ = .02f;
+  virtual void Translate(float deltaTime, const CameraMovementMap& movement, vec3& position) override;
+  virtual void Rotate(const CameraMovementMap& movement, vec3& rotation, bool constrainPitch = true) override;
+  virtual void Zoom(const CameraMovementMap& movement) override;
+  virtual void Update(float deltaTime, const CameraMovementMap& movement, vec3& position, vec3& rotation) override;
 };
 
 #endif /* ORTHOCAMERA_H */

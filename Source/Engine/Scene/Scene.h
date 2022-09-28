@@ -4,7 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "Camera.h"
+// #include "Camera.h"
+#include "Component/CameraComponent.h"
 #include "Viewport.h"
 
 class Entity;
@@ -17,7 +18,7 @@ class Scene {
   const Viewport* GetViewport() const;
 
   vec4 clearColor_ = vec4(0.2f, 0.3f, 0.3f, 1.0f);
-  std::shared_ptr<Camera> camera_;
+  CameraComponent* cameraComponent_;
 
  private:
   std::vector<std::shared_ptr<Entity>> entities_;

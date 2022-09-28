@@ -23,8 +23,9 @@ class App : public Application {
 
     auto viewport = AddViewport(true);
 
-    auto cam = viewport->GetScene()->camera_;
-    cam->position_.z = 4.0f;
+    auto cam = viewport->GetScene()->cameraComponent_->GetCamera();
+    auto camEntity = viewport->GetScene()->cameraComponent_->GetEntity();
+    camEntity->position_.z = 4.0f;
 
     viewport->AddEffect("Shaders/Effects/Noop.fs");
     // viewport->AddEffect("Shaders/Effects/Remove.fs");
@@ -114,7 +115,7 @@ class App : public Application {
     entity->position_.z = 0.5;
     viewport->GetScene()->AddEntity(entity);
 
-    cam->LookAt(ZERO);
+    cam->LookAt(ZERO, camEntity->position_, camEntity->rotation_);
   }
 };
 

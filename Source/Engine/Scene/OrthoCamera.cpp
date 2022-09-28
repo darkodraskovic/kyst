@@ -1,6 +1,6 @@
 #include "OrthoCamera.h"
 
-OrthoCamera::OrthoCamera() { movementSpeed_ = 500; }
+OrthoCamera::OrthoCamera() { translationSpeed_ = 500; }
 
 mat4 OrthoCamera::GetProjectionMatrix(int width, int height) {
   vec3 center(width / 2, height / 2, 0);
@@ -10,25 +10,27 @@ mat4 OrthoCamera::GetProjectionMatrix(int width, int height) {
   return glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f) * m;
 }
 
-void OrthoCamera::Update(float deltaTime, const Input* input) {
-  Camera::Update(deltaTime, input);
+void OrthoCamera::LookAt(const vec3& center, vec3& position, vec3& rotation) { position = center; }
 
-  Translate(deltaTime);
-  Zoom();
+void OrthoCamera::Translate(float deltaTime, const CameraMovementMap& movement, vec3& position) {
+  float velocity = translationSpeed_ * deltaTime;
+  if (movement.at(CAM_LEFT)) position -= right_ * velocity;
+  if (movement.at(CAM_RIGHT)) position += right_ * velocity;
+  if (movement.at(CAM_UP)) position += up_ * velocity;
+  if (movement.at(CAM_DOWN)) position -= up_ * velocity;
 }
 
-void OrthoCamera::Translate(float deltaTime) {
-  float velocity = movementSpeed_ * deltaTime;
-  if (movement_[CAM_LEFT]) position_ -= right_ * velocity;
-  if (movement_[CAM_RIGHT]) position_ += right_ * velocity;
-  if (movement_[CAM_UP]) position_ += up_ * velocity;
-  if (movement_[CAM_DOWN]) position_ -= up_ * velocity;
+void OrthoCamera::Rotate(const CameraMovementMap& movement, vec3& rotation, bool constrainPitch) {
+  // TODO: implement
 }
 
-void OrthoCamera::Zoom() {
-  zoom_ += movement_[CAM_FORWARD] * zoomRate_;
-  zoom_ -= movement_[CAM_BACKWARD] * zoomRate_;
-  zoom_ += movement_[CAM_ZOOM] * zoomRate_;
+void OrthoCamera::Zoom(const CameraMovementMap& movement) {
+  zoom_ += movement.at(CAM_FORWARD) * zoomSpeed_;
+  zoom_ -= movement.at(CAM_BACKWARD) * zoomSpeed_;
+  zoom_ += movement.at(CAM_ZOOM) * zoomSpeed_;
 }
 
-void OrthoCamera::LookAt(const vec3& center) { position_ = center; }
+void OrthoCamera::Update(float deltaTime, const CameraMovementMap& movement, vec3& position, vec3& rotation) {
+  Translate(deltaTime, movement, position);
+  Zoom(movement);
+}
