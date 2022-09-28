@@ -31,11 +31,6 @@ class App : public Application {
     viewport->scale_.y = .5;
     viewport->position_.x = .25;
 
-    auto cam = viewport->GetScene()->camera_;
-    // cam->zoom_ = 2;
-    // cam->position_.z = 5;
-    // cam->LookAt(ZERO);
-
     for (int i = 0; i < width * height; ++i) {
       data0[i] = 0x000000FF;
     }
