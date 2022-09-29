@@ -4,8 +4,8 @@
 #include <glm/gtc/random.hpp>
 
 #include "Engine/Graphics/Material.h"
-#include "Engine/Scene/Mover.h"
-#include "Engine/Scene/Particle.h"
+#include "Engine/Scene/Component/ModelComponent.h"
+#include "Engine/Scene/Component/Mover.h"
 #include "Engine/Scene/Scene.h"
 #include "ShapeFactory/KochFactory.h"
 #include "ShapeFactory/MazeFactory.h"
@@ -13,15 +13,21 @@
 
 using namespace ShapeFactory;
 
-EntityFactory::EntityFactory(Scene* scene) : scene_(scene) {
+EntityFactory::EntityFactory(Scene* scene, const vec3& col1, const vec3& col2, const vec3& col3) : scene_(scene) {
+  color1_ = col1;
+  color2_ = col2;
+  color3_ = col3;
+
   // make materials
   auto colShader = std::make_shared<Shader>("Shaders/Col.vs", "Shaders/Col.fs");
   colMaterial_ = std::make_shared<Material>();
   colMaterial_->SetShader(colShader);
+  colMaterial_->color_ = color3_;
 
   auto vColShader = std::make_shared<Shader>("Shaders/VCol.vs", "Shaders/VCol.fs");
   vColMaterial_ = std::make_shared<Material>();
   vColMaterial_->SetShader(vColShader);
+  vColMaterial_->color_ = color3_;
 
   // make mesh
   snowflakeMesh_ = std::make_shared<Mesh>();
@@ -30,30 +36,35 @@ EntityFactory::EntityFactory(Scene* scene) : scene_(scene) {
   snowflakeMesh_->Generate(colMaterial_->GetShader()->GetId());
 }
 
-Mover* EntityFactory::AddMover(bool vCol) {
-  auto mover = std::make_shared<Mover>();
-  mover->SetModel(std::make_shared<Model>());
-  mover->GetModel()->SetMaterial(colMaterial_);
-  mover->GetModel()->GetMaterial()->color_ = color1_;
+Entity* EntityFactory::AddEntity(bool vCol) {
+  auto model = std::make_shared<Model>();
+  model->SetMaterial(colMaterial_);
   if (vCol) {
-    mover->GetModel()->SetMaterial(vColMaterial_);
+    model->SetMaterial(vColMaterial_);
   }
 
-  scene_->AddEntity(mover);
-  return mover.get();
+  auto entity = std::make_shared<Entity>();
+  auto modelComponent = entity->AddComponent<ModelComponent>();
+  modelComponent->SetModel(model);
+  entity->AddComponent<Mover>();
+
+  scene_->AddEntity(entity);
+  return entity.get();
 }
 
 void EntityFactory::CreateLineGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol) {
-  auto gasket = AddMover(vCol);
+  auto gasket = AddEntity(vCol);
   gasket->name_ = "gasket";
+  auto* mover = gasket->GetComponent<Mover>();
+  auto* model = gasket->GetComponent<ModelComponent>()->GetModel();
 
-  gasket->aVelocity_.y = quarter_pi<float>();
+  mover->aVelocity_.y = quarter_pi<float>();
 
-  gasket->GetModel()->SetMesh(std::make_shared<Mesh>());
+  model->SetMesh(std::make_shared<Mesh>());
   SierpinskiFactory::varRange_ = varRange;
   auto points = threeD ? SierpinskiFactory::Sierpinski3DDet(numDivisions) : SierpinskiFactory::Sierpinski2DDet(numDivisions);
-  gasket->GetModel()->GetMesh()->mode_ = GL_LINES;
-  std::vector<vec3>& lines = gasket->GetModel()->GetMesh()->positions_;
+  model->GetMesh()->mode_ = GL_LINES;
+  std::vector<vec3>& lines = model->GetMesh()->positions_;
   for (int i = 0; i < points.size(); i += 3) {
     lines.push_back(points.at(i));
     lines.push_back(points.at(i + 1));
@@ -64,10 +75,10 @@ void EntityFactory::CreateLineGasket(int numDivisions, const vec2& varRange, boo
   }
 
   if (!vCol) {
-    gasket->GetModel()->GetMesh()->Generate(gasket->GetModel()->GetMaterial()->GetShader()->GetId());
+    model->GetMesh()->Generate(model->GetMaterial()->GetShader()->GetId());
   };
 
-  std::vector<vec3>& colors = gasket->GetModel()->GetMesh()->colors_;
+  std::vector<vec3>& colors = model->GetMesh()->colors_;
   for (int i = 0; i < lines.size(); i += 6) {
     colors.push_back(color1_);
     colors.push_back(color1_);
@@ -77,25 +88,28 @@ void EntityFactory::CreateLineGasket(int numDivisions, const vec2& varRange, boo
     colors.push_back(color3_);
   }
 
-  gasket->GetModel()->GetMesh()->Generate(gasket->GetModel()->GetMaterial()->GetShader()->GetId());
+  model->GetMesh()->Generate(model->GetMaterial()->GetShader()->GetId());
 }
 
 void EntityFactory::CreateTriGasket(int numDivisions, const vec2& varRange, bool threeD, bool vCol) {
-  auto gasket = AddMover(vCol);
-  gasket->aVelocity_.y = quarter_pi<float>();
+  auto gasket = AddEntity(vCol);
+  auto* mover = gasket->GetComponent<Mover>();
+  auto* model = gasket->GetComponent<ModelComponent>()->GetModel();
 
-  gasket->GetModel()->SetMesh(std::make_shared<Mesh>());
+  mover->aVelocity_.y = quarter_pi<float>();
+
+  model->SetMesh(std::make_shared<Mesh>());
   SierpinskiFactory::varRange_ = varRange;
-  gasket->GetModel()->GetMesh()->positions_ =
+  model->GetMesh()->positions_ =
       threeD ? SierpinskiFactory::Sierpinski3DDet(numDivisions) : SierpinskiFactory::Sierpinski2DDet(numDivisions);
-  gasket->GetModel()->GetMesh()->mode_ = GL_TRIANGLES;
+  model->GetMesh()->mode_ = GL_TRIANGLES;
 
   if (!vCol) {
-    gasket->GetModel()->GetMesh()->Generate(gasket->GetModel()->GetMaterial()->GetShader()->GetId());
+    model->GetMesh()->Generate(model->GetMaterial()->GetShader()->GetId());
   };
 
-  std::vector<vec3>& colors = gasket->GetModel()->GetMesh()->colors_;
-  for (int i = 0; i < gasket->GetModel()->GetMesh()->positions_.size(); i += 3) {
+  std::vector<vec3>& colors = model->GetMesh()->colors_;
+  for (int i = 0; i < model->GetMesh()->positions_.size(); i += 3) {
     int idx = (i / 3) % 3;
     vec3 color = color1_;
     if (idx == 1) {
@@ -106,20 +120,24 @@ void EntityFactory::CreateTriGasket(int numDivisions, const vec2& varRange, bool
     for (int j = 0; j < 3; ++j) colors.push_back(color);
   }
 
-  gasket->GetModel()->GetMesh()->Generate(gasket->GetModel()->GetMaterial()->GetShader()->GetId());
+  model->GetMesh()->Generate(model->GetMaterial()->GetShader()->GetId());
 }
 
-ParticleEmitter* EntityFactory::CreateSnowflakeEmitter() {
-  auto emitter = std::make_shared<ParticleEmitter>();
-  emitter->name_ = "emitter";
-  emitter->SetModel(std::make_shared<Model>());
-  emitter->GetModel()->SetMesh(snowflakeMesh_);
-  emitter->GetModel()->SetMaterial(colMaterial_);
-  emitter->GetModel()->GetMaterial()->color_ = color3_;
+Entity* EntityFactory::CreateSnowflakeEmitter() {
+  auto entity = std::make_shared<Entity>();
+  entity->name_ = "emitter";
+  entity->position_ = UP;
+  scene_->AddEntity(entity);
+
+  auto model = std::make_shared<Model>();
+  model->SetMesh(snowflakeMesh_);
+  model->SetMaterial(colMaterial_);
+
+  auto* emitter = entity->AddComponent<ParticleEmitter>();
+  emitter->SetModel(model);
 
   emitter->emissionFreq_ = .05f;
 
-  emitter->position_ = UP;
   emitter->minScale_ = ONE * 0.01f;
   emitter->maxScale_ = ONE * 0.1f;
 
@@ -131,7 +149,5 @@ ParticleEmitter* EntityFactory::CreateSnowflakeEmitter() {
   emitter->minLifespan_ = 2.f;
   emitter->maxLifespan_ = 3.f;
 
-  scene_->AddEntity(emitter);
-
-  return emitter.get();
+  return entity.get();
 }
