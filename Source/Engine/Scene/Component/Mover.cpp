@@ -1,12 +1,11 @@
 #include "Mover.h"
 
-#include "../VecConsts.h"
+#include "../../VecConsts.h"
+#include "../Entity.h"
 
 namespace Kyst {
 
 using namespace VecConsts;
-
-Mover::Mover() {}
 
 void Mover::ApplyForce(const vec3& force) { acceleration_ += force / mass_; }
 
@@ -19,8 +18,6 @@ void Mover::Drag() {
 }
 
 void Mover::Update(float deltaTime) {
-  Entity::Update(deltaTime);
-
   // linear
   ApplyForce(gravity_);
   Drag();
@@ -31,7 +28,7 @@ void Mover::Update(float deltaTime) {
   } else {
     velocity_ = glm::clamp(velocity_, -maxVelocity_, maxVelocity_);
   }
-  position_ += velocity_ * deltaTime;
+  entity_->position_ += velocity_ * deltaTime;
   acceleration_ *= 0.f;
 
   // angular
@@ -43,7 +40,7 @@ void Mover::Update(float deltaTime) {
   } else {
     aVelocity_ = glm::clamp(aVelocity_, -maxAVelocity_, maxAVelocity_);
   }
-  rotation_ += aVelocity_ * deltaTime;
+  entity_->rotation_ += aVelocity_ * deltaTime;
   aAcceleration_ *= 0.f;
 }
 

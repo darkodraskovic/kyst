@@ -19,30 +19,24 @@ class App : public Application {
     glLineWidth(2.0f);
 
     auto viewport = AddViewport(true);
+    auto* cam = viewport->GetScene()->cameraComponent_->GetCamera();
+    auto* camEntity = viewport->GetScene()->cameraComponent_->GetEntity();
     viewport->GetScene()->clearColor_ = vec4(ShapeUtils::Hex2rgb("99B898"), 1.0);
     // viewport->AddEffect("Shaders/Effects/Noop.fs");
-    // viewport->AddEffect("Shaders/Effects/Inversion.fs");
+    viewport->AddEffect("Shaders/Effects/Inversion.fs");
     // viewport->AddEffect("Shaders/Effects/Remove.fs");
 
-    viewport->GetScene()->camera_->position_.z = 7.0f;
-    viewport->GetScene()->camera_->position_.y = 5.0f;
+    camEntity->position_.z = 7.0f;
+    camEntity->position_.y = 5.0f;
 
-    auto eFactory = std::make_shared<EntityFactory>(viewport->GetScene());
-
-    eFactory->color1_ = ShapeUtils::Hex2rgb("E84A5F");
-    eFactory->color2_ = ShapeUtils::Hex2rgb("FF847C");
-    eFactory->color3_ = ShapeUtils::Hex2rgb("FECEAB");
+    auto eFactory = std::make_shared<EntityFactory>(viewport->GetScene(), ShapeUtils::Hex2rgb("E84A5F"),
+                                                    ShapeUtils::Hex2rgb("FF847C"), ShapeUtils::Hex2rgb("FECEAB"));
     float limit = 0.05;
     eFactory->CreateLineGasket(4, vec2(-limit, limit), true, true);
     // eFactory->CreateTriGasket(4, vec2(-limit, limit), true, true);
     eFactory->CreateSnowflakeEmitter();
 
-    viewport->GetScene()->camera_->LookAt(ZERO);
-  }
-
-  virtual void Update(float deltaTime) {
-    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
-    Application::Update(deltaTime);
+    cam->LookAt(ZERO, camEntity->position_, camEntity->rotation_);
   }
 };
 

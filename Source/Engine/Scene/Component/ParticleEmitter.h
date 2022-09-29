@@ -2,8 +2,9 @@
 
 #include <glm/glm.hpp>
 
-#include "../VecConsts.h"
-#include "Particle.h"
+#include "../../Graphics/Model.h"
+#include "../../VecConsts.h"
+#include "Component.h"
 
 using namespace glm;
 
@@ -11,10 +12,10 @@ namespace Kyst {
 
 using namespace VecConsts;
 
-class ParticleEmitter : public Entity {
+class ParticleEmitter : public Updatable {
  public:
-  ParticleEmitter();
   void Update(float deltaTime) override;
+  void SetModel(std::shared_ptr<Model> model);
 
   float emissionFreq_ = 1.f;
 
@@ -36,6 +37,7 @@ class ParticleEmitter : public Entity {
  private:
   void CreateParticle();
 
+  std::shared_ptr<Model> model_;
   float lastEmitted_ = 0;
 };
 

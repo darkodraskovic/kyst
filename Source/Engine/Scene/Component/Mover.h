@@ -2,16 +2,14 @@
 
 #include <glm/glm.hpp>
 
-#include "Entity.h"
+#include "Component.h"
 
 using namespace glm;
 
 namespace Kyst {
 
-class Mover : public Entity {
+class Mover : public Updatable {
  public:
-  Mover();
-
   void Update(float deltaTime) override;
   void ApplyForce(const vec3& force);
   void Drag();
