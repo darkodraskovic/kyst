@@ -2,6 +2,8 @@
 
 using namespace glm;
 
+namespace Kyst {
+
 const std::map<Uniform, std::string> UNIFORM_MAP{
     {TIME, "uTime"}, {COLOR, "uColor"}, {ALPHA, "uAlpha"}, {MODEL, "uModel"}, {VIEW, "uView"}, {PROJECTION, "uProjection"},
 };
@@ -22,3 +24,5 @@ void Material::Update(const mat4& model, const mat4& view, const mat4& projectio
   shader_->SetMat4(UNIFORM_MAP.at(VIEW), view);
   shader_->SetMat4(UNIFORM_MAP.at(PROJECTION), projection);
 }
+
+}  // namespace Kyst

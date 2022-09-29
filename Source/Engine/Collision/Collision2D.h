@@ -1,10 +1,11 @@
-#ifndef COLLISION2D_H
-#define COLLISION2D_H
+#pragma once
 
 #include <glm/fwd.hpp>
 #include <glm/glm.hpp>
 
 using namespace glm;
+
+namespace Kyst {
 
 namespace Collision2D {
 // Shapes
@@ -71,8 +72,7 @@ class Rectangle : public Shape {
 
 class OrientedRectangle : public Shape, public Rotor {
  public:
-  OrientedRectangle(const vec2& center, const vec2& halfSize,
-                    float rotation = 0);
+  OrientedRectangle(const vec2& center, const vec2& halfSize, float rotation = 0);
   const Segment& Edge(int n) const;  // cw side count: 0 = up, 1, = right, etc.
   bool SAT(const Segment& axis) const;
   const Range& Project(const vec2& dir) const;
@@ -102,4 +102,4 @@ bool collide(const Rectangle& rect, const Line& line);        // TODO
 bool collide(const Rectangle& rect, const Segment& segment);  // TODO
 }  // namespace Collision2D
 
-#endif /* COLLISION2D_H */
+}  // namespace Kyst

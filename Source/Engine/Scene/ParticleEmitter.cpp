@@ -5,6 +5,8 @@
 
 #include "Scene.h"
 
+namespace Kyst {
+
 ParticleEmitter::ParticleEmitter() { visible_ = false; }
 
 void ParticleEmitter::CreateParticle() {
@@ -42,3 +44,5 @@ void ParticleEmitter::Update(float deltaTime) {
     lastEmitted_ -= emissionFreq_;
   }
 }
+
+}  // namespace Kyst

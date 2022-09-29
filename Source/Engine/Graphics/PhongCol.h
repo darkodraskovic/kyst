@@ -1,10 +1,11 @@
-#ifndef PHONG_COL_H
-#define PHONG_COL_H
+#pragma once
 
 #include "../VecConsts.h"
 #include "Phong.h"
 
 using namespace glm;
+
+namespace Kyst {
 
 class PhongCol : public Phong {
  public:
@@ -16,4 +17,4 @@ class PhongCol : public Phong {
   vec3 specular_{WHITE};
 };
 
-#endif
+}  // namespace Kyst

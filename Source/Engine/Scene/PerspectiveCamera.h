@@ -1,7 +1,8 @@
-#ifndef PERSPECTIVECAMERA_H
-#define PERSPECTIVECAMERA_H
+#pragma once
 
 #include "Camera.h"
+
+namespace Kyst {
 
 class PerspectiveCamera : public Camera {
  public:
@@ -17,4 +18,4 @@ class PerspectiveCamera : public Camera {
   void UpdateCameraVectors(const vec3& rotation);
 };
 
-#endif /* PERSPECTIVECAMERA_H */
+}  // namespace Kyst

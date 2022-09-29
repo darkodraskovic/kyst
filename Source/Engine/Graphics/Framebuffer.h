@@ -1,9 +1,10 @@
-#ifndef FRAMBUFFER_H
-#define FRAMBUFFER_H
+#pragma once
 
 #include <memory>
 
 #include "Texture2D.h"
+
+namespace Kyst {
 
 class Framebuffer {
  public:
@@ -22,4 +23,4 @@ class Framebuffer {
   unsigned int renderbuffer_{0};
 };
 
-#endif /* FRAMBUFFER_H */
+}  // namespace Kyst

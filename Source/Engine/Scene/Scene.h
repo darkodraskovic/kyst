@@ -1,5 +1,4 @@
-#ifndef SCENE_H
-#define SCENE_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -7,6 +6,8 @@
 // #include "Camera.h"
 #include "Component/CameraComponent.h"
 #include "Viewport.h"
+
+namespace Kyst {
 
 class Entity;
 
@@ -29,4 +30,4 @@ class Scene {
   friend class Viewport;
 };
 
-#endif /* SCENE_H */
+}  // namespace Kyst

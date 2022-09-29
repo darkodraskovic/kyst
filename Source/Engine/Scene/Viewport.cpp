@@ -13,6 +13,8 @@
 
 using namespace std;
 
+namespace Kyst {
+
 const string vertexPath_ = "Shaders/Viewport/Viewport.vs";
 const string fragmentPath_ = "Shaders/Viewport/Viewport.fs";
 
@@ -136,3 +138,5 @@ std::shared_ptr<Viewport> Viewport::Create(Application* app, bool perspective, i
 
   return viewport;
 }
+
+}  // namespace Kyst

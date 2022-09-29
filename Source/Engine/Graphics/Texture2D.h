@@ -1,9 +1,10 @@
-#ifndef TEXTURE2D_H
-#define TEXTURE2D_H
+#pragma once
 
 #include <string>
 
 #include "../Core.h"
+
+namespace Kyst {
 
 class Texture2D {
  public:
@@ -18,4 +19,4 @@ class Texture2D {
   unsigned int id_;
 };
 
-#endif /* TEXTURE2D_H */
+}  // namespace Kyst

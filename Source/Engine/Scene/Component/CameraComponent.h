@@ -5,6 +5,8 @@
 #include "../Camera.h"
 #include "Component.h"
 
+namespace Kyst {
+
 class CameraComponent : public Updatable {
  public:
   CameraComponent();
@@ -18,3 +20,5 @@ class CameraComponent : public Updatable {
   std::shared_ptr<Camera> camera_;
   CameraMovementMap movement_;
 };
+
+}  // namespace Kyst

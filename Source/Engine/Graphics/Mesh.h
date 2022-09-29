@@ -1,5 +1,4 @@
-#ifndef MESH_H
-#define MESH_H
+#pragma once
 
 #include <glm/glm.hpp>
 #include <map>
@@ -9,6 +8,8 @@
 #include "../Core.h"
 
 using namespace glm;
+
+namespace Kyst {
 
 enum MeshAttribute { POSITIONS, NORMALS, TANGENTS, TEX_COORDS, COLORS };
 
@@ -55,4 +56,4 @@ class Mesh {
   int numIdx_ = 0;
 };
 
-#endif
+}  // namespace Kyst

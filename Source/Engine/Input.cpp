@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace Kyst {
+
 Input::MouseData Input::mouseData_;
 
 Input::Input(GLFWwindow* window) : window_(window) {}
@@ -31,3 +33,5 @@ void Input::MouseScrollCallback(GLFWwindow* window, double scrollX, double scrol
   mouseData_.scrollY_ = scrollY;
   mouseData_.scrolled_ = true;
 }
+
+}  // namespace Kyst

@@ -1,5 +1,4 @@
-#ifndef SHADER_H
-#define SHADER_H
+#pragma once
 
 #include <fstream>
 #include <glm/glm.hpp>
@@ -9,6 +8,8 @@
 
 using namespace std;
 using namespace glm;
+
+namespace Kyst {
 
 class Shader {
  public:
@@ -38,4 +39,5 @@ class Shader {
 
   unsigned int id_;
 };
-#endif
+
+}  // namespace Kyst

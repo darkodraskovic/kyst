@@ -1,10 +1,12 @@
-#ifndef PHONG_H
-#define PHONG_H
+#pragma once
 
 #include "../VecConsts.h"
 #include "Material.h"
 
 using namespace glm;
+
+namespace Kyst {
+
 using namespace VecConsts;
 
 enum PhongUniform {
@@ -34,4 +36,4 @@ class Phong : public Material {
   float shininess_;
 };
 
-#endif
+}  // namespace Kyst

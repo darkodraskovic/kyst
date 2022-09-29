@@ -6,6 +6,7 @@
 
 #include "Engine/VecConsts.h"
 
+using namespace Kyst;
 using namespace VecConsts;
 using namespace ShapeFactory;
 
@@ -26,8 +27,7 @@ MazeFactory::MazeFactory(int width, int height) {
   }
 
   for (int j = 0; j < width; j++) {
-    wallsHor_[height].push_back(
-        wall(vec3(j, height, 0), vec3(j + 1, height, 0)));
+    wallsHor_[height].push_back(wall(vec3(j, height, 0), vec3(j + 1, height, 0)));
   }
 
   for (int i = 0; i < height; i++) {
@@ -92,9 +92,7 @@ void MazeFactory::RandomWalk() {
     }
 
     // if cell is visited, continue
-    if (find_if(visited.begin(), visited.end(), compareIVec2(ivec2(x, y))) !=
-        visited.end())
-      continue;
+    if (find_if(visited.begin(), visited.end(), compareIVec2(ivec2(x, y))) != visited.end()) continue;
     visited.push_back(ivec2(x, y));
 
     if (x - prevX != 0) {  // remove walls

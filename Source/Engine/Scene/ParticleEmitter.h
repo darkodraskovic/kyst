@@ -1,5 +1,4 @@
-#ifndef PARTICLE_EMITTER_H
-#define PARTICLE_EMITTER_H
+#pragma once
 
 #include <glm/glm.hpp>
 
@@ -7,6 +6,9 @@
 #include "Particle.h"
 
 using namespace glm;
+
+namespace Kyst {
+
 using namespace VecConsts;
 
 class ParticleEmitter : public Entity {
@@ -37,4 +39,4 @@ class ParticleEmitter : public Entity {
   float lastEmitted_ = 0;
 };
 
-#endif /* PARTICLE_EMITTER_H */
+}  // namespace Kyst

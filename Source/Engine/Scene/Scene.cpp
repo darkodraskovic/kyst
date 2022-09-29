@@ -5,6 +5,8 @@
 #include "Component/ModelComponent.h"
 #include "Entity.h"
 
+namespace Kyst {
+
 const Viewport* Scene::GetViewport() const { return viewport_; }
 
 void Scene::AddEntity(std::shared_ptr<Entity> entity) {
@@ -68,3 +70,5 @@ void Scene::Draw(unsigned int width, unsigned int height) {
 
   alphaEntities_.clear();
 }
+
+}  // namespace Kyst

@@ -10,6 +10,7 @@
 #include "Engine/Scene/Viewport.h"
 #include "Engine/VecConsts.h"
 
+using namespace Kyst;
 using namespace VecConsts;
 using namespace glm;
 

@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace Kyst {
+
 mat4 PerspectiveCamera::GetProjectionMatrix(int width, int height) {
   return glm::perspective(zoom_, (float)width / (float)height, 0.1f, 100.0f);
 }
@@ -53,3 +55,5 @@ void PerspectiveCamera::Update(float deltaTime, const CameraMovementMap& movemen
   Rotate(movement, rotation);
   Zoom(movement);
 }
+
+}  // namespace Kyst

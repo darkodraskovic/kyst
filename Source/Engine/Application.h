@@ -1,5 +1,4 @@
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#pragma once
 
 #include <glm/glm.hpp>
 #include <memory>
@@ -10,6 +9,8 @@
 #include "ResourceManager.h"
 
 using namespace glm;
+
+namespace Kyst {
 
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 
@@ -58,4 +59,4 @@ class Application {
   float lastFrame_ = 0.0f;
 };
 
-#endif
+}  // namespace Kyst

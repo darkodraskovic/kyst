@@ -2,6 +2,8 @@
 
 #include "../Core.h"
 
+namespace Kyst {
+
 // constructor generates the shader on the fly
 // ------------------------------------------------------------------------
 Shader::Shader(const string& vertexPath, const string& fragmentPath, const string& geometryPath, string include) {
@@ -160,3 +162,5 @@ void Shader::CheckCompileErrors(GLuint shader, string type) {
     }
   }
 }
+
+}  // namespace Kyst

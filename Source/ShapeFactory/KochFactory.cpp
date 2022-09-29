@@ -5,6 +5,7 @@
 
 #include "Engine/VecConsts.h"
 
+using namespace Kyst;
 using namespace VecConsts;
 using namespace ShapeFactory;
 
@@ -28,8 +29,7 @@ const std::vector<vec3>& KochFactory::Snowflake(int numDivisions) {
   return points_;
 }
 
-const std::vector<vec3>& KochFactory::SnowflakeCurve(vec3& a, vec3& b,
-                                                     int numDivisions) {
+const std::vector<vec3>& KochFactory::SnowflakeCurve(vec3& a, vec3& b, int numDivisions) {
   points_.clear();
 
   Divide(a, b, numDivisions);

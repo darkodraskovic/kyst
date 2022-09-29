@@ -7,6 +7,7 @@
 #include "Engine/Scene/Entity.h"
 #include "ShapeFactory/CubeFactory.h"
 
+using namespace Kyst;
 using namespace ShapeFactory;
 
 class Cube : public Entity {

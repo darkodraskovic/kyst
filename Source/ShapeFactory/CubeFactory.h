@@ -9,6 +9,7 @@
 #include "Engine/VecConsts.h"
 
 using namespace glm;
+using namespace Kyst;
 using namespace VecConsts;
 
 namespace ShapeFactory {

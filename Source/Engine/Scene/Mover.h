@@ -1,11 +1,12 @@
-#ifndef MOVER_H
-#define MOVER_H
+#pragma once
 
 #include <glm/glm.hpp>
 
 #include "Entity.h"
 
 using namespace glm;
+
+namespace Kyst {
 
 class Mover : public Entity {
  public:
@@ -32,4 +33,4 @@ class Mover : public Entity {
   float aDrag_ = 0;
 };
 
-#endif /* MOVER_H */
+}  // namespace Kyst

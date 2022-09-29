@@ -4,6 +4,8 @@
 #include "../Entity.h"
 #include "../Scene.h"
 
+namespace Kyst {
+
 CameraComponent::CameraComponent() {
   for (int key = CAM_FORWARD; key <= CAM_ZOOM; key++) {
     CameraMovement movement = static_cast<CameraMovement>(key);
@@ -39,3 +41,5 @@ void CameraComponent::Update(float deltaTime) {
   // apply movement map
   camera_->Update(deltaTime, movement_, entity_->position_, entity_->rotation_);
 }
+
+}  // namespace Kyst

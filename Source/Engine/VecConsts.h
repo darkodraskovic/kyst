@@ -1,9 +1,10 @@
-#ifndef VEC_CONSTS_H
-#define VEC_CONSTS_H
+#pragma once
 
 #include <glm/glm.hpp>
 
 using namespace glm;
+
+namespace Kyst {
 
 namespace VecConsts {
 // Directions
@@ -38,4 +39,4 @@ const vec3 GRAY(0.5f, 0.5f, 0.5f);
 const vec3 LIGHT_GRAY(0.8f, 0.8f, 0.8f);
 }  // namespace VecConsts
 
-#endif
+}  // namespace Kyst
