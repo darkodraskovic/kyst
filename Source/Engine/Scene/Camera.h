@@ -1,8 +1,9 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#pragma once
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <map>
+
+namespace Kyst {
 
 enum CameraMovement { CAM_FORWARD, CAM_BACKWARD, CAM_LEFT, CAM_RIGHT, CAM_UP, CAM_DOWN, CAM_ROT_X, CAM_ROT_Y, CAM_ZOOM };
 
@@ -34,4 +35,5 @@ class Camera {
   float rotationSpeed_{0.001f};
   float zoomSpeed_ = .04f;
 };
-#endif
+
+}  // namespace Kyst

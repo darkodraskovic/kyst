@@ -3,6 +3,8 @@
 #include <map>
 #include <string>
 
+namespace Kyst {
+
 const std::map<PhongUniform, std::string> PHONG_MAP{
     {LIGHT_DIFFUSE, "uLight.diffuse"},         {LIGHT_SPECULAR, "uLight.specular"},
     {LIGHT_AMBIENT, "uLight.ambient"},         {LIGHT_POSITION, "uLight.position"},
@@ -23,3 +25,5 @@ void Phong::Update(const glm::mat4& model, const glm::mat4& view, const glm::mat
   shader_->SetFloat(PHONG_MAP.at(MATERIAL_SHININESS), shininess_);
   shader_->SetVec3(PHONG_MAP.at(VIEW_POS), glm::vec3(glm::inverse(view)[3]));
 }
+
+}  // namespace Kyst

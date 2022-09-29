@@ -1,5 +1,4 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#pragma once
 
 #include <glm/glm.hpp>
 #include <map>
@@ -10,6 +9,9 @@
 #include "Component/Component.h"
 
 using namespace glm;
+
+namespace Kyst {
+
 class Scene;
 
 class Entity {
@@ -64,4 +66,4 @@ class Entity {
   Scene* scene_;
 };
 
-#endif
+}  // namespace Kyst

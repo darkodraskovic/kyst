@@ -1,5 +1,7 @@
 #include "Particle.h"
 
+namespace Kyst {
+
 Particle::Particle() {}
 
 void Particle::Update(float deltaTime) {
@@ -8,3 +10,5 @@ void Particle::Update(float deltaTime) {
   lifespan_ -= deltaTime;
   if (lifespan_ < 0) remove_ = true;
 }
+
+}  // namespace Kyst

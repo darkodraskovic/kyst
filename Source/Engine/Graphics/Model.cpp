@@ -2,8 +2,9 @@
 
 #include "../VecConsts.h"
 
-using namespace VecConsts;
+namespace Kyst {
 
+using namespace VecConsts;
 Model::Model() {}
 
 void Model::SetMaterial(std::shared_ptr<Material> material) { material_ = material; }
@@ -16,3 +17,5 @@ void Model::Draw(const glm::mat4& uModel, const glm::mat4& uView, const glm::mat
   material_->Update(uModel, uView, uProjection);
   mesh_->Draw();
 }
+
+}  // namespace Kyst

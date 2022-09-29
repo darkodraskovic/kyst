@@ -1,5 +1,7 @@
 #include "PhongMap.h"
 
+namespace Kyst {
+
 PhongMap::PhongMap() {}
 
 void PhongMap::Update(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) {
@@ -16,3 +18,5 @@ void PhongMap::Update(const glm::mat4& model, const glm::mat4& view, const glm::
   shader_->SetInt(PHONG_MAP.at(MATERIAL_SPECULAR), 1);
   shader_->SetInt(PHONG_MAP.at(MATERIAL_EMISSIVE), 2);
 }
+
+}  // namespace Kyst

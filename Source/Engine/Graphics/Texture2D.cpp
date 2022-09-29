@@ -1,5 +1,7 @@
 #include "Texture2D.h"
 
+namespace Kyst {
+
 Texture2D::Texture2D() { glGenTextures(1, &id_); }
 
 void Texture2D::CreateImage(int width, int height, unsigned int* data = nullptr, GLuint interpolation) {
@@ -26,3 +28,5 @@ void Texture2D::GetData(unsigned int* data) {
 }
 
 unsigned int Texture2D::GetId() { return id_; }
+
+}  // namespace Kyst

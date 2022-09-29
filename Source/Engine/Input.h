@@ -1,7 +1,8 @@
-#ifndef INPUT_H
-#define INPUT_H
+#pragma once
 
 #include "Core.h"
+
+namespace Kyst {
 
 class Input {
  public:
@@ -32,8 +33,7 @@ class Input {
   bool GetKey(unsigned int key) const;
 
   static void MouseMoveCallback(GLFWwindow* window, double posX, double posY);
-  static void MouseScrollCallback(GLFWwindow* window, double scrollX,
-                                  double scrollY);
+  static void MouseScrollCallback(GLFWwindow* window, double scrollX, double scrollY);
 
   static MouseData mouseData_;
 
@@ -41,4 +41,4 @@ class Input {
   GLFWwindow* window_;
 };
 
-#endif /* INPUT_H */
+}  // namespace Kyst

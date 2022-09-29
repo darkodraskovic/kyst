@@ -1,7 +1,7 @@
-#ifndef PARTICLE_H
-#define PARTICLE_H
 
 #include "Mover.h"
+
+namespace Kyst {
 
 class Particle : public Mover {
  public:
@@ -11,4 +11,4 @@ class Particle : public Mover {
   float lifespan_ = 1.f;  // secs
 };
 
-#endif /* PARTICLE_H */
+}  // namespace Kyst

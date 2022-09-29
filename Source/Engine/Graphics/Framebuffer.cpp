@@ -4,6 +4,7 @@
 
 #include "../Core.h"
 
+namespace Kyst {
 Framebuffer::Framebuffer() {
   glGenFramebuffers(1, &framebuffer_);
   glGenRenderbuffers(1, &renderbuffer_);
@@ -44,3 +45,4 @@ Framebuffer::~Framebuffer() {
   if (framebuffer_) glDeleteFramebuffers(1, &framebuffer_);
   if (renderbuffer_) glDeleteRenderbuffers(1, &renderbuffer_);
 }
+}  // namespace Kyst

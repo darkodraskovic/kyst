@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace Kyst {
+
 Mesh::Mesh() { glGenVertexArrays(1, &VAO_); }
 
 const std::map<MeshAttribute, std::string> ATTRIBUTE_MAP{
@@ -139,3 +141,5 @@ Mesh::~Mesh() {
   DeleteBuffers();
   if (VAO_) glDeleteVertexArrays(1, &VAO_);
 }
+
+}  // namespace Kyst

@@ -5,6 +5,8 @@
 #include "Material.h"
 #include "Mesh.h"
 
+namespace Kyst {
+
 class Model {
  public:
   Model();
@@ -21,3 +23,5 @@ class Model {
   std::shared_ptr<Material> material_;
   std::shared_ptr<Mesh> mesh_;
 };
+
+}  // namespace Kyst

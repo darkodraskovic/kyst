@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+namespace Kyst {
+
 class Entity;
 class Component {
  public:
@@ -24,3 +26,5 @@ class Drawable : public Component {
  public:
   virtual void Draw(const glm::mat4& uModel, const glm::mat4& uView, const glm::mat4& uProjection) = 0;
 };
+
+}  // namespace Kyst

@@ -1,5 +1,6 @@
-#ifndef OBJECT_H
-#define OBJECT_H
+#pragma once
+
+namespace Kyst {
 
 class Application;
 class Object {
@@ -11,4 +12,4 @@ class Object {
   Application* app_;
 };
 
-#endif /* OBJECT_H */
+}  // namespace Kyst

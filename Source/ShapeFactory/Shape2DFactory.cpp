@@ -31,8 +31,7 @@ Mesh* Shape2DFactory::Lines(const std::vector<vec3>& points) {
   return mesh;
 }
 
-const std::vector<vec3>& Shape2DFactory::RectPoints(const vec3& offset,
-                                                    const vec2& size) {
+const std::vector<vec3>& Shape2DFactory::RectPoints(const vec3& offset, const vec2& size) {
   points_.clear();
 
   points_.push_back(offset);
@@ -65,9 +64,7 @@ Mesh* Shape2DFactory::SolidRect(const vec3& offset, const vec2& size) {
   return mesh;
 }
 
-const std::vector<vec3>& Shape2DFactory::EllipsePoints(const vec3& offset,
-                                                       const vec2& size,
-                                                       unsigned int precision) {
+const std::vector<vec3>& Shape2DFactory::EllipsePoints(const vec3& offset, const vec2& size, unsigned int precision) {
   points_.clear();
 
   float step = glm::pi<float>() * 2 / precision;
@@ -80,16 +77,14 @@ const std::vector<vec3>& Shape2DFactory::EllipsePoints(const vec3& offset,
   return points_;
 }
 
-Mesh* Shape2DFactory::LineEllipse(const vec3& offset, const vec2& size,
-                                  unsigned int precision) {
+Mesh* Shape2DFactory::LineEllipse(const vec3& offset, const vec2& size, unsigned int precision) {
   auto mesh = new Mesh();
   mesh->positions_ = EllipsePoints(offset, size, precision);
   mesh->mode_ = GL_LINE_LOOP;
   return mesh;
 }
 
-Mesh* Shape2DFactory::SolidEllipse(const vec3& offset, const vec2& size,
-                                   unsigned int precision) {
+Mesh* Shape2DFactory::SolidEllipse(const vec3& offset, const vec2& size, unsigned int precision) {
   auto mesh = new Mesh();
   mesh->positions_ = EllipsePoints(offset, size, precision);
   mesh->positions_.insert(mesh->positions_.end(), *mesh->positions_.begin());

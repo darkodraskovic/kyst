@@ -1,8 +1,9 @@
-#ifndef RESOURCE_MANAGER_H
-#define RESOURCE_MANAGER_H
+#pragma once
 
 #include <map>
 #include <string>
+
+namespace Kyst {
 
 class ResourceManager {
  public:
@@ -14,4 +15,4 @@ class ResourceManager {
   std::map<std::string, unsigned int> textures_;
 };
 
-#endif
+}  // namespace Kyst

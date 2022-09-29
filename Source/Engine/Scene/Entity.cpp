@@ -4,6 +4,8 @@
 #include "Component/ModelComponent.h"
 #include "Scene.h"
 
+namespace Kyst {
+
 using namespace VecConsts;
 
 void Entity::SetScene(Scene* scene) { scene_ = scene; }
@@ -25,6 +27,6 @@ void Entity::Draw(const glm::mat4& uView, const glm::mat4& uProjection) {
   for (auto it = drawables_.begin(); it != drawables_.end(); ++it) {
     (*it)->Draw(transform, uView, uProjection);
   }
-
-  // model_->Draw(transform, uView, uProjection);
 }
+
+}  // namespace Kyst

@@ -9,6 +9,7 @@
 #include "Engine/Graphics/Mesh.h"
 #include "Engine/Scene/Entity.h"
 
+using namespace Kyst;
 using namespace glm;
 
 namespace ShapeFactory {
@@ -22,19 +23,14 @@ class Shape2DFactory {
   static Mesh* Lines(const std::vector<vec3>& points);
 
   // Rect
-  static const std::vector<vec3>& RectPoints(const vec3& offset,
-                                             const vec2& size);
+  static const std::vector<vec3>& RectPoints(const vec3& offset, const vec2& size);
   static Mesh* LineRect(const vec3& offset, const vec2& size);
   static Mesh* SolidRect(const vec3& offset, const vec2& size);
 
   // Ellipse
-  static const std::vector<vec3>& EllipsePoints(const vec3& offset,
-                                                const vec2& size,
-                                                unsigned int precision);
-  static Mesh* LineEllipse(const vec3& offset, const vec2& size,
-                           unsigned int precision = 36);
-  static Mesh* SolidEllipse(const vec3& offset, const vec2& size,
-                            unsigned int precision = 36);
+  static const std::vector<vec3>& EllipsePoints(const vec3& offset, const vec2& size, unsigned int precision);
+  static Mesh* LineEllipse(const vec3& offset, const vec2& size, unsigned int precision = 36);
+  static Mesh* SolidEllipse(const vec3& offset, const vec2& size, unsigned int precision = 36);
 
   // Polygon
   static Mesh* LinePolygon(const std::vector<vec3>& points);

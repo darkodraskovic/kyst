@@ -7,6 +7,8 @@
 
 using namespace glm;
 
+namespace Kyst {
+
 Application::Application(){};
 
 void Application::SetWindowSize(const uvec2& size) { windowSize_ = size; }
@@ -114,3 +116,5 @@ void Application::Terminate() {
 };
 
 void Application::FramebufferSizeCallback(GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height); }
+
+}  // namespace Kyst

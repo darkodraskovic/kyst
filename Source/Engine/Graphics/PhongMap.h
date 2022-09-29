@@ -1,7 +1,8 @@
-#ifndef PHONG_MAP_H
-#define PHONG_MAP_H
+#pragma once
 
 #include "Phong.h"
+
+namespace Kyst {
 
 class PhongMap : public Phong {
  public:
@@ -14,4 +15,4 @@ class PhongMap : public Phong {
   unsigned int emissive_{0};
 };
 
-#endif
+}  // namespace Kyst

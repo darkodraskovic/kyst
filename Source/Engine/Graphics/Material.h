@@ -1,5 +1,4 @@
-#ifndef MATERIAL_H
-#define MATERIAL_H
+#pragma once
 
 #include <glm/glm.hpp>
 #include <map>
@@ -9,6 +8,8 @@
 #include "Shader.h"
 
 using namespace glm;
+
+namespace Kyst {
 
 enum Uniform { TIME, COLOR, ALPHA, MODEL, VIEW, PROJECTION };
 extern const std::map<Uniform, std::string> UNIFORM_MAP;
@@ -29,4 +30,4 @@ class Material {
   std::shared_ptr<Shader> shader_;
 };
 
-#endif
+}  // namespace Kyst

@@ -1,7 +1,7 @@
-#ifndef ORTHOCAMERA_H
-#define ORTHOCAMERA_H
-
+#pragma once
 #include "Camera.h"
+
+namespace Kyst {
 
 class Viewport;
 class OrthoCamera : public Camera {
@@ -17,4 +17,4 @@ class OrthoCamera : public Camera {
   virtual void Update(float deltaTime, const CameraMovementMap& movement, vec3& position, vec3& rotation) override;
 };
 
-#endif /* ORTHOCAMERA_H */
+}  // namespace Kyst

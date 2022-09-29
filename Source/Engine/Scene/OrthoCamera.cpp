@@ -1,5 +1,7 @@
 #include "OrthoCamera.h"
 
+namespace Kyst {
+
 OrthoCamera::OrthoCamera() { translationSpeed_ = 500; }
 
 mat4 OrthoCamera::GetProjectionMatrix(int width, int height) {
@@ -34,3 +36,5 @@ void OrthoCamera::Update(float deltaTime, const CameraMovementMap& movement, vec
   Translate(deltaTime, movement, position);
   Zoom(movement);
 }
+
+}  // namespace Kyst

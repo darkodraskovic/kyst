@@ -1,5 +1,4 @@
-#ifndef VIEWPORT_H
-#define VIEWPORT_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -7,6 +6,8 @@
 #include "../Graphics/Framebuffer.h"
 #include "../Graphics/Shader.h"
 #include "Object.h"
+
+namespace Kyst {
 
 class Scene;
 class Mesh;
@@ -47,4 +48,4 @@ class Viewport : public Object {
   std::vector<std::shared_ptr<Shader>> effects_;
 };
 
-#endif /* VIEWPORT_H */
+}  // namespace Kyst

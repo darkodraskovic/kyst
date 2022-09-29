@@ -8,8 +8,9 @@
 
 #include "../VecConsts.h"
 
-using namespace Collision2D;
+namespace Kyst {
 
+using namespace Collision2D;
 // Shapes
 // ------------------------------
 
@@ -23,9 +24,7 @@ void Range::Sort() {
   }
 }
 
-bool Range::Overlapping(const Range& other) const {
-  return overlapping(min_, max_, other.min_, other.max_);
-}
+bool Range::Overlapping(const Range& other) const { return overlapping(min_, max_, other.min_, other.max_); }
 
 const Range& Range::Hull(const Range& other) const {
   Range* hull = new Range();
@@ -57,11 +56,9 @@ void Shape::Update(const vec2& position) { position_ = position; }
 
 // Line
 
-Line::Line(const vec2& position, float rotation)
-    : Shape(position), Rotor(rotation) {}
+Line::Line(const vec2& position, float rotation) : Shape(position), Rotor(rotation) {}
 
-Line::Line(const vec2& position, const vec2& direction)
-    : Shape(position), Rotor(direction) {}
+Line::Line(const vec2& position, const vec2& direction) : Shape(position), Rotor(direction) {}
 
 bool Line::Equivalent(const Line& other) const {
   if (!parallel(direction_, other.direction_)) return false;
@@ -70,8 +67,7 @@ bool Line::Equivalent(const Line& other) const {
 
 // Segment
 
-Segment::Segment(const vec2& startpoint, const vec2& endpoint)
-    : Shape(startpoint), endpoint_(endpoint) {}
+Segment::Segment(const vec2& startpoint, const vec2& endpoint) : Shape(startpoint), endpoint_(endpoint) {}
 
 const Range& Segment::Project(const vec2& onto) const {
   vec2 ontoN = glm::normalize(onto);
@@ -84,19 +80,16 @@ bool Segment::OnOneSide(const Line& line) const {
   vec2 d1 = position_ - line.position_;
   vec2 d2 = endpoint_ - line.position_;
   vec2 norm = rotate90(line.direction_);
-  return glm::dot(norm, d1) * glm::dot(norm, d2) >
-         0;  // colinear is not on the same side
+  return glm::dot(norm, d1) * glm::dot(norm, d2) > 0;  // colinear is not on the same side
 }
 
 // Rectangle
 
-Rectangle::Rectangle(const vec2& position, const vec2& size)
-    : Shape(position), size_(size) {}
+Rectangle::Rectangle(const vec2& position, const vec2& size) : Shape(position), size_(size) {}
 
 // OrientedRectangle
 
-OrientedRectangle::OrientedRectangle(const vec2& center, const vec2& halfSize,
-                                     float rotation)
+OrientedRectangle::OrientedRectangle(const vec2& center, const vec2& halfSize, float rotation)
     : Shape(center), halfSize_(halfSize), Rotor(rotation) {}
 
 const Segment& OrientedRectangle::Edge(int n) const {
@@ -129,18 +122,13 @@ bool OrientedRectangle::SAT(const Segment& axis) const {
   return !axisRange.Overlapping(Project(dir));
 }
 
-const Range& OrientedRectangle::Project(const vec2& dir) const {
-  return Edge(0).Project(dir).Hull(Edge(2).Project(dir));
-}
+const Range& OrientedRectangle::Project(const vec2& dir) const { return Edge(0).Project(dir).Hull(Edge(2).Project(dir)); }
 
 // Circle
 
-Circle::Circle(const vec2& position, float radius)
-    : Shape(position), radius_(radius) {}
+Circle::Circle(const vec2& position, float radius) : Shape(position), radius_(radius) {}
 
-bool Circle::Contains(const vec2& point) const {
-  return glm::length(point - position_) <= radius_;
-}
+bool Circle::Contains(const vec2& point) const { return glm::length(point - position_) <= radius_; }
 
 // Collides helpers
 // ------------------------------
@@ -150,9 +138,7 @@ bool Collision2D::equal(float a, float b) {
   return fabsf(a - b) < threshold;
 }
 
-bool Collision2D::equal(const vec2& a, const vec2& b) {
-  return equal(a.x, b.x) && equal(a.y, b.y);
-}
+bool Collision2D::equal(const vec2& a, const vec2& b) { return equal(a.x, b.x) && equal(a.y, b.y); }
 
 const vec2& Collision2D::rotate(const vec2& vec, float rotation) {
   float s = sinf(rotation);
@@ -182,9 +168,7 @@ const vec2& Collision2D::project(const vec2& project, const vec2& onto) {
   return onto;
 }
 
-bool Collision2D::overlapping(float minA, float maxA, float minB, float maxB) {
-  return minB <= maxA && minA <= maxB;
-}
+bool Collision2D::overlapping(float minA, float maxA, float minB, float maxB) { return minB <= maxA && minA <= maxB; }
 
 // Collides
 // ------------------------------
@@ -200,8 +184,7 @@ bool Collision2D::collide(const Rectangle& a, const Rectangle& b) {
   float bBottom = b.position_.y;
   float bTop = b.position_.y + b.size_.y;
 
-  return overlapping(aLeft, aRight, bLeft, bRight) &&
-         overlapping(aBottom, aTop, bBottom, bTop);
+  return overlapping(aLeft, aRight, bLeft, bRight) && overlapping(aBottom, aTop, bBottom, bTop);
 }
 
 bool Collision2D::collide(const Circle& a, const Circle& b) {
@@ -227,8 +210,7 @@ bool Collision2D::collide(const Segment& a, const Segment& b) {
   return true;
 }
 
-bool Collision2D::collide(const OrientedRectangle& a,
-                          const OrientedRectangle& b) {
+bool Collision2D::collide(const OrientedRectangle& a, const OrientedRectangle& b) {
   if (a.SAT(b.Edge(0))) return false;
   if (a.SAT(b.Edge(1))) return false;
   if (b.SAT(a.Edge(0))) return false;
@@ -237,8 +219,7 @@ bool Collision2D::collide(const OrientedRectangle& a,
 }
 
 bool Collision2D::collide(const Circle& circle, const Line& line) {
-  vec2 nearestPt = project(circle.position_ - line.position_, line.direction_) +
-                   line.position_;
+  vec2 nearestPt = project(circle.position_ - line.position_, line.direction_) + line.position_;
   return circle.Contains(nearestPt);
 }
 
@@ -249,12 +230,12 @@ bool Collision2D::collide(const Circle& circle, const Segment& segment) {
   vec2 dir = segment.endpoint_ - segment.position_;
   vec2 proj = project(circle.position_ - segment.position_, dir);
   vec2 nearestPt = proj + segment.position_;
-  return circle.Contains(nearestPt) && glm::length(proj) <= length(dir) &&
-         glm::dot(proj, dir) >= 0;
+  return circle.Contains(nearestPt) && glm::length(proj) <= length(dir) && glm::dot(proj, dir) >= 0;
 }
 
 bool Collision2D::collide(const Circle& circle, const Rectangle& rect) {
-  vec2 clamped =
-      glm::clamp(circle.position_, rect.position_, rect.position_ + rect.size_);
+  vec2 clamped = glm::clamp(circle.position_, rect.position_, rect.position_ + rect.size_);
   return circle.Contains(clamped);
 }
+
+}  // namespace Kyst

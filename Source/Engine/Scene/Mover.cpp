@@ -2,6 +2,8 @@
 
 #include "../VecConsts.h"
 
+namespace Kyst {
+
 using namespace VecConsts;
 
 Mover::Mover() {}
@@ -44,3 +46,5 @@ void Mover::Update(float deltaTime) {
   rotation_ += aVelocity_ * deltaTime;
   aAcceleration_ *= 0.f;
 }
+
+}  // namespace Kyst
