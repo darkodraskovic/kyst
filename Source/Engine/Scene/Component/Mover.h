@@ -10,8 +10,6 @@ namespace Kyst {
 
 class Mover : public Updatable {
  public:
-  Mover();
-
   void Update(float deltaTime) override;
   void ApplyForce(const vec3& force);
   void Drag();

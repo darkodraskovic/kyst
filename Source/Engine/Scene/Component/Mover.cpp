@@ -7,8 +7,6 @@ namespace Kyst {
 
 using namespace VecConsts;
 
-Mover::Mover() {}
-
 void Mover::ApplyForce(const vec3& force) { acceleration_ += force / mass_; }
 
 void Mover::Drag() {
