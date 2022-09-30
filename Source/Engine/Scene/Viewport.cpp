@@ -7,8 +7,6 @@
 #include "../Graphics/Texture2D.h"
 #include "Component/CameraComponent.h"
 #include "Entity.h"
-#include "OrthoCamera.h"
-#include "PerspectiveCamera.h"
 #include "Scene.h"
 
 using namespace std;
@@ -125,12 +123,8 @@ std::shared_ptr<Viewport> Viewport::Create(Application* app, bool perspective, i
   auto cameraEntity = std::make_shared<Entity>();
   viewport->scene_->AddEntity(cameraEntity);
 
-  std::shared_ptr<Camera> camera;
-  if (perspective) {
-    camera = make_shared<PerspectiveCamera>();
-  } else {
-    camera = make_shared<OrthoCamera>();
-  }
+  std::shared_ptr<Camera> camera = std::make_shared<Camera>();
+  camera->SetPerspective(perspective);
 
   auto cameraComponent = cameraEntity->AddComponent<CameraComponent>();
   cameraComponent->SetCamera(camera);

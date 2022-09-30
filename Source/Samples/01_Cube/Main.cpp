@@ -5,7 +5,6 @@
 #include "Engine/Graphics/PhongMap.h"
 #include "Engine/Scene/Component/CameraComponent.h"
 #include "Engine/Scene/Component/ModelComponent.h"
-#include "Engine/Scene/PerspectiveCamera.h"
 #include "Engine/Scene/Scene.h"
 #include "Engine/Scene/Viewport.h"
 #include "Engine/VecConsts.h"
