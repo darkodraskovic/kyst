@@ -31,6 +31,10 @@ class App : public Application {
     viewport->scale_.y = .5;
     viewport->position_.x = .25;
 
+    auto* camComponent = viewport->GetScene()->cameraComponent_;
+    camComponent->translationSpeed_ = 500.0f;
+    camComponent->zoomSpeed_ = -camComponent->zoomSpeed_;
+
     for (int i = 0; i < width * height; ++i) {
       data0[i] = 0x000000FF;
     }

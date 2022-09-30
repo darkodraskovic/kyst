@@ -13,16 +13,17 @@ using namespace glm;
 
 class Camera {
  public:
+  Camera();
+
   mat4 GetViewMatrix(const vec3& position);
 
-  virtual mat4 GetProjectionMatrix(int scrWidth, int scrHeight) = 0;
-  virtual void LookAt(const vec3& center, vec3& position, vec3& rotation) = 0;
-  // TODO: move this method from Camera to Entity
+  void SetCameraVectors(const vec3& rotation);
 
-  virtual void Translate(float deltaTime, const CameraMovementMap& map, vec3& position) = 0;
-  virtual void Rotate(const CameraMovementMap& movement, vec3& rotation, bool constrainPitch = true) = 0;
-  virtual void Zoom(const CameraMovementMap& movement) = 0;
-  virtual void Update(float deltaTime, const CameraMovementMap& movement, vec3& position, vec3& rotation) = 0;
+  mat4 GetProjectionMatrix(int scrWidth, int scrHeight);
+  void LookAt(const vec3& center, vec3& position, vec3& rotation);
+
+  void SetPerspective(bool perspective);
+  bool GetPerspective();
 
   vec3 right_{1, 0, 0};
   vec3 up_{0, 1, 0};
@@ -31,9 +32,16 @@ class Camera {
 
   float zoom_{1};
 
-  float translationSpeed_{5.0};
-  float rotationSpeed_{0.001f};
-  float zoomSpeed_ = .04f;
+ private:
+  mat4 (Camera::*GetProjectionMatrixPtr)(int scrWidth, int scrHeight);
+  mat4 GetProjectionMatrixOrtho(int width, int height);
+  mat4 GetProjectionMatrixPerspective(int width, int height);
+
+  void (Camera::*LookAtPtr)(const vec3& center, vec3& position, vec3& rotation);
+  void LookAtOrtho(const vec3& center, vec3& position, vec3& rotation);
+  void LookAtPerspective(const vec3& center, vec3& position, vec3& rotation);
+
+  bool perspective_ = true;
 };
 
 }  // namespace Kyst
