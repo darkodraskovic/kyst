@@ -12,7 +12,6 @@ TARGET=
 ROOT_DIR=~/Development/kyst
 COMPILE_CMD="make"
 CONFIGURE=false
-RUN=true
 
 SLN=kyst.sln
 
@@ -79,7 +78,7 @@ validate_exit
 
 # run
 
-if [ $RUN == true ]; then
+if [ $TARGET != all ]; then
     echo "EXE_NAME: ${EXE_NAME}"    
     cd $ROOT_DIR/bin
     $EXE_NAME

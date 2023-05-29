@@ -5,9 +5,12 @@
 
 #include "Assert.h"
 #include "Engine/Application.h"
+#include "Engine/Scene/Viewport.h"
+#include "Engine/Scene/Scene.h"
 #include "Engine/Graphics/Material2D.h"
 #include "Engine/Scene/Entity.h"
 #include "Engine/VecConsts.h"
+#include "Engine/Scene/Component/ModelComponent.h"
 #include "ShapeFactory/Shape2DFactory.h"
 using namespace VecConsts;
 
@@ -19,22 +22,28 @@ class App : public Application {
     Application::Init();
 
     auto viewport = AddViewport(true);
-    auto cam = viewport->GetScene()->camera_;
-    cam->position_.z = 5;
-    cam->LookAt(ZERO);
+    auto* camComponent = viewport->GetScene()->cameraComponent_;
+    auto* camEntity = camComponent->GetEntity();
+    camEntity->position_.z = 5;
+    camComponent->GetCamera()->LookAt(ZERO, camEntity->position_, camEntity->rotation_);
 
-    auto material = new Material2D();
+    auto material = std::make_shared<Material2D>();
     material->color_ = GREEN;
-    auto mesh = Shape2DFactory::SolidEllipse(ZERO, ONE * 2.f);
-    mesh->Generate(material->shader_->id_);
-    auto entity = new Entity(mesh, material);
+    
+    auto mesh = std::shared_ptr<Mesh>(Shape2DFactory::SolidEllipse(ZERO, ONE * 2.f));
+    mesh->Generate(material->GetShader()->GetId());
+    
+    auto entity = std::make_shared<Entity>();
+    ModelComponent* modelComponent = entity->AddComponent<ModelComponent>();
+    auto model = std::make_shared<Model>();
+    modelComponent->SetModel(model);
+    model->SetMaterial(material);
+    model->SetMesh(mesh);
+
     viewport->GetScene()->AddEntity(entity);
   }
 
-  virtual void Update(float deltaTime) {
-    viewports_[0]->GetScene()->camera_->Update(deltaTime_, *GetInput());
-    Application::Update(deltaTime);
-  }
+
 };
 
 int main() {

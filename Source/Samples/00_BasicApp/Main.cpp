@@ -2,6 +2,8 @@
 
 #include "Engine/Application.h"
 
+using namespace Kyst;
+
 int main() {
   Application app;
 

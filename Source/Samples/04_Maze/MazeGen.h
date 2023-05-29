@@ -5,14 +5,16 @@
 
 #include <glm/glm.hpp>
 
-#include "Engine/Scene/Mover.h"
+#include "Engine/Scene/Scene.h"
+#include "Engine/Scene/Component/Mover.h"
 
 using namespace glm;
+using namespace Kyst;
 
 class MazeGen {
  public:
   MazeGen(Scene* scene);
-  std::shared_ptr<Mover> CreateMaze(int width, int height, const vec3& color);
+  std::shared_ptr<Entity> CreateMaze(int width, int height, const vec3& color);
 
  private:
   Scene* scene_;

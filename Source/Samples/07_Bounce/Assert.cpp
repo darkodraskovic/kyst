@@ -5,11 +5,11 @@
 
 #include "Assert.h"
 
-using namespace VecConsts;
+using namespace Kyst::VecConsts;
+using namespace Kyst::Collision2D;
 
 void assertColllide()
 {
-    using namespace Collision2D;
     
     Rectangle aRect{{1, 1}, {4, 4}};
     Rectangle bRect{{2, 2}, {5, 5}};

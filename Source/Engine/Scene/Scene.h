@@ -19,6 +19,8 @@ class Scene {
   const Viewport* GetViewport() const;
 
   vec4 clearColor_ = vec4(0.2f, 0.3f, 0.3f, 1.0f);
+
+  // TODO: make private
   CameraComponent* cameraComponent_;
 
  private:

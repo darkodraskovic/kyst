@@ -39,6 +39,7 @@ void Scene::Draw(unsigned int width, unsigned int height) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnable(GL_DEPTH_TEST);
 
+  // TODO: replace cameraComponent_ with camera_
   auto pos = cameraComponent_->GetEntity()->position_;
   glm::mat4 view = cameraComponent_->GetCamera()->GetViewMatrix(pos);
   glm::mat4 projection = cameraComponent_->GetCamera()->GetProjectionMatrix(width, height);
